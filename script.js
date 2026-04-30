@@ -108,3 +108,45 @@ function updateFloatCta() {
 window.addEventListener('scroll', updateFloatCta, { passive: true });
 updateFloatCta();
 
+/* ----- Contact form: Netlify Forms + Meta CAPI parallel submit ----- */
+const form = document.querySelector('.contact-form');
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data     = new FormData(form);
+    const name     = data.get('name')    || '';
+    const email    = data.get('email')   || '';
+    const phone    = data.get('tel')     || '';
+    const message  = data.get('message') || '';
+
+    // Meta CAPI — fire and forget (errors are silent)
+    fetch('/.netlify/functions/meta-capi', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name, email, phone, message, sourceUrl: window.location.href }),
+    }).catch(() => {});
+
+    // Netlify Forms — await so we know it succeeded
+    data.append('form-name', 'contact');
+    await fetch('/', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body:    new URLSearchParams(data).toString(),
+    });
+
+    // Success feedback
+    const btn  = form.querySelector('.btn-submit');
+    const orig = btn.textContent;
+    btn.textContent      = '送信しました ✓';
+    btn.style.background = '#4a8d9b';
+    btn.disabled         = true;
+    setTimeout(() => {
+      btn.textContent      = orig;
+      btn.style.background = '';
+      btn.disabled         = false;
+      form.reset();
+    }, 3500);
+  });
+}
+
