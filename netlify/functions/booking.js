@@ -9,11 +9,11 @@ function hashData(data) {
 
 async function sendEmail(bookingData) {
   const { name, email, phone, date, time, menu, message } = bookingData;
-  const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD } });
+  const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.MAIL_FROM, pass: process.env.GMAIL_APP_PASSWORD } });
   const dateStr = date ? new Date(date + 'T00:00:00').toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' }) : date;
   await transporter.sendMail({
-    from: `Na'au Noa予約システム <${process.env.GMAIL_USER}>`,
-    to: process.env.NOTIFY_EMAIL || process.env.GMAIL_USER,
+    from: `Na'au Noa予約システム <${process.env.MAIL_FROM}>`,
+    to: process.env.NOTIFY_EMAIL || process.env.MAIL_FROM,
     subject: `【Na'au Noa】新規予約 - ${name}様（${dateStr} ${time}〜）`,
     html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;"><div style="background:#1a3a3a;padding:24px;text-align:center;"><h1 style="color:#b8976a;font-size:1.2rem;margin:0;">Na'au Noa 新規予約通知</h1></div><div style="padding:32px 24px;background:#fff;"><table style="width:100%;border-collapse:collapse;"><tr style="border-bottom:1px solid #eee;"><td style="padding:12px 8px;color:#888;width:35%;">お名前</td><td style="padding:12px 8px;font-weight:bold;">${name}</td></tr><tr style="border-bottom:1px solid #eee;"><td style="padding:12px 8px;color:#888;">メール</td><td style="padding:12px 8px;">${email}</td></tr><tr style="border-bottom:1px solid #eee;"><td style="padding:12px 8px;color:#888;">電話番号</td><td style="padding:12px 8px;">${phone}</td></tr><tr style="border-bottom:1px solid #eee;"><td style="padding:12px 8px;color:#888;">希望日</td><td style="padding:12px 8px;font-weight:bold;">${dateStr}</td></tr><tr style="border-bottom:1px solid #eee;"><td style="padding:12px 8px;color:#888;">希望時間</td><td style="padding:12px 8px;font-weight:bold;">${time}〜</td></tr><tr style="border-bottom:1px solid #eee;"><td style="padding:12px 8px;color:#888;">メニュー</td><td style="padding:12px 8px;">${menu}</td></tr><tr><td style="padding:12px 8px;color:#888;vertical-align:top;">お悩み</td><td style="padding:12px 8px;line-height:1.8;">${message||'（記載なし）'}</td></tr></table></div><div style="background:#f0ebe3;padding:16px 24px;text-align:center;"><p style="color:#888;font-size:0.85rem;">24時間以内にお客様へご連絡ください</p></div></div>`
   });
