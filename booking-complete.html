@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご予約ありがとうございます | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; min-height: 100vh; display: flex; flex-direction: column; }
+header { background: #1a3a3a; padding: 20px 24px; text-align: center; }
+header a { color: #b8976a; text-decoration: none; font-size: 1.4rem; letter-spacing: 0.1em; }
+.complete-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
+.complete-card { background: #fff; border-radius: 16px; padding: 48px 40px; max-width: 560px; width: 100%; text-align: center; box-shadow: 0 4px 30px rgba(0,0,0,0.08); }
+.check-icon { width: 80px; height: 80px; background: #1a3a3a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; font-size: 2rem; color: #fff; }
+h1 { font-size: 1.5rem; color: #1a3a3a; margin-bottom: 16px; line-height: 1.6; }
+.sub { color: #888; font-size: 0.9rem; margin-bottom: 32px; line-height: 1.8; }
+.info-box { background: #f0ebe3; border-radius: 10px; padding: 24px; margin-bottom: 32px; text-align: left; }
+.info-box h3 { font-size: 0.95rem; color: #1a3a3a; margin-bottom: 12px; }
+.info-box ul { list-style: none; font-size: 0.9rem; color: #555; line-height: 2; }
+.info-box ul li::before { content: '✓ '; color: #b8976a; }
+.back-btn { display: inline-block; padding: 14px 40px; background: #1a3a3a; color: #fff; text-decoration: none; border-radius: 8px; font-size: 1rem; letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+<header><a href="index.html">Na'au Noa</a></header>
+<div class="complete-wrap">
+  <div class="complete-card">
+    <div class="check-icon">✓</div>
+    <h1>ご予約を受け付けました</h1>
+    <p class="sub">ご予約いただきありがとうございます。<br>24時間以内にメールまたはお電話にて<br>ご確認のご連絡をさせていただきます。</p>
+    <div class="info-box">
+      <h3>当日までにご準備ください</h3>
+      <ul>
+        <li>Zoomのインストール（無料）</li>
+        <li>静かで話せる環境の確保</li>
+        <li>お気持ちを整理しておく（不要でも大丈夫です）</li>
+      </ul>
+    </div>
+    <a href="index.html" class="back-btn">トップページに戻る</a>
+  </div>
+</div>
+</body>
+</html>

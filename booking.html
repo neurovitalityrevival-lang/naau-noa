@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料オンライン個別相談 ご予約 | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; }
+header { background: #1a3a3a; padding: 20px 24px; text-align: center; }
+header a { color: #b8976a; text-decoration: none; font-size: 1.4rem; letter-spacing: 0.1em; }
+.hero { background: linear-gradient(135deg, #1a3a3a 0%, #2a5a5a 100%); color: #fff; text-align: center; padding: 60px 24px 48px; }
+.hero h1 { font-size: 1.8rem; line-height: 1.6; margin-bottom: 16px; color: #f0e8d8; }
+.hero p { font-size: 1rem; color: #c8b89a; line-height: 1.8; }
+.hero .badge { display: inline-block; background: #b8976a; color: #fff; font-size: 0.85rem; padding: 6px 20px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.05em; }
+.form-container { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+.form-section { background: #fff; border-radius: 12px; padding: 36px 32px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); margin-bottom: 24px; }
+.form-section h2 { font-size: 1.1rem; color: #1a3a3a; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #f0ebe3; }
+.form-group { margin-bottom: 20px; }
+label { display: block; font-size: 0.9rem; color: #555; margin-bottom: 6px; }
+label .required { color: #c0392b; margin-left: 4px; font-size: 0.8rem; }
+label .optional { color: #999; margin-left: 4px; font-size: 0.8rem; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea { width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 1rem; color: #2c2c2c; background: #faf8f5; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: #b8976a; background: #fff; }
+.select-wrap { position: relative; }
+.select-wrap::after { content: '▼'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.7rem; color: #888; pointer-events: none; }
+textarea { height: 120px; resize: vertical; line-height: 1.8; }
+.time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+.time-btn { padding: 10px 8px; border: 1px solid #ddd; border-radius: 6px; background: #faf8f5; font-family: 'Noto Serif JP', serif; font-size: 0.9rem; color: #555; cursor: pointer; text-align: center; transition: all 0.2s; }
+.time-btn:hover { border-color: #b8976a; color: #b8976a; }
+.time-btn.selected { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
+.privacy-note { font-size: 0.85rem; color: #888; line-height: 1.8; margin-bottom: 24px; }
+.submit-btn { width: 100%; padding: 18px; background: #b8976a; color: #fff; border: none; border-radius: 8px; font-family: 'Noto Serif JP', serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; letter-spacing: 0.05em; }
+.submit-btn:hover { background: #a07850; }
+.submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+.error-msg { color: #c0392b; font-size: 0.85rem; margin-top: 4px; display: none; }
+.points { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.point-item { background: #fff; border-radius: 10px; padding: 20px 16px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.point-item .icon { font-size: 1.8rem; margin-bottom: 8px; }
+.point-item p { font-size: 0.85rem; color: #555; line-height: 1.6; }
+.point-item strong { color: #1a3a3a; display: block; margin-bottom: 4px; }
+@media (max-width: 480px) { .hero h1 { font-size: 1.4rem; } .form-section { padding: 24px 20px; } .time-grid { grid-template-columns: repeat(2, 1fr); } .points { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header><a href="index.html">Na'au Noa</a></header>
+<div class="hero">
+  <span class="badge">完全無料・オンライン</span>
+  <h1>無料オンライン個別相談<br>ご予約フォーム</h1>
+  <p>あなたのお悩みを、丁寧にお聴きします。<br>まずは45分、話すだけでも大丈夫です。</p>
+</div>
+<div class="form-container">
+  <div class="points">
+    <div class="point-item"><div class="icon">🕐</div><strong>45分</strong><p>じっくりお話しできます</p></div>
+    <div class="point-item"><div class="icon">💻</div><strong>完全オンライン</strong><p>Zoomで自宅から参加</p></div>
+    <div class="point-item"><div class="icon">🆓</div><strong>無料</strong><p>費用は一切かかりません</p></div>
+    <div class="point-item"><div class="icon">🔒</div><strong>秘密厳守</strong><p>お話の内容は守られます</p></div>
+  </div>
+  <form id="bookingForm">
+    <div class="form-section">
+      <h2>お客様情報</h2>
+      <div class="form-group"><label>お名前<span class="required">*必須</span></label><input type="text" id="name" placeholder="山田 花子" required><div class="error-msg" id="nameError">お名前を入力してください</div></div>
+      <div class="form-group"><label>メールアドレス<span class="required">*必須</span></label><input type="email" id="email" placeholder="example@email.com" required><div class="error-msg" id="emailError">正しいメールアドレスを入力してください</div></div>
+      <div class="form-group"><label>電話番号<span class="required">*必須</span></label><input type="tel" id="phone" placeholder="090-1234-5678" required><div class="error-msg" id="phoneError">電話番号を入力してください</div></div>
+    </div>
+    <div class="form-section">
+      <h2>ご希望の日時</h2>
+      <div class="form-group"><label>ご希望日<span class="required">*必須</span></label><input type="date" id="date" required><div class="error-msg" id="dateError">希望日を選択してください</div></div>
+      <div class="form-group">
+        <label>ご希望の時間帯<span class="required">*必須</span></label>
+        <div class="time-grid" id="timeGrid">
+          <button type="button" class="time-btn" data-time="10:00">10:00〜</button>
+          <button type="button" class="time-btn" data-time="11:00">11:00〜</button>
+          <button type="button" class="time-btn" data-time="12:00">12:00〜</button>
+          <button type="button" class="time-btn" data-time="14:00">14:00〜</button>
+          <button type="button" class="time-btn" data-time="15:00">15:00〜</button>
+          <button type="button" class="time-btn" data-time="16:00">16:00〜</button>
+          <button type="button" class="time-btn" data-time="19:00">19:00〜</button>
+          <button type="button" class="time-btn" data-time="20:00">20:00〜</button>
+          <button type="button" class="time-btn" data-time="21:00">21:00〜</button>
+        </div>
+        <input type="hidden" id="time" required>
+        <div class="error-msg" id="timeError">希望の時間帯を選択してください</div>
+      </div>
+      <div class="form-group"><label>メニュー<span class="required">*必須</span></label><div class="select-wrap"><select id="menu" required><option value="">選択してください</option><option value="初回無料相談">初回無料相談（はじめての方）</option><option value="2回目以降フォローアップ">2回目以降 フォローアップ相談</option></select></div><div class="error-msg" id="menuError">メニューを選択してください</div></div>
+    </div>
+    <div class="form-section">
+      <h2>お悩み・症状</h2>
+      <div class="form-group"><label>現在のお悩みや症状をお聞かせください<span class="optional">（任意）</span></label><textarea id="message" placeholder="例：適応障害と診断されて休職中です。職場復帰への不安や、自分に自信が持てないことで悩んでいます。"></textarea></div>
+    </div>
+    <p class="privacy-note">ご入力いただいた個人情報は、予約確認およびサービス提供のみに使用し、第三者への提供は行いません。</p>
+    <button type="submit" class="submit-btn" id="submitBtn">予約を申し込む →</button>
+  </form>
+</div>
+<script>
+const dateInput = document.getElementById('date');
+const today = new Date();
+dateInput.min = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+document.querySelectorAll('.time-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('time').value = btn.dataset.time;
+  });
+});
+document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+  const menu = document.getElementById('menu').value;
+  const message = document.getElementById('message').value.trim();
+  let valid = true;
+  if (!name) { document.getElementById('nameError').style.display='block'; valid=false; } else document.getElementById('nameError').style.display='none';
+  if (!email||!/\S+@\S+\.\S+/.test(email)) { document.getElementById('emailError').style.display='block'; valid=false; } else document.getElementById('emailError').style.display='none';
+  if (!phone) { document.getElementById('phoneError').style.display='block'; valid=false; } else document.getElementById('phoneError').style.display='none';
+  if (!date) { document.getElementById('dateError').style.display='block'; valid=false; } else document.getElementById('dateError').style.display='none';
+  if (!time) { document.getElementById('timeError').style.display='block'; valid=false; } else document.getElementById('timeError').style.display='none';
+  if (!menu) { document.getElementById('menuError').style.display='block'; valid=false; } else document.getElementById('menuError').style.display='none';
+  if (!valid) return;
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送信中...';
+  try {
+    const res = await fetch('/.netlify/functions/booking', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name,email,phone,date,time,menu,message,sourceUrl:window.location.href}) });
+    if (res.ok) { window.location.href = 'booking-complete.html'; } else { throw new Error('error'); }
+  } catch(err) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = '予約を申し込む →';
+    alert('送信中にエラーが発生しました。もう一度お試しください。');
+  }
+});
+</script>
+</body>
+</html>
