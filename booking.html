@@ -161,7 +161,7 @@ async function loadMonth() {
   document.getElementById('calTitle').textContent = `${currentYear}年${currentMonth}月`;
   document.getElementById('calBody').innerHTML = '<div class="cal-loading">読み込み中...</div>';
   try {
-    const res = await fetch(`/.netlify/functions/get-slots?year=${currentYear}&month=${currentMonth}`);
+    const res = await fetch(`/api/get-slots?year=${currentYear}&month=${currentMonth}`);
     const slots = await res.json();
     slotsData = {};
     if (Array.isArray(slots)) {
@@ -253,7 +253,7 @@ async function submitBooking() {
   btn.disabled = true;
   btn.textContent = '送信中...';
   try {
-    const res = await fetch('/.netlify/functions/create-booking', {
+    const res = await fetch('/api/create-booking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slotId: selectedSlotId, name, email, phone, menu, message, sourceUrl: window.location.href })
