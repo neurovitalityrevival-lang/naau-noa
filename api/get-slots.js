@@ -42,5 +42,11 @@ module.exports = async (req, res) => {
   const data = await supabase(
     `/rest/v1/slots?date=gte.${start}&date=lt.${end}&is_available=eq.true&is_booked=eq.false&order=date,start_time`
   );
-  res.status(200).json(data);
+
+  // 22:00以降の枠を除外
+  const filtered = Array.isArray(data)
+    ? data.filter(s => s.start_time.substring(0, 5) < '22:00')
+    : data;
+
+  res.status(200).json(filtered);
 };

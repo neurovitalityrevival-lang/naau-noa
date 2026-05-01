@@ -4,7 +4,12 @@ function supabase(path, method = 'GET', body = null) {
   const url = new URL('https://quacqiugfcwdqxzutqpq.supabase.co' + path);
   return new Promise((resolve, reject) => {
     const data = body ? JSON.stringify(body) : null;
-    const headers = { 'apikey': 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI', 'Authorization': `Bearer sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+    const headers = {
+      'apikey': 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI',
+      'Authorization': `Bearer sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
     if (data) headers['Content-Length'] = Buffer.byteLength(data);
     const req = https.request({ hostname: url.hostname, path: url.pathname + url.search, method, headers }, (res) => {
       let d = '';
@@ -50,10 +55,26 @@ module.exports = async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
-    const { id } = req.query;
-    if (!id) return res.status(400).json({ error: 'id required' });
-    await supabase(`/rest/v1/slots?id=eq.${id}&is_booked=eq.false`, 'DELETE');
-    return res.status(200).json({ success: true });
+    const { id, ids, force } = req.query;
+
+    // 一括削除（予約済みは除く）
+    if (ids) {
+      const idList = ids.split(',').filter(Boolean);
+      if (!idList.length) return res.status(400).json({ error: 'ids is empty' });
+      await supabase(`/rest/v1/slots?id=in.(${idList.join(',')})&is_booked=eq.false`, 'DELETE');
+      return res.status(200).json({ success: true });
+    }
+
+    // 個別削除（force=true なら予約済みも削除可）
+    if (id) {
+      const q = force === 'true'
+        ? `/rest/v1/slots?id=eq.${id}`
+        : `/rest/v1/slots?id=eq.${id}&is_booked=eq.false`;
+      await supabase(q, 'DELETE');
+      return res.status(200).json({ success: true });
+    }
+
+    return res.status(400).json({ error: 'id or ids required' });
   }
 
   res.status(405).end();

@@ -277,7 +277,7 @@ function generateTimes(from, to) {
   let [fh,fm] = from.split(':').map(Number);
   const [th,tm] = to.split(':').map(Number);
   const toMins = th*60+tm;
-  while (fh*60+fm <= toMins) {
+  while (fh*60+fm < toMins) {
     times.push(`${String(fh).padStart(2,'0')}:${String(fm).padStart(2,'0')}`);
     fm += 15;
     if (fm >= 60) { fm -= 60; fh++; }
@@ -509,7 +509,15 @@ function attachDragEvents() {
     if (!td) return;
     e.preventDefault();
     const slot = slotsData[td.dataset.key];
-    if (slot?.is_booked) return;
+    // 予約済み枠は個別クリックでのみ削除可（ドラッグ選択不可）
+    if (slot?.is_booked) {
+      const key = td.dataset.key;
+      const [, time] = key.split('|');
+      if (confirm(`予約済みの枠（${time}）を強制削除しますか？\n※予約データも無効になります。この操作は取り消せません。`)) {
+        forceDeleteBookedSlot(slot.id, key);
+      }
+      return;
+    }
     isDragging = true;
     dragStartKey = td.dataset.key;
     dragStartDateIdx = parseInt(td.dataset.di);
@@ -600,7 +608,7 @@ function updateActionBar() {
   document.getElementById('btnDelSlot').disabled = toDel === 0;
 }
 
-// ── Add Selected Slots ──
+// ── Add Selected Slots（並列実行で高速化）──
 async function addSelectedSlots() {
   const toAdd = {};
   selectedCells.forEach(key => {
@@ -613,24 +621,39 @@ async function addSelectedSlots() {
   if (dates.length === 0) return;
   document.getElementById('btnAddSlot').disabled = true;
   document.getElementById('btnAddSlot').textContent = '追加中...';
-  let ok = 0;
-  for (const date of dates) {
-    try {
-      const res = await fetch('/api/admin-slots', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
-        body: JSON.stringify({ date, times: toAdd[date] })
-      });
-      if (res.ok) ok++;
-    } catch(e) {}
-  }
+  // Promise.all で並列実行
+  const results = await Promise.allSettled(dates.map(date =>
+    fetch('/api/admin-slots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+      body: JSON.stringify({ date, times: toAdd[date] })
+    })
+  ));
+  const ok = results.filter(r => r.status === 'fulfilled' && r.value.ok).length;
   document.getElementById('btnAddSlot').textContent = '✚ 選択枠を追加';
   const totalSlots = Object.values(toAdd).reduce((a,b) => a + b.length, 0);
   alert(`${totalSlots}枠を追加しました`);
   await loadWeekSlots();
 }
 
-// ── Delete Selected Slots ──
+// ── 予約済み枠の強制削除（個別のみ）──
+async function forceDeleteBookedSlot(id, key) {
+  try {
+    const res = await fetch(`/api/admin-slots?id=${id}&force=true`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Password': adminPassword }
+    });
+    if (res.ok) {
+      await loadWeekSlots();
+    } else {
+      alert('削除に失敗しました');
+    }
+  } catch(e) {
+    alert('エラーが発生しました');
+  }
+}
+
+// ── Delete Selected Slots（一括削除APIで高速化）──
 async function deleteSelectedSlots() {
   const toDelete = [];
   selectedCells.forEach(key => {
@@ -641,18 +664,22 @@ async function deleteSelectedSlots() {
   if (!confirm(`選択した${toDelete.length}枠を削除しますか？`)) return;
   document.getElementById('btnDelSlot').disabled = true;
   document.getElementById('btnDelSlot').textContent = '削除中...';
-  let ok = 0;
-  for (const id of toDelete) {
-    try {
-      const res = await fetch(`/api/admin-slots?id=${id}`, {
-        method: 'DELETE',
-        headers: { 'X-Admin-Password': adminPassword }
-      });
-      if (res.ok) ok++;
-    } catch(e) {}
+  try {
+    // 一括削除（APIに一度だけリクエスト）
+    const res = await fetch(`/api/admin-slots?ids=${toDelete.join(',')}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Password': adminPassword }
+    });
+    document.getElementById('btnDelSlot').textContent = '✕ 選択枠を削除';
+    if (res.ok) {
+      alert(`${toDelete.length}枠を削除しました`);
+    } else {
+      alert('削除に失敗しました');
+    }
+  } catch(e) {
+    document.getElementById('btnDelSlot').textContent = '✕ 選択枠を削除';
+    alert('エラーが発生しました');
   }
-  document.getElementById('btnDelSlot').textContent = '✕ 選択枠を削除';
-  alert(`${ok}枠を削除しました`);
   await loadWeekSlots();
 }
 
@@ -688,19 +715,18 @@ async function bulkAction(mode) {
   let successCount = 0;
 
   if (mode === 'add') {
-    for (const date of dates) {
-      try {
-        const res = await fetch('/api/admin-slots', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
-          body: JSON.stringify({ date, times })
-        });
-        if (res.ok) successCount++;
-      } catch(e) {}
-    }
+    // 並列で一括追加
+    const results = await Promise.allSettled(dates.map(date =>
+      fetch('/api/admin-slots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+        body: JSON.stringify({ date, times })
+      })
+    ));
+    successCount = results.filter(r => r.status === 'fulfilled' && r.value.ok).length;
     alert(`${successCount}日分、合計${successCount * times.length}枠を追加しました`);
   } else {
-    // DELETE mode: first fetch slots for the month, then delete matching ones
+    // 対象月のスロットを取得して一括削除
     try {
       const res = await fetch(`/api/admin-slots?year=${year}&month=${month}`, {
         headers: { 'X-Admin-Password': adminPassword }
@@ -710,15 +736,14 @@ async function bulkAction(mode) {
         dates.includes(s.date) &&
         times.includes(s.start_time.substring(0,5)) &&
         !s.is_booked
-      );
-      for (const slot of toDelete) {
-        try {
-          const r = await fetch(`/api/admin-slots?id=${slot.id}`, {
-            method: 'DELETE',
-            headers: { 'X-Admin-Password': adminPassword }
-          });
-          if (r.ok) successCount++;
-        } catch(e) {}
+      ).map(s => s.id);
+      if (toDelete.length > 0) {
+        // 一括削除API（1リクエストで完了）
+        await fetch(`/api/admin-slots?ids=${toDelete.join(',')}`, {
+          method: 'DELETE',
+          headers: { 'X-Admin-Password': adminPassword }
+        });
+        successCount = toDelete.length;
       }
       alert(`${successCount}枠を削除しました`);
     } catch(e) {
