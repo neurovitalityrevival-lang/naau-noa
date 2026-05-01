@@ -6,12 +6,12 @@ function hashData(d) {
 }
 
 function supabase(path, method = 'GET', body = null) {
-  const url = new URL(process.env.SUPABASE_URL + path);
+  const url = new URL('https://quacqiugfcwdqxzutqpq.supabase.co' + path);
   return new Promise((resolve, reject) => {
     const data = body ? JSON.stringify(body) : null;
     const headers = {
-      'apikey': process.env.SUPABASE_SECRET_KEY,
-      'Authorization': `Bearer ${process.env.SUPABASE_SECRET_KEY}`,
+      'apikey': 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI',
+      'Authorization': `Bearer sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI`,
       'Content-Type': 'application/json',
       'Prefer': 'return=representation'
     };

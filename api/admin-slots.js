@@ -1,10 +1,10 @@
 const https = require('https');
 
 function supabase(path, method = 'GET', body = null) {
-  const url = new URL(process.env.SUPABASE_URL + path);
+  const url = new URL('https://quacqiugfcwdqxzutqpq.supabase.co' + path);
   return new Promise((resolve, reject) => {
     const data = body ? JSON.stringify(body) : null;
-    const headers = { 'apikey': process.env.SUPABASE_SECRET_KEY, 'Authorization': `Bearer ${process.env.SUPABASE_SECRET_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+    const headers = { 'apikey': 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI', 'Authorization': `Bearer sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
     if (data) headers['Content-Length'] = Buffer.byteLength(data);
     const req = https.request({ hostname: url.hostname, path: url.pathname + url.search, method, headers }, (res) => {
       let d = '';
