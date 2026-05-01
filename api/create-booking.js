@@ -56,12 +56,8 @@ async function sendCAPI({ name, email, phone, sourceUrl }) {
 
 // ── メール送信 ──
 async function sendEmails({ name, email, phone, menu, date, startTime, endTime }) {
-  const user = process.env.GMAIL_USER;
-  const pass = process.env.GMAIL_APP_PASSWORD;
-  if (!user || !pass) {
-    console.log('メール設定なし（GMAIL_USER/GMAIL_APP_PASSWORD未設定）');
-    return;
-  }
+  const user = process.env.GMAIL_USER || 'neuro.vitality.revival@gmail.com';
+  const pass = process.env.GMAIL_APP_PASSWORD || 'hpjhneugdbybxplq';
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
