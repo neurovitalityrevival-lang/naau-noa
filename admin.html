@@ -36,19 +36,29 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
 .bookings-table tr:last-child td { border-bottom: none; }
 .bookings-table tr:hover td { background: #faf8f5; }
 .empty-msg { text-align: center; color: #999; padding: 40px; font-size: 0.9rem; }
+.add-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.add-tab { padding: 7px 18px; border-radius: 6px; border: 1px solid #ddd; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; cursor: pointer; background: #fff; color: #777; transition: all 0.2s; }
+.add-tab.active { background: #1a3a3a; color: #fff; border-color: #1a3a3a; }
 .slot-form { background: #faf8f5; border-radius: 10px; padding: 20px; margin-bottom: 24px; }
-.slot-form h3 { font-size: 0.95rem; color: #1a3a3a; margin-bottom: 16px; }
-.slot-form-grid { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: start; }
-.form-field label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 6px; }
-.form-field input[type="date"] { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 0.95rem; background: #fff; }
-.form-field input[type="date"]:focus { outline: none; border-color: #b8976a; }
-.time-checks { display: flex; flex-wrap: wrap; gap: 8px; }
-.time-check { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: all 0.2s; background: #fff; }
-.time-check:hover { border-color: #b8976a; }
-.time-check input { display: none; }
-.time-check.checked { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
-.add-btn { padding: 10px 24px; background: #b8976a; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.9rem; white-space: nowrap; align-self: end; transition: background 0.2s; }
+.slot-form h3 { font-size: 0.95rem; color: #1a3a3a; margin-bottom: 14px; }
+.add-form-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 0.82rem; color: #666; }
+.form-field input[type="date"],
+.form-field input[type="month"],
+.form-field select { padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 0.92rem; background: #fff; color: #2c2c2c; cursor: pointer; }
+.form-field input:focus, .form-field select:focus { outline: none; border-color: #b8976a; }
+.form-hint { font-size: 0.78rem; color: #aaa; margin-top: 8px; }
+.wd-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #ddd; background: #fff; font-family: 'Noto Serif JP', serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; color: #555; }
+.wd-btn:hover { border-color: #b8976a; color: #b8976a; }
+.wd-btn.active { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
+.wd-btn[data-day="0"] { color: #e74c3c; }
+.wd-btn[data-day="0"].active { background: #e74c3c; border-color: #e74c3c; color: #fff; }
+.wd-btn[data-day="6"] { color: #3498db; }
+.wd-btn[data-day="6"].active { background: #3498db; border-color: #3498db; color: #fff; }
+.add-btn { padding: 10px 22px; background: #b8976a; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.9rem; white-space: nowrap; transition: background 0.2s; height: 38px; }
 .add-btn:hover { background: #a07850; }
+.add-btn:disabled { background: #ccc; cursor: not-allowed; }
 .slot-month-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
 .slot-month-nav h3 { font-size: 0.95rem; color: #1a3a3a; }
 .month-nav-btn { background: none; border: 1px solid #ddd; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem; color: #555; transition: all 0.2s; }
@@ -64,8 +74,8 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
 .count-badge { background: #1a3a3a; color: #fff; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
 @media (max-width: 600px) {
   .login-card { padding: 32px 24px; }
-  .slot-form-grid { grid-template-columns: 1fr; }
   .admin-header { flex-wrap: wrap; gap: 8px; }
+  .add-form-row { flex-direction: column; align-items: stretch; }
 }
 </style>
 </head>
@@ -97,27 +107,57 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
     <div id="tab-slots" class="panel" style="display:none;">
       <h2>予約枠の管理</h2>
       <div class="slot-form">
-        <h3>新しい枠を追加</h3>
-        <div class="slot-form-grid">
-          <div class="form-field">
-            <label>日付</label>
-            <input type="date" id="slotDate">
-          </div>
-          <div class="form-field">
-            <label>時間帯（複数選択可）</label>
-            <div class="time-checks" id="timeChecks">
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="10:00">10:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="11:00">11:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="12:00">12:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="14:00">14:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="15:00">15:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="16:00">16:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="19:00">19:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="20:00">20:00</label>
-              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="21:00">21:00</label>
+        <div class="add-tabs">
+          <button class="add-tab active" onclick="switchAddTab('single', this)">個別追加</button>
+          <button class="add-tab" onclick="switchAddTab('bulk', this)">曜日で一括追加</button>
+        </div>
+        <div id="add-single">
+          <div class="add-form-row">
+            <div class="form-field">
+              <label>日付</label>
+              <input type="date" id="slotDate">
             </div>
+            <div class="form-field">
+              <label>開始時間</label>
+              <select id="slotFrom"></select>
+            </div>
+            <div class="form-field">
+              <label>終了時間</label>
+              <select id="slotTo"></select>
+            </div>
+            <button class="add-btn" onclick="addSlots()">追加する</button>
           </div>
-          <button class="add-btn" onclick="addSlots()">追加する</button>
+          <p class="form-hint">※ 15分刻みで枠をまとめて作成します（例：10:00〜12:00 → 10:00、10:15、10:30… の枠）</p>
+        </div>
+        <div id="add-bulk" style="display:none;">
+          <div class="add-form-row">
+            <div class="form-field">
+              <label>対象月</label>
+              <input type="month" id="bulkMonth">
+            </div>
+            <div class="form-field">
+              <label>曜日</label>
+              <div style="display:flex;gap:6px;">
+                <button class="wd-btn" data-day="0" onclick="toggleWeekday(this)">日</button>
+                <button class="wd-btn" data-day="1" onclick="toggleWeekday(this)">月</button>
+                <button class="wd-btn" data-day="2" onclick="toggleWeekday(this)">火</button>
+                <button class="wd-btn" data-day="3" onclick="toggleWeekday(this)">水</button>
+                <button class="wd-btn" data-day="4" onclick="toggleWeekday(this)">木</button>
+                <button class="wd-btn" data-day="5" onclick="toggleWeekday(this)">金</button>
+                <button class="wd-btn" data-day="6" onclick="toggleWeekday(this)">土</button>
+              </div>
+            </div>
+            <div class="form-field">
+              <label>開始時間</label>
+              <select id="bulkFrom"></select>
+            </div>
+            <div class="form-field">
+              <label>終了時間</label>
+              <select id="bulkTo"></select>
+            </div>
+            <button class="add-btn" onclick="addBulkSlots()">一括追加</button>
+          </div>
+          <p class="form-hint">※ 選んだ月の、選んだ曜日すべてに15分刻みで枠を作成します</p>
         </div>
       </div>
       <div>
@@ -135,6 +175,53 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
 <script>
 let adminPassword = '';
 let slotYear, slotMonth;
+
+function buildTimeOptions(selectId, defaultVal) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = '';
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const t = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      const opt = document.createElement('option');
+      opt.value = t;
+      opt.textContent = t;
+      if (t === defaultVal) opt.selected = true;
+      sel.appendChild(opt);
+    }
+  }
+}
+
+function initTimeSelects() {
+  buildTimeOptions('slotFrom', '10:00');
+  buildTimeOptions('slotTo', '12:00');
+  buildTimeOptions('bulkFrom', '10:00');
+  buildTimeOptions('bulkTo', '17:00');
+}
+
+function generateTimes(from, to) {
+  const times = [];
+  let [fh, fm] = from.split(':').map(Number);
+  const [th, tm] = to.split(':').map(Number);
+  const toMins = th * 60 + tm;
+  while (fh * 60 + fm <= toMins) {
+    times.push(`${String(fh).padStart(2,'0')}:${String(fm).padStart(2,'0')}`);
+    fm += 15;
+    if (fm >= 60) { fm -= 60; fh++; }
+  }
+  return times;
+}
+
+function switchAddTab(tab, btn) {
+  document.querySelectorAll('.add-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('add-single').style.display = tab === 'single' ? 'block' : 'none';
+  document.getElementById('add-bulk').style.display = tab === 'bulk' ? 'block' : 'none';
+}
+
+function toggleWeekday(btn) {
+  btn.classList.toggle('active');
+}
+
 function login() {
   const pw = document.getElementById('pwInput').value;
   fetch('/.netlify/functions/admin-bookings', {
@@ -145,15 +232,21 @@ function login() {
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('adminWrap').style.display = 'block';
       const today = new Date();
-      document.getElementById('slotDate').min = today.toISOString().split('T')[0];
+      const todayStr = today.toISOString().split('T')[0];
+      document.getElementById('slotDate').min = todayStr;
+      document.getElementById('slotDate').value = todayStr;
+      const ym = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+      document.getElementById('bulkMonth').value = ym;
       slotYear = today.getFullYear();
       slotMonth = today.getMonth() + 1;
+      initTimeSelects();
       loadBookings();
     } else {
       document.getElementById('loginErr').style.display = 'block';
     }
   }).catch(() => { document.getElementById('loginErr').style.display = 'block'; });
 }
+
 function logout() {
   adminPassword = '';
   document.getElementById('adminWrap').style.display = 'none';
@@ -161,6 +254,7 @@ function logout() {
   document.getElementById('pwInput').value = '';
   document.getElementById('loginErr').style.display = 'none';
 }
+
 function showTab(tab, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
@@ -169,6 +263,7 @@ function showTab(tab, btn) {
   if (tab === 'bookings') loadBookings();
   if (tab === 'slots') loadSlots();
 }
+
 async function loadBookings() {
   document.getElementById('bookingsList').innerHTML = '<p style="color:#999;padding:20px 0;">読み込み中...</p>';
   try {
@@ -205,12 +300,14 @@ async function loadBookings() {
     document.getElementById('bookingsList').innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
   }
 }
+
 function changeSlotMonth(delta) {
   slotMonth += delta;
   if (slotMonth > 12) { slotMonth = 1; slotYear++; }
   if (slotMonth < 1) { slotMonth = 12; slotYear--; }
   loadSlots();
 }
+
 async function loadSlots() {
   document.getElementById('slotMonthTitle').textContent = `${slotYear}年${slotMonth}月`;
   document.getElementById('slotsList').innerHTML = '<p style="color:#999;">読み込み中...</p>';
@@ -225,7 +322,7 @@ async function loadSlots() {
     }
     const grouped = {};
     slots.forEach(s => { if (!grouped[s.date]) grouped[s.date] = []; grouped[s.date].push(s); });
-    let html = '<div class="slot-list">';
+    let html = '<div>';
     Object.keys(grouped).sort().forEach(date => {
       const dateObj = new Date(date + 'T00:00:00');
       const dateLabel = dateObj.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' });
@@ -250,16 +347,16 @@ async function loadSlots() {
     document.getElementById('slotsList').innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
   }
 }
-function toggleCheck(label) {
-  label.classList.toggle('checked');
-  const cb = label.querySelector('input');
-  cb.checked = !cb.checked;
-}
+
 async function addSlots() {
   const date = document.getElementById('slotDate').value;
-  const times = Array.from(document.querySelectorAll('.time-check.checked input')).map(i => i.value);
+  const from = document.getElementById('slotFrom').value;
+  const to = document.getElementById('slotTo').value;
   if (!date) { alert('日付を選択してください'); return; }
-  if (times.length === 0) { alert('時間帯を選択してください'); return; }
+  if (from >= to) { alert('終了時間は開始時間より後にしてください'); return; }
+  const times = generateTimes(from, to);
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '追加中...';
   try {
     const res = await fetch('/.netlify/functions/admin-slots', {
       method: 'POST',
@@ -267,11 +364,8 @@ async function addSlots() {
       body: JSON.stringify({ date, times })
     });
     if (res.ok) {
-      document.getElementById('slotDate').value = '';
-      document.querySelectorAll('.time-check').forEach(l => { l.classList.remove('checked'); l.querySelector('input').checked = false; });
       const d = new Date(date + 'T00:00:00');
-      slotYear = d.getFullYear();
-      slotMonth = d.getMonth() + 1;
+      slotYear = d.getFullYear(); slotMonth = d.getMonth() + 1;
       loadSlots();
       alert(`${times.length}枠を追加しました！`);
     } else {
@@ -279,7 +373,47 @@ async function addSlots() {
       alert('エラー: ' + (data.error || '追加に失敗しました'));
     }
   } catch(e) { alert('エラーが発生しました'); }
+  btn.disabled = false; btn.textContent = '追加する';
 }
+
+async function addBulkSlots() {
+  const ym = document.getElementById('bulkMonth').value;
+  if (!ym) { alert('対象月を選択してください'); return; }
+  const weekdays = Array.from(document.querySelectorAll('.wd-btn.active')).map(b => parseInt(b.dataset.day));
+  if (weekdays.length === 0) { alert('曜日を選択してください'); return; }
+  const from = document.getElementById('bulkFrom').value;
+  const to = document.getElementById('bulkTo').value;
+  if (from >= to) { alert('終了時間は開始時間より後にしてください'); return; }
+  const times = generateTimes(from, to);
+  const [year, month] = ym.split('-').map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const dates = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dow = new Date(year, month - 1, d).getDay();
+    if (weekdays.includes(dow)) {
+      dates.push(`${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`);
+    }
+  }
+  if (dates.length === 0) { alert('該当する日付がありません'); return; }
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '追加中...';
+  let successDays = 0;
+  for (const date of dates) {
+    try {
+      const res = await fetch('/.netlify/functions/admin-slots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+        body: JSON.stringify({ date, times })
+      });
+      if (res.ok) successDays++;
+    } catch(e) {}
+  }
+  btn.disabled = false; btn.textContent = '一括追加';
+  slotYear = year; slotMonth = month;
+  loadSlots();
+  alert(`${successDays}日分、合計${successDays * times.length}枠を追加しました！`);
+}
+
 async function deleteSlot(id) {
   if (!confirm('この枠を削除しますか？')) return;
   try {
