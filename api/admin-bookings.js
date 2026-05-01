@@ -27,6 +27,11 @@ module.exports = async (req, res) => {
   const pw = req.headers['x-admin-password'];
   if (pw !== 'taisyo1023') return res.status(401).json({ error: 'Unauthorized' });
 
-  const data = await supabase('/rest/v1/bookings?select=*,slots(date,start_time)&order=created_at.desc');
-  res.status(200).json(data);
+  try {
+    const data = await supabase('/rest/v1/bookings?select=*,slots(date,start_time)&order=created_at.desc');
+    res.status(200).json(Array.isArray(data) ? data : []);
+  } catch(e) {
+    console.error('Supabase error:', e);
+    res.status(200).json([]);
+  }
 };
