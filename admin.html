@@ -22,13 +22,13 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
 .admin-header .logo { color: #b8976a; font-size: 1rem; letter-spacing: 0.1em; }
 .logout-btn { background: none; border: 1px solid rgba(184,151,106,0.5); color: #b8976a; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; transition: all 0.2s; }
 .logout-btn:hover { border-color: #b8976a; background: rgba(184,151,106,0.1); }
-.admin-main { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+.admin-main { max-width: 1000px; margin: 0 auto; padding: 28px 20px 60px; }
 .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
 .tab { padding: 10px 24px; border-radius: 8px; border: none; font-family: 'Noto Serif JP', serif; font-size: 0.95rem; cursor: pointer; background: #fff; color: #777; transition: all 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
 .tab.active { background: #1a3a3a; color: #fff; }
-.panel { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.panel { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
 .panel h2 { font-size: 1rem; color: #1a3a3a; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #f0ebe3; }
-.refresh-btn { padding: 8px 16px; background: none; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; color: #555; margin-bottom: 16px; transition: all 0.2s; }
+.refresh-btn { padding: 7px 14px; background: none; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.82rem; color: #555; transition: all 0.2s; }
 .refresh-btn:hover { border-color: #b8976a; color: #b8976a; }
 .bookings-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; overflow-x: auto; display: block; }
 .bookings-table th { background: #f0ebe3; padding: 10px 12px; text-align: left; color: #555; font-weight: 600; white-space: nowrap; }
@@ -36,50 +36,86 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
 .bookings-table tr:last-child td { border-bottom: none; }
 .bookings-table tr:hover td { background: #faf8f5; }
 .empty-msg { text-align: center; color: #999; padding: 40px; font-size: 0.9rem; }
-.add-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-.add-tab { padding: 7px 18px; border-radius: 6px; border: 1px solid #ddd; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; cursor: pointer; background: #fff; color: #777; transition: all 0.2s; }
-.add-tab.active { background: #1a3a3a; color: #fff; border-color: #1a3a3a; }
-.slot-form { background: #faf8f5; border-radius: 10px; padding: 20px; margin-bottom: 24px; }
-.slot-form h3 { font-size: 0.95rem; color: #1a3a3a; margin-bottom: 14px; }
-.add-form-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
-.form-field { display: flex; flex-direction: column; gap: 6px; }
-.form-field label { font-size: 0.82rem; color: #666; }
-.form-field input[type="date"],
-.form-field input[type="month"],
-.form-field select { padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 0.92rem; background: #fff; color: #2c2c2c; cursor: pointer; }
-.form-field input:focus, .form-field select:focus { outline: none; border-color: #b8976a; }
-.form-hint { font-size: 0.78rem; color: #aaa; margin-top: 8px; }
-.wd-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #ddd; background: #fff; font-family: 'Noto Serif JP', serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; color: #555; }
-.wd-btn:hover { border-color: #b8976a; color: #b8976a; }
-.wd-btn.active { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
-.wd-btn[data-day="0"] { color: #e74c3c; }
-.wd-btn[data-day="0"].active { background: #e74c3c; border-color: #e74c3c; color: #fff; }
-.wd-btn[data-day="6"] { color: #3498db; }
-.wd-btn[data-day="6"].active { background: #3498db; border-color: #3498db; color: #fff; }
-.add-btn { padding: 10px 22px; background: #b8976a; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.9rem; white-space: nowrap; transition: background 0.2s; height: 38px; }
-.add-btn:hover { background: #a07850; }
-.add-btn:disabled { background: #ccc; cursor: not-allowed; }
-.slot-month-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.slot-month-nav h3 { font-size: 0.95rem; color: #1a3a3a; }
-.month-nav-btn { background: none; border: 1px solid #ddd; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem; color: #555; transition: all 0.2s; }
-.month-nav-btn:hover { border-color: #b8976a; color: #b8976a; }
-.slot-group { margin-bottom: 20px; }
-.slot-group-date { font-size: 0.85rem; color: #888; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0ebe3; }
-.slot-items { display: flex; flex-wrap: wrap; gap: 8px; }
-.slot-item { display: flex; align-items: center; gap: 8px; border-radius: 6px; padding: 8px 12px; font-size: 0.85rem; border: 1px solid #e0d8cc; }
-.slot-item.available { background: #f0ebe3; color: #1a3a3a; }
-.slot-item.booked { background: #fff0f0; border-color: #fcc; color: #c0392b; }
-.slot-delete { background: none; border: none; cursor: pointer; color: #bbb; font-size: 0.9rem; padding: 0; line-height: 1; transition: color 0.2s; }
-.slot-delete:hover { color: #c0392b; }
 .count-badge { background: #1a3a3a; color: #fff; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+
+/* ── Timeline Calendar ── */
+.week-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.week-nav-title { font-size: 0.95rem; color: #1a3a3a; font-weight: 600; flex: 1; }
+.week-nav-btn { background: none; border: 1px solid #ddd; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; color: #555; transition: all 0.2s; font-family: 'Noto Serif JP', serif; }
+.week-nav-btn:hover { border-color: #b8976a; color: #b8976a; }
+
+.legend { display: flex; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.76rem; color: #666; }
+.legend-box { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+
+.timeline-outer { overflow-x: auto; border: 1px solid #e0d8cc; border-radius: 8px; max-height: 520px; overflow-y: auto; position: relative; }
+.timeline-table { border-collapse: collapse; font-size: 0.76rem; table-layout: fixed; min-width: 640px; }
+.timeline-table thead { position: sticky; top: 0; z-index: 10; }
+.timeline-table thead th { background: #f0ebe3; padding: 8px 4px; text-align: center; color: #444; font-weight: 600; border-bottom: 2px solid #d8cfc4; border-right: 1px solid #e0d8cc; white-space: nowrap; }
+.timeline-table thead th.time-head { width: 54px; background: #e8e0d4; }
+.timeline-table thead th.day-head { width: 100px; }
+.timeline-table thead th.day-head .day-name { font-size: 0.85rem; }
+.timeline-table thead th.day-head .day-date { font-size: 0.7rem; color: #888; margin-top: 2px; }
+.timeline-table thead th.day-head.today { background: #e8f0e8; }
+.timeline-table thead th.day-head.today .day-name { color: #2e7d32; }
+
+.timeline-table tbody tr td { border-right: 1px solid #ece5dc; border-bottom: 1px solid #f0ebe3; }
+.timeline-table tbody tr.hour-sep td { border-top: 1px solid #d0c8bc; }
+.time-label { width: 54px; padding: 0 6px 0 0; text-align: right; color: #aaa; font-size: 0.72rem; height: 20px; vertical-align: middle; white-space: nowrap; background: #f8f5f0; border-right: 1px solid #ddd !important; user-select: none; }
+.time-label.hour { color: #666; font-weight: 600; }
+
+td.cell { height: 20px; width: 100px; cursor: pointer; user-select: none; -webkit-user-select: none; transition: background 0.08s; }
+td.cell.empty { background: #fafaf8; }
+td.cell.empty:hover { background: #e0f0ff; }
+td.cell.available { background: #c8e6c9; }
+td.cell.available:hover { background: #a5d6a7; }
+td.cell.booked { background: #ffcdd2; cursor: default; }
+td.cell.sel-add { background: #90caf9 !important; }
+td.cell.sel-del { background: #ffcc80 !important; }
+td.cell.drag-over { opacity: 0.7; }
+td.cell.booked.sel-add, td.cell.booked.sel-del { background: #ffcdd2 !important; cursor: default; }
+
+.action-bar { display: flex; gap: 10px; margin: 14px 0 0; flex-wrap: wrap; align-items: center; }
+.sel-count { font-size: 0.82rem; color: #888; }
+.btn-action { padding: 9px 20px; border: none; border-radius: 7px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.88rem; font-weight: 600; transition: background 0.2s; }
+.btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-add-slot { background: #2e7d32; color: #fff; }
+.btn-add-slot:not(:disabled):hover { background: #1b5e20; }
+.btn-del-slot { background: #c62828; color: #fff; }
+.btn-del-slot:not(:disabled):hover { background: #b71c1c; }
+.btn-clear { background: none; border: 1px solid #ccc; color: #666; padding: 8px 14px; border-radius: 7px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; }
+.btn-clear:hover { border-color: #999; }
+
+/* ── 定例ブロック section ── */
+.bulk-section { background: #faf8f5; border-radius: 10px; padding: 20px; margin-top: 24px; border: 1px solid #ece5dc; }
+.bulk-section h3 { font-size: 0.92rem; color: #1a3a3a; margin-bottom: 4px; }
+.bulk-section .bulk-desc { font-size: 0.78rem; color: #999; margin-bottom: 16px; }
+.bulk-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; margin-bottom: 14px; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-field label { font-size: 0.78rem; color: #777; }
+.form-field select, .form-field input[type="month"] { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 0.88rem; background: #fff; color: #2c2c2c; cursor: pointer; }
+.form-field select:focus, .form-field input[type="month"]:focus { outline: none; border-color: #b8976a; }
+.weekday-btns { display: flex; gap: 5px; }
+.wd-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #ddd; background: #fff; font-family: 'Noto Serif JP', serif; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; color: #555; }
+.wd-btn:hover { border-color: #b8976a; }
+.wd-btn.active { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
+.wd-btn[data-d="0"].active { background: #c62828; border-color: #c62828; }
+.wd-btn[data-d="6"].active { background: #1565c0; border-color: #1565c0; }
+.bulk-btns { display: flex; gap: 8px; }
+.bulk-hint { font-size: 0.76rem; color: #aaa; margin-top: 6px; }
+
 @media (max-width: 600px) {
   .login-card { padding: 32px 24px; }
   .admin-header { flex-wrap: wrap; gap: 8px; }
-  .add-form-row { flex-direction: column; align-items: stretch; }
+  .week-nav { gap: 8px; }
+  .bulk-row { flex-direction: column; align-items: stretch; }
+  .weekday-btns { flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
+
+<!-- Login -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
     <div class="login-logo">Na'au Noa</div>
@@ -89,6 +125,8 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
     <div class="login-err" id="loginErr">パスワードが正しくありません</div>
   </div>
 </div>
+
+<!-- Admin -->
 <div class="admin-wrap" id="adminWrap">
   <div class="admin-header">
     <div class="logo">Na'au Noa 管理画面</div>
@@ -96,114 +134,150 @@ body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c;
   </div>
   <div class="admin-main">
     <div class="tabs">
-      <button class="tab active" onclick="showTab('bookings', this)">📋 予約一覧</button>
-      <button class="tab" onclick="showTab('slots', this)">⚙️ 枠設定</button>
+      <button class="tab active" onclick="showTab('bookings',this)">📋 予約一覧</button>
+      <button class="tab" onclick="showTab('slots',this)">⚙️ 枠設定</button>
     </div>
+
+    <!-- Bookings Tab -->
     <div id="tab-bookings" class="panel">
       <h2>予約一覧 <span id="bookingCount" class="count-badge" style="display:none;"></span></h2>
       <button class="refresh-btn" onclick="loadBookings()">↻ 更新</button>
-      <div id="bookingsList"></div>
+      <div id="bookingsList" style="margin-top:16px;"></div>
     </div>
+
+    <!-- Slots Tab -->
     <div id="tab-slots" class="panel" style="display:none;">
       <h2>予約枠の管理</h2>
-      <div class="slot-form">
-        <div class="add-tabs">
-          <button class="add-tab active" onclick="switchAddTab('single', this)">個別追加</button>
-          <button class="add-tab" onclick="switchAddTab('bulk', this)">曜日で一括追加</button>
-        </div>
-        <div id="add-single">
-          <div class="add-form-row">
-            <div class="form-field">
-              <label>日付</label>
-              <input type="date" id="slotDate">
-            </div>
-            <div class="form-field">
-              <label>開始時間</label>
-              <select id="slotFrom"></select>
-            </div>
-            <div class="form-field">
-              <label>終了時間</label>
-              <select id="slotTo"></select>
-            </div>
-            <button class="add-btn" onclick="addSlots()">追加する</button>
-          </div>
-          <p class="form-hint">※ 15分刻みで枠をまとめて作成します（例：10:00〜12:00 → 10:00、10:15、10:30… の枠）</p>
-        </div>
-        <div id="add-bulk" style="display:none;">
-          <div class="add-form-row">
-            <div class="form-field">
-              <label>対象月</label>
-              <input type="month" id="bulkMonth">
-            </div>
-            <div class="form-field">
-              <label>曜日</label>
-              <div style="display:flex;gap:6px;">
-                <button class="wd-btn" data-day="0" onclick="toggleWeekday(this)">日</button>
-                <button class="wd-btn" data-day="1" onclick="toggleWeekday(this)">月</button>
-                <button class="wd-btn" data-day="2" onclick="toggleWeekday(this)">火</button>
-                <button class="wd-btn" data-day="3" onclick="toggleWeekday(this)">水</button>
-                <button class="wd-btn" data-day="4" onclick="toggleWeekday(this)">木</button>
-                <button class="wd-btn" data-day="5" onclick="toggleWeekday(this)">金</button>
-                <button class="wd-btn" data-day="6" onclick="toggleWeekday(this)">土</button>
-              </div>
-            </div>
-            <div class="form-field">
-              <label>開始時間</label>
-              <select id="bulkFrom"></select>
-            </div>
-            <div class="form-field">
-              <label>終了時間</label>
-              <select id="bulkTo"></select>
-            </div>
-            <button class="add-btn" onclick="addBulkSlots()">一括追加</button>
-          </div>
-          <p class="form-hint">※ 選んだ月の、選んだ曜日すべてに15分刻みで枠を作成します</p>
-        </div>
+
+      <!-- Week Navigation -->
+      <div class="week-nav">
+        <button class="week-nav-btn" onclick="changeWeek(-1)">‹ 前週</button>
+        <div class="week-nav-title" id="weekTitle"></div>
+        <button class="week-nav-btn" onclick="changeWeek(1)">次週 ›</button>
+        <button class="refresh-btn" onclick="loadWeekSlots()">↻ 更新</button>
       </div>
-      <div>
-        <div class="slot-month-nav">
-          <button class="month-nav-btn" onclick="changeSlotMonth(-1)">‹ 前月</button>
-          <h3 id="slotMonthTitle"></h3>
-          <button class="month-nav-btn" onclick="changeSlotMonth(1)">次月 ›</button>
-          <button class="refresh-btn" style="margin-bottom:0;" onclick="loadSlots()">↻</button>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item"><div class="legend-box" style="background:#fafaf8;"></div>空き（未設定）</div>
+        <div class="legend-item"><div class="legend-box" style="background:#c8e6c9;"></div>予約受付中</div>
+        <div class="legend-item"><div class="legend-box" style="background:#ffcdd2;"></div>予約済み</div>
+        <div class="legend-item"><div class="legend-box" style="background:#90caf9;"></div>追加予定（選択中）</div>
+        <div class="legend-item"><div class="legend-box" style="background:#ffcc80;"></div>削除予定（選択中）</div>
+      </div>
+      <p style="font-size:0.76rem;color:#aaa;margin-bottom:10px;">ドラッグして範囲選択できます。緑＝削除予定（オレンジ）、白＝追加予定（青）になります。予約済み（赤）は変更不可。</p>
+
+      <!-- Timeline Grid -->
+      <div class="timeline-outer" id="timelineOuter">
+        <div id="timelineLoading" style="padding:40px;text-align:center;color:#aaa;">読み込み中...</div>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="action-bar">
+        <span class="sel-count" id="selCount">選択なし</span>
+        <button class="btn-action btn-add-slot" id="btnAddSlot" onclick="addSelectedSlots()" disabled>✚ 選択枠を追加</button>
+        <button class="btn-action btn-del-slot" id="btnDelSlot" onclick="deleteSelectedSlots()" disabled>✕ 選択枠を削除</button>
+        <button class="btn-clear" onclick="clearSelection()">選択解除</button>
+      </div>
+
+      <!-- 定例ブロック -->
+      <div class="bulk-section">
+        <h3>🔁 定例ブロック</h3>
+        <p class="bulk-desc">曜日と時間帯を指定して、対象月の枠をまとめて追加・削除できます。</p>
+        <div class="bulk-row">
+          <div class="form-field">
+            <label>対象月</label>
+            <input type="month" id="bulkMonth">
+          </div>
+          <div class="form-field">
+            <label>曜日</label>
+            <div class="weekday-btns">
+              <button class="wd-btn" data-d="0" onclick="toggleWD(this)">日</button>
+              <button class="wd-btn" data-d="1" onclick="toggleWD(this)">月</button>
+              <button class="wd-btn" data-d="2" onclick="toggleWD(this)">火</button>
+              <button class="wd-btn" data-d="3" onclick="toggleWD(this)">水</button>
+              <button class="wd-btn" data-d="4" onclick="toggleWD(this)">木</button>
+              <button class="wd-btn" data-d="5" onclick="toggleWD(this)">金</button>
+              <button class="wd-btn" data-d="6" onclick="toggleWD(this)">土</button>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>開始時間</label>
+            <select id="bulkFrom"></select>
+          </div>
+          <div class="form-field">
+            <label>終了時間</label>
+            <select id="bulkTo"></select>
+          </div>
         </div>
-        <div id="slotsList"></div>
+        <div class="bulk-btns">
+          <button class="btn-action btn-add-slot" onclick="bulkAction('add')">✚ 一括追加</button>
+          <button class="btn-action btn-del-slot" onclick="bulkAction('delete')">✕ 一括削除</button>
+        </div>
+        <p class="bulk-hint">※ 追加：対象月の選択曜日すべてに15分刻みで枠を作成します。削除：該当する枠（予約済みを除く）を削除します。</p>
       </div>
     </div>
   </div>
 </div>
-<script>
-let adminPassword = '';
-let slotYear, slotMonth;
 
-function buildTimeOptions(selectId, defaultVal) {
-  const sel = document.getElementById(selectId);
-  sel.innerHTML = '';
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      const t = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-      const opt = document.createElement('option');
-      opt.value = t;
-      opt.textContent = t;
-      if (t === defaultVal) opt.selected = true;
-      sel.appendChild(opt);
-    }
+<script>
+// ── Constants ──
+const TIMES = [];
+for (let h = 8; h <= 21; h++) {
+  for (let m = 0; m < 60; m += 15) {
+    TIMES.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
   }
 }
+// 8:00 to 21:45 = 56 slots
 
-function initTimeSelects() {
-  buildTimeOptions('slotFrom', '10:00');
-  buildTimeOptions('slotTo', '12:00');
-  buildTimeOptions('bulkFrom', '10:00');
-  buildTimeOptions('bulkTo', '17:00');
+const DAY_NAMES = ['日','月','火','水','木','金','土'];
+
+// ── State ──
+let adminPassword = '';
+let weekMonday = getThisMonday(new Date());
+let slotsData = {}; // key: "YYYY-MM-DD|HH:MM" → { id, is_booked, is_available }
+let selectedCells = new Set();
+let cellEls = {}; // key: "YYYY-MM-DD|HH:MM" → <td> element
+let isDragging = false;
+let dragStartKey = null;
+let dragStartDateIdx = -1;
+let dragStartTimeIdx = -1;
+let dragEndDateIdx = -1;
+let dragEndTimeIdx = -1;
+let dragRangeKeys = new Set();
+
+// ── Helpers ──
+function getThisMonday(d) {
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  const mon = new Date(d);
+  mon.setDate(d.getDate() + diff);
+  mon.setHours(0,0,0,0);
+  return mon;
 }
+
+function addDays(d, n) {
+  const r = new Date(d);
+  r.setDate(r.getDate() + n);
+  return r;
+}
+
+function fmtDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getWeekDates() {
+  return Array.from({length:7}, (_,i) => fmtDate(addDays(weekMonday, i)));
+}
+
+function cellKey(date, time) { return date + '|' + time; }
 
 function generateTimes(from, to) {
   const times = [];
-  let [fh, fm] = from.split(':').map(Number);
-  const [th, tm] = to.split(':').map(Number);
-  const toMins = th * 60 + tm;
-  while (fh * 60 + fm <= toMins) {
+  let [fh,fm] = from.split(':').map(Number);
+  const [th,tm] = to.split(':').map(Number);
+  const toMins = th*60+tm;
+  while (fh*60+fm <= toMins) {
     times.push(`${String(fh).padStart(2,'0')}:${String(fm).padStart(2,'0')}`);
     fm += 15;
     if (fm >= 60) { fm -= 60; fh++; }
@@ -211,40 +285,45 @@ function generateTimes(from, to) {
   return times;
 }
 
-function switchAddTab(tab, btn) {
-  document.querySelectorAll('.add-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('add-single').style.display = tab === 'single' ? 'block' : 'none';
-  document.getElementById('add-bulk').style.display = tab === 'bulk' ? 'block' : 'none';
+function buildTimeSelect(selId, defaultVal) {
+  const sel = document.getElementById(selId);
+  sel.innerHTML = '';
+  TIMES.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    if (t === defaultVal) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  // Add 22:00 as end option
+  const opt22 = document.createElement('option');
+  opt22.value = '22:00';
+  opt22.textContent = '22:00';
+  if (defaultVal === '22:00') opt22.selected = true;
+  sel.appendChild(opt22);
 }
 
-function toggleWeekday(btn) {
-  btn.classList.toggle('active');
-}
+function toggleWD(btn) { btn.classList.toggle('active'); }
 
+// ── Login / Logout ──
 function login() {
   const pw = document.getElementById('pwInput').value;
-  fetch('/api/admin-bookings', {
-    headers: { 'X-Admin-Password': pw }
-  }).then(res => {
-    if (res.ok) {
-      adminPassword = pw;
-      document.getElementById('loginWrap').style.display = 'none';
-      document.getElementById('adminWrap').style.display = 'block';
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
-      document.getElementById('slotDate').min = todayStr;
-      document.getElementById('slotDate').value = todayStr;
-      const ym = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
-      document.getElementById('bulkMonth').value = ym;
-      slotYear = today.getFullYear();
-      slotMonth = today.getMonth() + 1;
-      initTimeSelects();
-      loadBookings();
-    } else {
-      document.getElementById('loginErr').style.display = 'block';
-    }
-  }).catch(() => { document.getElementById('loginErr').style.display = 'block'; });
+  fetch('/api/admin-bookings', { headers: { 'X-Admin-Password': pw } })
+    .then(res => {
+      if (res.ok) {
+        adminPassword = pw;
+        document.getElementById('loginWrap').style.display = 'none';
+        document.getElementById('adminWrap').style.display = 'block';
+        const today = new Date();
+        const ym = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+        document.getElementById('bulkMonth').value = ym;
+        buildTimeSelect('bulkFrom','10:00');
+        buildTimeSelect('bulkTo','17:00');
+        loadBookings();
+      } else {
+        document.getElementById('loginErr').style.display = 'block';
+      }
+    }).catch(() => { document.getElementById('loginErr').style.display = 'block'; });
 }
 
 function logout() {
@@ -261,15 +340,14 @@ function showTab(tab, btn) {
   document.getElementById('tab-bookings').style.display = tab === 'bookings' ? 'block' : 'none';
   document.getElementById('tab-slots').style.display = tab === 'slots' ? 'block' : 'none';
   if (tab === 'bookings') loadBookings();
-  if (tab === 'slots') loadSlots();
+  if (tab === 'slots') { weekMonday = getThisMonday(new Date()); loadWeekSlots(); }
 }
 
+// ── Bookings ──
 async function loadBookings() {
   document.getElementById('bookingsList').innerHTML = '<p style="color:#999;padding:20px 0;">読み込み中...</p>';
   try {
-    const res = await fetch('/api/admin-bookings', {
-      headers: { 'X-Admin-Password': adminPassword }
-    });
+    const res = await fetch('/api/admin-bookings', { headers: { 'X-Admin-Password': adminPassword } });
     const bookings = await res.json();
     if (!Array.isArray(bookings) || bookings.length === 0) {
       document.getElementById('bookingCount').style.display = 'none';
@@ -282,14 +360,14 @@ async function loadBookings() {
     bookings.forEach(b => {
       const date = b.slots?.date || '';
       const time = b.slots?.start_time ? b.slots.start_time.substring(0,5) : '';
-      const dateLabel = date ? new Date(date + 'T00:00:00').toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }) : '-';
-      const createdAt = new Date(b.created_at).toLocaleDateString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const dateLabel = date ? new Date(date+'T00:00:00').toLocaleDateString('ja-JP',{month:'long',day:'numeric',weekday:'short'}) : '-';
+      const createdAt = new Date(b.created_at).toLocaleDateString('ja-JP',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
       html += `<tr>
         <td><strong>${dateLabel}</strong><br>${time ? time+'〜' : ''}</td>
         <td>${b.name}</td>
         <td style="word-break:break-all;font-size:0.82rem;">${b.email}</td>
         <td>${b.phone}</td>
-        <td>${b.menu}</td>
+        <td style="font-size:0.82rem;">${b.menu}</td>
         <td style="max-width:160px;font-size:0.82rem;">${b.message || '-'}</td>
         <td style="font-size:0.82rem;color:#999;">${createdAt}</td>
       </tr>`;
@@ -301,130 +379,363 @@ async function loadBookings() {
   }
 }
 
-function changeSlotMonth(delta) {
-  slotMonth += delta;
-  if (slotMonth > 12) { slotMonth = 1; slotYear++; }
-  if (slotMonth < 1) { slotMonth = 12; slotYear--; }
-  loadSlots();
+// ── Week Navigation ──
+function changeWeek(delta) {
+  weekMonday = addDays(weekMonday, delta * 7);
+  loadWeekSlots();
 }
 
-async function loadSlots() {
-  document.getElementById('slotMonthTitle').textContent = `${slotYear}年${slotMonth}月`;
-  document.getElementById('slotsList').innerHTML = '<p style="color:#999;">読み込み中...</p>';
+// ── Load Slots ──
+async function loadWeekSlots() {
+  const weekDates = getWeekDates();
+  const sunday = weekDates[6];
+  // Update title
+  const mon = weekDates[0], sun = weekDates[6];
+  const monD = new Date(mon+'T00:00:00');
+  const sunD = new Date(sun+'T00:00:00');
+  document.getElementById('weekTitle').textContent =
+    `${monD.getFullYear()}年${monD.getMonth()+1}月${monD.getDate()}日（月）〜 ${sunD.getMonth()+1}月${sunD.getDate()}日（日）`;
+
+  document.getElementById('timelineOuter').innerHTML = '<div id="timelineLoading" style="padding:40px;text-align:center;color:#aaa;">読み込み中...</div>';
+  slotsData = {};
+  selectedCells.clear();
+  updateActionBar();
+
+  // Determine which months we need to fetch
+  const months = new Set();
+  weekDates.forEach(d => { const [y,m] = d.split('-'); months.add(`${y}-${m}`); });
+
   try {
-    const res = await fetch(`/api/admin-slots?year=${slotYear}&month=${slotMonth}`, {
-      headers: { 'X-Admin-Password': adminPassword }
-    });
-    const slots = await res.json();
-    if (!Array.isArray(slots) || slots.length === 0) {
-      document.getElementById('slotsList').innerHTML = '<p class="empty-msg">この月の枠はありません</p>';
-      return;
-    }
-    const grouped = {};
-    slots.forEach(s => { if (!grouped[s.date]) grouped[s.date] = []; grouped[s.date].push(s); });
-    let html = '<div>';
-    Object.keys(grouped).sort().forEach(date => {
-      const dateObj = new Date(date + 'T00:00:00');
-      const dateLabel = dateObj.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' });
-      const available = grouped[date].filter(s => !s.is_booked).length;
-      const booked = grouped[date].filter(s => s.is_booked).length;
-      html += `<div class="slot-group">
-        <div class="slot-group-date">${dateLabel}　<span style="color:#b8976a;">空き${available}枠</span>${booked > 0 ? `　<span style="color:#c0392b;">予約済${booked}枠</span>` : ''}</div>
-        <div class="slot-items">`;
-      grouped[date].forEach(s => {
-        const t = s.start_time.substring(0,5);
-        const cls = s.is_booked ? 'slot-item booked' : 'slot-item available';
-        const status = s.is_booked ? '予約済' : '空き';
-        html += `<div class="${cls}">${t}〜 <small>(${status})</small>`;
-        if (!s.is_booked) html += ` <button class="slot-delete" onclick="deleteSlot('${s.id}')" title="削除">✕</button>`;
-        html += '</div>';
+    for (const ym of months) {
+      const [year, month] = ym.split('-');
+      const res = await fetch(`/api/admin-slots?year=${year}&month=${month}`, {
+        headers: { 'X-Admin-Password': adminPassword }
       });
-      html += '</div></div>';
-    });
-    html += '</div>';
-    document.getElementById('slotsList').innerHTML = html;
+      const slots = await res.json();
+      if (Array.isArray(slots)) {
+        slots.forEach(s => {
+          const t = s.start_time.substring(0,5);
+          if (weekDates.includes(s.date)) {
+            slotsData[cellKey(s.date, t)] = s;
+          }
+        });
+      }
+    }
+    buildGrid();
   } catch(e) {
-    document.getElementById('slotsList').innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
+    document.getElementById('timelineOuter').innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
   }
 }
 
-async function addSlots() {
-  const date = document.getElementById('slotDate').value;
-  const from = document.getElementById('slotFrom').value;
-  const to = document.getElementById('slotTo').value;
-  if (!date) { alert('日付を選択してください'); return; }
-  if (from >= to) { alert('終了時間は開始時間より後にしてください'); return; }
-  const times = generateTimes(from, to);
-  const btn = event.target;
-  btn.disabled = true; btn.textContent = '追加中...';
-  try {
-    const res = await fetch('/api/admin-slots', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
-      body: JSON.stringify({ date, times })
+// ── Build Grid ──
+function buildGrid() {
+  const weekDates = getWeekDates();
+  const todayStr = fmtDate(new Date());
+  cellEls = {};
+
+  let html = '<table class="timeline-table" id="timelineTable"><thead><tr>';
+  html += '<th class="time-head">時間</th>';
+  weekDates.forEach((d, i) => {
+    const dateObj = new Date(d + 'T00:00:00');
+    const dow = dateObj.getDay();
+    const isToday = d === todayStr;
+    const dateLabel = `${dateObj.getMonth()+1}/${dateObj.getDate()}`;
+    const nameClass = dow === 0 ? 'color:#c62828;' : dow === 6 ? 'color:#1565c0;' : '';
+    html += `<th class="day-head${isToday?' today':''}" data-col="${i}">
+      <div class="day-name" style="${nameClass}">${DAY_NAMES[dow]}</div>
+      <div class="day-date">${dateLabel}</div>
+    </th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  TIMES.forEach((time, ti) => {
+    const [hStr, mStr] = time.split(':');
+    const h = parseInt(hStr), m = parseInt(mStr);
+    const isHour = m === 0;
+    const rowClass = isHour ? ' class="hour-sep"' : '';
+    html += `<tr${rowClass}>`;
+    html += `<td class="time-label${isHour?' hour':''}" data-ti="${ti}">${isHour ? time : ''}</td>`;
+    weekDates.forEach((date, di) => {
+      const key = cellKey(date, time);
+      const slot = slotsData[key];
+      let cls = 'cell ';
+      if (!slot) cls += 'empty';
+      else if (slot.is_booked) cls += 'booked';
+      else cls += 'available';
+      html += `<td class="${cls}" data-key="${key}" data-di="${di}" data-ti="${ti}"></td>`;
     });
-    if (res.ok) {
-      const d = new Date(date + 'T00:00:00');
-      slotYear = d.getFullYear(); slotMonth = d.getMonth() + 1;
-      loadSlots();
-      alert(`${times.length}枠を追加しました！`);
-    } else {
-      const data = await res.json();
-      alert('エラー: ' + (data.error || '追加に失敗しました'));
-    }
-  } catch(e) { alert('エラーが発生しました'); }
-  btn.disabled = false; btn.textContent = '追加する';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('timelineOuter').innerHTML = html;
+
+  // Store references to cells
+  document.querySelectorAll('#timelineTable td.cell').forEach(td => {
+    cellEls[td.dataset.key] = td;
+  });
+
+  // Attach drag events
+  attachDragEvents();
 }
 
-async function addBulkSlots() {
-  const ym = document.getElementById('bulkMonth').value;
-  if (!ym) { alert('対象月を選択してください'); return; }
-  const weekdays = Array.from(document.querySelectorAll('.wd-btn.active')).map(b => parseInt(b.dataset.day));
-  if (weekdays.length === 0) { alert('曜日を選択してください'); return; }
-  const from = document.getElementById('bulkFrom').value;
-  const to = document.getElementById('bulkTo').value;
-  if (from >= to) { alert('終了時間は開始時間より後にしてください'); return; }
-  const times = generateTimes(from, to);
-  const [year, month] = ym.split('-').map(Number);
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const dates = [];
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dow = new Date(year, month - 1, d).getDay();
-    if (weekdays.includes(dow)) {
-      dates.push(`${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`);
+// ── Cell Styling ──
+function getCellCls(key) {
+  const slot = slotsData[key];
+  let cls = 'cell ';
+  if (!slot) cls += 'empty';
+  else if (slot.is_booked) cls += 'booked';
+  else cls += 'available';
+  if (selectedCells.has(key)) {
+    if (!slot || !slot.is_booked) {
+      cls += !slot ? ' sel-add' : ' sel-del';
     }
   }
-  if (dates.length === 0) { alert('該当する日付がありません'); return; }
-  const btn = event.target;
-  btn.disabled = true; btn.textContent = '追加中...';
-  let successDays = 0;
+  return cls;
+}
+
+function refreshCell(key) {
+  const td = cellEls[key];
+  if (td) td.className = getCellCls(key);
+}
+
+// ── Drag Selection ──
+function attachDragEvents() {
+  const table = document.getElementById('timelineTable');
+  if (!table) return;
+
+  table.addEventListener('mousedown', e => {
+    const td = e.target.closest('td.cell');
+    if (!td) return;
+    e.preventDefault();
+    const slot = slotsData[td.dataset.key];
+    if (slot?.is_booked) return;
+    isDragging = true;
+    dragStartKey = td.dataset.key;
+    dragStartDateIdx = parseInt(td.dataset.di);
+    dragStartTimeIdx = parseInt(td.dataset.ti);
+    dragEndDateIdx = dragStartDateIdx;
+    dragEndTimeIdx = dragStartTimeIdx;
+    dragRangeKeys.clear();
+    updateDragRange();
+  });
+
+  table.addEventListener('mouseover', e => {
+    if (!isDragging) return;
+    const td = e.target.closest('td.cell');
+    if (!td) return;
+    dragEndDateIdx = parseInt(td.dataset.di);
+    dragEndTimeIdx = parseInt(td.dataset.ti);
+    updateDragRange();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    commitDrag();
+  });
+}
+
+function updateDragRange() {
+  // Clear previous drag highlight
+  dragRangeKeys.forEach(key => {
+    const td = cellEls[key];
+    if (td) { td.classList.remove('drag-over'); }
+  });
+  dragRangeKeys.clear();
+
+  const weekDates = getWeekDates();
+  const minDi = Math.min(dragStartDateIdx, dragEndDateIdx);
+  const maxDi = Math.max(dragStartDateIdx, dragEndDateIdx);
+  const minTi = Math.min(dragStartTimeIdx, dragEndTimeIdx);
+  const maxTi = Math.max(dragStartTimeIdx, dragEndTimeIdx);
+
+  for (let di = minDi; di <= maxDi; di++) {
+    for (let ti = minTi; ti <= maxTi; ti++) {
+      const key = cellKey(weekDates[di], TIMES[ti]);
+      const slot = slotsData[key];
+      if (slot?.is_booked) continue;
+      dragRangeKeys.add(key);
+      const td = cellEls[key];
+      if (td) td.classList.add('drag-over');
+    }
+  }
+}
+
+function commitDrag() {
+  dragRangeKeys.forEach(key => {
+    const td = cellEls[key];
+    if (td) td.classList.remove('drag-over');
+    if (selectedCells.has(key)) {
+      selectedCells.delete(key);
+    } else {
+      selectedCells.add(key);
+    }
+    refreshCell(key);
+  });
+  dragRangeKeys.clear();
+  updateActionBar();
+}
+
+function clearSelection() {
+  selectedCells.forEach(key => refreshCell(key));
+  selectedCells.clear();
+  updateActionBar();
+}
+
+function updateActionBar() {
+  // Count what's selected
+  let toAdd = 0, toDel = 0;
+  selectedCells.forEach(key => {
+    const slot = slotsData[key];
+    if (!slot) toAdd++;
+    else if (!slot.is_booked) toDel++;
+  });
+  const total = toAdd + toDel;
+  const parts = [];
+  if (toAdd > 0) parts.push(`追加予定 ${toAdd}枠（青）`);
+  if (toDel > 0) parts.push(`削除予定 ${toDel}枠（オレンジ）`);
+  document.getElementById('selCount').textContent = total > 0 ? parts.join('　') : '選択なし';
+  document.getElementById('btnAddSlot').disabled = toAdd === 0;
+  document.getElementById('btnDelSlot').disabled = toDel === 0;
+}
+
+// ── Add Selected Slots ──
+async function addSelectedSlots() {
+  const toAdd = {};
+  selectedCells.forEach(key => {
+    if (slotsData[key]) return;
+    const [date, time] = key.split('|');
+    if (!toAdd[date]) toAdd[date] = [];
+    toAdd[date].push(time);
+  });
+  const dates = Object.keys(toAdd);
+  if (dates.length === 0) return;
+  document.getElementById('btnAddSlot').disabled = true;
+  document.getElementById('btnAddSlot').textContent = '追加中...';
+  let ok = 0;
   for (const date of dates) {
     try {
       const res = await fetch('/api/admin-slots', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
-        body: JSON.stringify({ date, times })
+        body: JSON.stringify({ date, times: toAdd[date] })
       });
-      if (res.ok) successDays++;
+      if (res.ok) ok++;
     } catch(e) {}
   }
-  btn.disabled = false; btn.textContent = '一括追加';
-  slotYear = year; slotMonth = month;
-  loadSlots();
-  alert(`${successDays}日分、合計${successDays * times.length}枠を追加しました！`);
+  document.getElementById('btnAddSlot').textContent = '✚ 選択枠を追加';
+  const totalSlots = Object.values(toAdd).reduce((a,b) => a + b.length, 0);
+  alert(`${totalSlots}枠を追加しました`);
+  await loadWeekSlots();
 }
 
-async function deleteSlot(id) {
-  if (!confirm('この枠を削除しますか？')) return;
-  try {
-    const res = await fetch(`/api/admin-slots?id=${id}`, {
-      method: 'DELETE',
-      headers: { 'X-Admin-Password': adminPassword }
-    });
-    if (res.ok) { loadSlots(); }
-    else alert('削除に失敗しました');
-  } catch(e) { alert('エラーが発生しました'); }
+// ── Delete Selected Slots ──
+async function deleteSelectedSlots() {
+  const toDelete = [];
+  selectedCells.forEach(key => {
+    const slot = slotsData[key];
+    if (slot && !slot.is_booked) toDelete.push(slot.id);
+  });
+  if (toDelete.length === 0) return;
+  if (!confirm(`選択した${toDelete.length}枠を削除しますか？`)) return;
+  document.getElementById('btnDelSlot').disabled = true;
+  document.getElementById('btnDelSlot').textContent = '削除中...';
+  let ok = 0;
+  for (const id of toDelete) {
+    try {
+      const res = await fetch(`/api/admin-slots?id=${id}`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Password': adminPassword }
+      });
+      if (res.ok) ok++;
+    } catch(e) {}
+  }
+  document.getElementById('btnDelSlot').textContent = '✕ 選択枠を削除';
+  alert(`${ok}枠を削除しました`);
+  await loadWeekSlots();
 }
+
+// ── Bulk Action ──
+async function bulkAction(mode) {
+  const ym = document.getElementById('bulkMonth').value;
+  if (!ym) { alert('対象月を選択してください'); return; }
+  const weekdays = Array.from(document.querySelectorAll('.wd-btn.active')).map(b => parseInt(b.dataset.d));
+  if (weekdays.length === 0) { alert('曜日を選択してください'); return; }
+  const from = document.getElementById('bulkFrom').value;
+  const to = document.getElementById('bulkTo').value;
+  if (from >= to) { alert('終了時間は開始時間より後にしてください'); return; }
+
+  const times = generateTimes(from, to);
+  const [year, month] = ym.split('-').map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const dates = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dow = new Date(year, month-1, d).getDay();
+    if (weekdays.includes(dow)) {
+      dates.push(`${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`);
+    }
+  }
+  if (dates.length === 0) { alert('該当する日付がありません'); return; }
+
+  const wdLabel = weekdays.map(d => DAY_NAMES[d]).join('・');
+  const action = mode === 'add' ? '追加' : '削除';
+  if (!confirm(`${ym.replace('-','年')}月の【${wdLabel}】曜日、${from}〜${to}の枠を${action}します。よろしいですか？\n対象: ${dates.length}日 × ${times.length}枠 = ${dates.length * times.length}枠`)) return;
+
+  const btn = document.querySelector(`.bulk-btns .btn-${mode === 'add' ? 'add' : 'del'}-slot`);
+  if (btn) { btn.disabled = true; btn.textContent = mode === 'add' ? '追加中...' : '削除中...'; }
+
+  let successCount = 0;
+
+  if (mode === 'add') {
+    for (const date of dates) {
+      try {
+        const res = await fetch('/api/admin-slots', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+          body: JSON.stringify({ date, times })
+        });
+        if (res.ok) successCount++;
+      } catch(e) {}
+    }
+    alert(`${successCount}日分、合計${successCount * times.length}枠を追加しました`);
+  } else {
+    // DELETE mode: first fetch slots for the month, then delete matching ones
+    try {
+      const res = await fetch(`/api/admin-slots?year=${year}&month=${month}`, {
+        headers: { 'X-Admin-Password': adminPassword }
+      });
+      const allSlots = await res.json();
+      const toDelete = allSlots.filter(s =>
+        dates.includes(s.date) &&
+        times.includes(s.start_time.substring(0,5)) &&
+        !s.is_booked
+      );
+      for (const slot of toDelete) {
+        try {
+          const r = await fetch(`/api/admin-slots?id=${slot.id}`, {
+            method: 'DELETE',
+            headers: { 'X-Admin-Password': adminPassword }
+          });
+          if (r.ok) successCount++;
+        } catch(e) {}
+      }
+      alert(`${successCount}枠を削除しました`);
+    } catch(e) {
+      alert('エラーが発生しました');
+    }
+  }
+
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = mode === 'add' ? '✚ 一括追加' : '✕ 一括削除';
+  }
+  loadWeekSlots();
+}
+
+// ── Init ──
+buildTimeSelect('bulkFrom', '10:00');
+buildTimeSelect('bulkTo', '17:00');
 </script>
 </body>
 </html>
