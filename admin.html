@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理画面 | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #f0ebe3; color: #2c2c2c; min-height: 100vh; }
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.login-card { background: #fff; border-radius: 16px; padding: 48px 40px; max-width: 380px; width: 100%; box-shadow: 0 4px 30px rgba(0,0,0,0.1); text-align: center; }
+.login-logo { color: #b8976a; font-size: 1.1rem; letter-spacing: 0.1em; margin-bottom: 4px; }
+.login-card h1 { font-size: 1.1rem; color: #1a3a3a; margin-bottom: 32px; }
+.login-input { width: 100%; padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Noto Serif JP', serif; font-size: 1rem; margin-bottom: 14px; text-align: center; letter-spacing: 0.15em; }
+.login-input:focus { outline: none; border-color: #b8976a; }
+.login-btn { width: 100%; padding: 14px; background: #1a3a3a; color: #fff; border: none; border-radius: 8px; font-family: 'Noto Serif JP', serif; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+.login-btn:hover { background: #2a5a5a; }
+.login-err { color: #c0392b; font-size: 0.85rem; margin-top: 10px; display: none; }
+.admin-wrap { display: none; }
+.admin-header { background: #1a3a3a; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+.admin-header .logo { color: #b8976a; font-size: 1rem; letter-spacing: 0.1em; }
+.logout-btn { background: none; border: 1px solid rgba(184,151,106,0.5); color: #b8976a; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; transition: all 0.2s; }
+.logout-btn:hover { border-color: #b8976a; background: rgba(184,151,106,0.1); }
+.admin-main { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.tab { padding: 10px 24px; border-radius: 8px; border: none; font-family: 'Noto Serif JP', serif; font-size: 0.95rem; cursor: pointer; background: #fff; color: #777; transition: all 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.tab.active { background: #1a3a3a; color: #fff; }
+.panel { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.panel h2 { font-size: 1rem; color: #1a3a3a; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #f0ebe3; }
+.refresh-btn { padding: 8px 16px; background: none; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; color: #555; margin-bottom: 16px; transition: all 0.2s; }
+.refresh-btn:hover { border-color: #b8976a; color: #b8976a; }
+.bookings-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; overflow-x: auto; display: block; }
+.bookings-table th { background: #f0ebe3; padding: 10px 12px; text-align: left; color: #555; font-weight: 600; white-space: nowrap; }
+.bookings-table td { padding: 12px; border-bottom: 1px solid #f5f0e8; vertical-align: top; }
+.bookings-table tr:last-child td { border-bottom: none; }
+.bookings-table tr:hover td { background: #faf8f5; }
+.empty-msg { text-align: center; color: #999; padding: 40px; font-size: 0.9rem; }
+.slot-form { background: #faf8f5; border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+.slot-form h3 { font-size: 0.95rem; color: #1a3a3a; margin-bottom: 16px; }
+.slot-form-grid { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: start; }
+.form-field label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 6px; }
+.form-field input[type="date"] { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 0.95rem; background: #fff; }
+.form-field input[type="date"]:focus { outline: none; border-color: #b8976a; }
+.time-checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.time-check { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: all 0.2s; background: #fff; }
+.time-check:hover { border-color: #b8976a; }
+.time-check input { display: none; }
+.time-check.checked { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
+.add-btn { padding: 10px 24px; background: #b8976a; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.9rem; white-space: nowrap; align-self: end; transition: background 0.2s; }
+.add-btn:hover { background: #a07850; }
+.slot-month-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.slot-month-nav h3 { font-size: 0.95rem; color: #1a3a3a; }
+.month-nav-btn { background: none; border: 1px solid #ddd; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem; color: #555; transition: all 0.2s; }
+.month-nav-btn:hover { border-color: #b8976a; color: #b8976a; }
+.slot-group { margin-bottom: 20px; }
+.slot-group-date { font-size: 0.85rem; color: #888; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0ebe3; }
+.slot-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.slot-item { display: flex; align-items: center; gap: 8px; border-radius: 6px; padding: 8px 12px; font-size: 0.85rem; border: 1px solid #e0d8cc; }
+.slot-item.available { background: #f0ebe3; color: #1a3a3a; }
+.slot-item.booked { background: #fff0f0; border-color: #fcc; color: #c0392b; }
+.slot-delete { background: none; border: none; cursor: pointer; color: #bbb; font-size: 0.9rem; padding: 0; line-height: 1; transition: color 0.2s; }
+.slot-delete:hover { color: #c0392b; }
+.count-badge { background: #1a3a3a; color: #fff; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+@media (max-width: 600px) {
+  .login-card { padding: 32px 24px; }
+  .slot-form-grid { grid-template-columns: 1fr; }
+  .admin-header { flex-wrap: wrap; gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">Na'au Noa</div>
+    <h1>管理画面へログイン</h1>
+    <input type="password" class="login-input" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">ログイン</button>
+    <div class="login-err" id="loginErr">パスワードが正しくありません</div>
+  </div>
+</div>
+<div class="admin-wrap" id="adminWrap">
+  <div class="admin-header">
+    <div class="logo">Na'au Noa 管理画面</div>
+    <button class="logout-btn" onclick="logout()">ログアウト</button>
+  </div>
+  <div class="admin-main">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('bookings', this)">📋 予約一覧</button>
+      <button class="tab" onclick="showTab('slots', this)">⚙️ 枠設定</button>
+    </div>
+    <div id="tab-bookings" class="panel">
+      <h2>予約一覧 <span id="bookingCount" class="count-badge" style="display:none;"></span></h2>
+      <button class="refresh-btn" onclick="loadBookings()">↻ 更新</button>
+      <div id="bookingsList"></div>
+    </div>
+    <div id="tab-slots" class="panel" style="display:none;">
+      <h2>予約枠の管理</h2>
+      <div class="slot-form">
+        <h3>新しい枠を追加</h3>
+        <div class="slot-form-grid">
+          <div class="form-field">
+            <label>日付</label>
+            <input type="date" id="slotDate">
+          </div>
+          <div class="form-field">
+            <label>時間帯（複数選択可）</label>
+            <div class="time-checks" id="timeChecks">
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="10:00">10:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="11:00">11:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="12:00">12:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="14:00">14:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="15:00">15:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="16:00">16:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="19:00">19:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="20:00">20:00</label>
+              <label class="time-check" onclick="toggleCheck(this)"><input type="checkbox" value="21:00">21:00</label>
+            </div>
+          </div>
+          <button class="add-btn" onclick="addSlots()">追加する</button>
+        </div>
+      </div>
+      <div>
+        <div class="slot-month-nav">
+          <button class="month-nav-btn" onclick="changeSlotMonth(-1)">‹ 前月</button>
+          <h3 id="slotMonthTitle"></h3>
+          <button class="month-nav-btn" onclick="changeSlotMonth(1)">次月 ›</button>
+          <button class="refresh-btn" style="margin-bottom:0;" onclick="loadSlots()">↻</button>
+        </div>
+        <div id="slotsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+let adminPassword = '';
+let slotYear, slotMonth;
+function login() {
+  const pw = document.getElementById('pwInput').value;
+  fetch('/.netlify/functions/admin-bookings', {
+    headers: { 'X-Admin-Password': pw }
+  }).then(res => {
+    if (res.ok) {
+      adminPassword = pw;
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('adminWrap').style.display = 'block';
+      const today = new Date();
+      document.getElementById('slotDate').min = today.toISOString().split('T')[0];
+      slotYear = today.getFullYear();
+      slotMonth = today.getMonth() + 1;
+      loadBookings();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+    }
+  }).catch(() => { document.getElementById('loginErr').style.display = 'block'; });
+}
+function logout() {
+  adminPassword = '';
+  document.getElementById('adminWrap').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('pwInput').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+function showTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-bookings').style.display = tab === 'bookings' ? 'block' : 'none';
+  document.getElementById('tab-slots').style.display = tab === 'slots' ? 'block' : 'none';
+  if (tab === 'bookings') loadBookings();
+  if (tab === 'slots') loadSlots();
+}
+async function loadBookings() {
+  document.getElementById('bookingsList').innerHTML = '<p style="color:#999;padding:20px 0;">読み込み中...</p>';
+  try {
+    const res = await fetch('/.netlify/functions/admin-bookings', {
+      headers: { 'X-Admin-Password': adminPassword }
+    });
+    const bookings = await res.json();
+    if (!Array.isArray(bookings) || bookings.length === 0) {
+      document.getElementById('bookingCount').style.display = 'none';
+      document.getElementById('bookingsList').innerHTML = '<p class="empty-msg">予約はまだありません</p>';
+      return;
+    }
+    document.getElementById('bookingCount').textContent = bookings.length + '件';
+    document.getElementById('bookingCount').style.display = 'inline';
+    let html = '<div style="overflow-x:auto;"><table class="bookings-table"><thead><tr><th>予約日時</th><th>お名前</th><th>メール</th><th>電話番号</th><th>メニュー</th><th>お悩み</th><th>申込日</th></tr></thead><tbody>';
+    bookings.forEach(b => {
+      const date = b.slots?.date || '';
+      const time = b.slots?.start_time ? b.slots.start_time.substring(0,5) : '';
+      const dateLabel = date ? new Date(date + 'T00:00:00').toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }) : '-';
+      const createdAt = new Date(b.created_at).toLocaleDateString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      html += `<tr>
+        <td><strong>${dateLabel}</strong><br>${time ? time+'〜' : ''}</td>
+        <td>${b.name}</td>
+        <td style="word-break:break-all;font-size:0.82rem;">${b.email}</td>
+        <td>${b.phone}</td>
+        <td>${b.menu}</td>
+        <td style="max-width:160px;font-size:0.82rem;">${b.message || '-'}</td>
+        <td style="font-size:0.82rem;color:#999;">${createdAt}</td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('bookingsList').innerHTML = html;
+  } catch(e) {
+    document.getElementById('bookingsList').innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
+  }
+}
+function changeSlotMonth(delta) {
+  slotMonth += delta;
+  if (slotMonth > 12) { slotMonth = 1; slotYear++; }
+  if (slotMonth < 1) { slotMonth = 12; slotYear--; }
+  loadSlots();
+}
+async function loadSlots() {
+  document.getElementById('slotMonthTitle').textContent = `${slotYear}年${slotMonth}月`;
+  document.getElementById('slotsList').innerHTML = '<p style="color:#999;">読み込み中...</p>';
+  try {
+    const res = await fetch(`/.netlify/functions/admin-slots?year=${slotYear}&month=${slotMonth}`, {
+      headers: { 'X-Admin-Password': adminPassword }
+    });
+    const slots = await res.json();
+    if (!Array.isArray(slots) || slots.length === 0) {
+      document.getElementById('slotsList').innerHTML = '<p class="empty-msg">この月の枠はありません</p>';
+      return;
+    }
+    const grouped = {};
+    slots.forEach(s => { if (!grouped[s.date]) grouped[s.date] = []; grouped[s.date].push(s); });
+    let html = '<div class="slot-list">';
+    Object.keys(grouped).sort().forEach(date => {
+      const dateObj = new Date(date + 'T00:00:00');
+      const dateLabel = dateObj.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' });
+      const available = grouped[date].filter(s => !s.is_booked).length;
+      const booked = grouped[date].filter(s => s.is_booked).length;
+      html += `<div class="slot-group">
+        <div class="slot-group-date">${dateLabel}　<span style="color:#b8976a;">空き${available}枠</span>${booked > 0 ? `　<span style="color:#c0392b;">予約済${booked}枠</span>` : ''}</div>
+        <div class="slot-items">`;
+      grouped[date].forEach(s => {
+        const t = s.start_time.substring(0,5);
+        const cls = s.is_booked ? 'slot-item booked' : 'slot-item available';
+        const status = s.is_booked ? '予約済' : '空き';
+        html += `<div class="${cls}">${t}〜 <small>(${status})</small>`;
+        if (!s.is_booked) html += ` <button class="slot-delete" onclick="deleteSlot('${s.id}')" title="削除">✕</button>`;
+        html += '</div>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+    document.getElementById('slotsList').innerHTML = html;
+  } catch(e) {
+    document.getElementById('slotsList').innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
+  }
+}
+function toggleCheck(label) {
+  label.classList.toggle('checked');
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+}
+async function addSlots() {
+  const date = document.getElementById('slotDate').value;
+  const times = Array.from(document.querySelectorAll('.time-check.checked input')).map(i => i.value);
+  if (!date) { alert('日付を選択してください'); return; }
+  if (times.length === 0) { alert('時間帯を選択してください'); return; }
+  try {
+    const res = await fetch('/.netlify/functions/admin-slots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+      body: JSON.stringify({ date, times })
+    });
+    if (res.ok) {
+      document.getElementById('slotDate').value = '';
+      document.querySelectorAll('.time-check').forEach(l => { l.classList.remove('checked'); l.querySelector('input').checked = false; });
+      const d = new Date(date + 'T00:00:00');
+      slotYear = d.getFullYear();
+      slotMonth = d.getMonth() + 1;
+      loadSlots();
+      alert(`${times.length}枠を追加しました！`);
+    } else {
+      const data = await res.json();
+      alert('エラー: ' + (data.error || '追加に失敗しました'));
+    }
+  } catch(e) { alert('エラーが発生しました'); }
+}
+async function deleteSlot(id) {
+  if (!confirm('この枠を削除しますか？')) return;
+  try {
+    const res = await fetch(`/.netlify/functions/admin-slots?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Password': adminPassword }
+    });
+    if (res.ok) { loadSlots(); }
+    else alert('削除に失敗しました');
+  } catch(e) { alert('エラーが発生しました'); }
+}
+</script>
+</body>
+</html>
