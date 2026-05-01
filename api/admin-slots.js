@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const pw = req.headers['x-admin-password'];
-  if (pw !== process.env.ADMIN_PASSWORD) return res.status(401).json({ error: 'Unauthorized' });
+  if (pw !== process.env.NAAU_ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
 
   if (req.method === 'GET') {
     const { year, month } = req.query;
