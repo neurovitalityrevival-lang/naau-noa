@@ -23,10 +23,8 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const crypto = require('crypto');
   const pw = req.headers['x-admin-password'];
-  const hash = crypto.createHash('sha256').update(pw || '').digest('hex');
-  if (hash !== 'ab467ac41fbad139ccb753f11c19a9ae457713f631e43932686096c380a14dd5') return res.status(401).json({ error: 'Unauthorized' });
+  if (pw !== 'taisyo1023') return res.status(401).json({ error: 'Unauthorized' });
 
   if (req.method === 'GET') {
     const { year, month } = req.query;
