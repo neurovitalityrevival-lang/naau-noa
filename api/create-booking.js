@@ -46,8 +46,8 @@ const MENU_VALUES = {
 };
 
 async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAgent, fbc, fbp }) {
-  const PID = '1586041389742932';
-  const AT = 'EAAU7PbtGoZAIBRawgr6Ql8EqxYPMOnp473bfb15Cmq1u2Vn0xm2tUrXj86Hb7yZCNvEg4eAbbwc1fIn0eGmZAKAdbiQ6G7ZC5BJs5oTdtmQnFhimMGyVtEogoeuJgV7bKdWzZCP7K8Neyfa4Jg8qmZA7MIuQYaZByly4OY3FmBZCoZAUZBtkYa112GEqvX4d9r'; // 有効期限: 2026年7月2日
+  const PID = '2080933312746435';
+  const AT = 'EAAU7PbtGoZAIBRZA3pGTfor2tqpoj4LDYj9tgeDHwAMxm6PEFMaQ8QdWTsJXaYZAUvPT6VJ4gZCQqZCuCVQ7PGIfKBHXbsH4HL3SFGK2N7a73CmFFzE7UuCHutOVrPE7IGMGaYdzlg998a5ncpZBkei8PovsRAu9pUrjl3gmcfPqAi4ZALZAvulMceZBVOSaG7WDf0CXXhz19fJ0qplFdooj14DfsbcIDqqSOB16Mi3PUJYutnZBTjzh1Og4VWY27kgLJTUwDCgrGny29CvHo1uTaYs6d60PZBClIhHs394eZCIdZAJgDnHDrLuWiRhURyZCdn644FlHyc2Tnd';
   if (!AT) return;
   const ud = {};
   if (email) ud.em = [hashData(email)];
