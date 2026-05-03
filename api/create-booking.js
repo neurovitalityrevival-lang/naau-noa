@@ -60,8 +60,8 @@ async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAge
   const value = MENU_VALUES[menu] || 0;
   const pd = JSON.stringify({ data: [{ event_name: 'Schedule', event_time: Math.floor(Date.now()/1000), event_id: `sch_${Date.now()}`, action_source: 'website', event_source_url: sourceUrl || 'https://naau-noa.vercel.app/booking.html', user_data: ud, custom_data: { content_name: menu || '予約', value, currency: 'JPY' } }], test_event_code: 'TEST8552' }); // ← テスト確認後に削除
   return new Promise((resolve, reject) => {
-    const req = https.request({ hostname: 'graph.facebook.com', path: `/v19.0/${PID}/events?access_token=${AT}`, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(pd) } }, (res) => { let d=''; res.on('data', c=>d+=c); res.on('end', ()=>resolve(d)); });
-    req.on('error', reject);
+    const req = https.request({ hostname: 'graph.facebook.com', path: `/v19.0/${PID}/events?access_token=${AT}`, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(pd) } }, (res) => { let d=''; res.on('data', c=>d+=c); res.on('end', ()=>{ console.log('CAPI response:', d); resolve(d); }); });
+    req.on('error', (e) => { console.error('CAPI request error:', e.message); reject(e); });
     req.write(pd);
     req.end();
   });
