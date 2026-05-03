@@ -47,7 +47,7 @@ const MENU_VALUES = {
 
 async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAgent, fbc, fbp }) {
   const PID = '2080933312746435';
-  const AT = 'EAAU7PbtGoZAIBRZA3pGTfor2tqpoj4LDYj9tgeDHwAMxm6PEFMaQ8QdWTsJXaYZAUvPT6VJ4gZCQqZCuCVQ7PGIfKBHXbsH4HL3SFGK2N7a73CmFFzE7UuCHutOVrPE7IGMGaYdzlg998a5ncpZBkei8PovsRAu9pUrjl3gmcfPqAi4ZALZAvulMceZBVOSaG7WDf0CXXhz19fJ0qplFdooj14DfsbcIDqqSOB16Mi3PUJYutnZBTjzh1Og4VWY27kgLJTUwDCgrGny29CvHo1uTaYs6d60PZBClIhHs394eZCIdZAJgDnHDrLuWiRhURyZCdn644FlHyc2Tnd';
+  const AT = 'EAAU7PbtGoZAIBReDwLpfbbo6AvazK5yqebVjLuEZCN2IKvNoh9Y4Gkbb2jrD9v2HWHpgUkKKJhZCvsba65MKnj3wLP1ZAzE5R7GKr8j4lwZBEcPcdC3FVGmLefu3HsjVV66Wf7EZCCRVi5M4SqM0HXlxPnHGz85zmmqpWUVNSBvS95wO3S1dASP3ag2vRPXkEa'; // 有効期限: 2026年7月2日
   if (!AT) return;
   const ud = {};
   if (email) ud.em = [hashData(email)];
@@ -58,9 +58,9 @@ async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAge
   if (fbc) ud.fbc = fbc;
   if (fbp) ud.fbp = fbp;
   const value = MENU_VALUES[menu] || 0;
-  const pd = JSON.stringify({ data: [{ event_name: 'Schedule', event_time: Math.floor(Date.now()/1000), event_id: `sch_${Date.now()}`, action_source: 'website', event_source_url: sourceUrl || 'https://naau-noa.vercel.app/booking.html', user_data: ud, custom_data: { content_name: menu || '予約', value, currency: 'JPY' } }], test_event_code: 'TEST8552' }); // ← テスト確認後に削除
+  const pd = JSON.stringify({ data: [{ event_name: 'Schedule', event_time: Math.floor(Date.now()/1000), event_id: `sch_${Date.now()}`, action_source: 'website', event_source_url: sourceUrl || 'https://naau-noa.vercel.app/booking.html', user_data: ud, custom_data: { content_name: menu || '予約', value, currency: 'JPY' } }] });
   return new Promise((resolve, reject) => {
-    const req = https.request({ hostname: 'graph.facebook.com', path: `/v19.0/${PID}/events?access_token=${AT}`, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(pd) } }, (res) => { let d=''; res.on('data', c=>d+=c); res.on('end', ()=>{ console.log('CAPI response:', d); resolve(d); }); });
+    const req = https.request({ hostname: 'graph.facebook.com', path: `/v19.0/${PID}/events?access_token=${AT}`, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(pd) } }, (res) => { let d=''; res.on('data', c=>d+=c); res.on('end', ()=>{ resolve(d); }); });
     req.on('error', (e) => { console.error('CAPI request error:', e.message); reject(e); });
     req.write(pd);
     req.end();
