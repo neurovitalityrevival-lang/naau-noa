@@ -47,7 +47,7 @@ const MENU_VALUES = {
 
 async function sendCAPI({ name, email, phone, sourceUrl, menu }) {
   const PID = '2080933312746435';
-  const AT = process.env.META_ACCESS_TOKEN;
+  const AT = 'EAAU7PbtGoZAIBRawgr6Ql8EqxYPMOnp473bfb15Cmq1u2Vn0xm2tUrXj86Hb7yZCNvEg4eAbbwc1fIn0eGmZAKAdbiQ6G7ZC5BJs5oTdtmQnFhimMGyVtEogoeuJgV7bKdWzZCP7K8Neyfa4Jg8qmZA7MIuQYaZByly4OY3FmBZCoZAUZBtkYa112GEqvX4d9r'; // 有効期限: 2026年7月2日
   if (!AT) return;
   const ud = {};
   if (email) ud.em = [hashData(email)];
