@@ -45,7 +45,7 @@ const MENU_VALUES = {
   '《2回目以降》オンラインリリースワーク（90分）33,000円': 33000
 };
 
-async function sendCAPI({ name, email, phone, sourceUrl, menu }) {
+async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAgent, fbc, fbp }) {
   const PID = '2080933312746435';
   const AT = 'EAAU7PbtGoZAIBRawgr6Ql8EqxYPMOnp473bfb15Cmq1u2Vn0xm2tUrXj86Hb7yZCNvEg4eAbbwc1fIn0eGmZAKAdbiQ6G7ZC5BJs5oTdtmQnFhimMGyVtEogoeuJgV7bKdWzZCP7K8Neyfa4Jg8qmZA7MIuQYaZByly4OY3FmBZCoZAUZBtkYa112GEqvX4d9r'; // 有効期限: 2026年7月2日
   if (!AT) return;
@@ -53,6 +53,10 @@ async function sendCAPI({ name, email, phone, sourceUrl, menu }) {
   if (email) ud.em = [hashData(email)];
   if (phone) ud.ph = [hashData(phone.replace(/\D/g,''))];
   if (name) { const p = name.trim().split(/\s+/); ud.fn = [hashData(p[0])]; if (p.length > 1) ud.ln = [hashData(p[p.length-1])]; }
+  if (clientIp) ud.client_ip_address = clientIp;
+  if (userAgent) ud.client_user_agent = userAgent;
+  if (fbc) ud.fbc = fbc;
+  if (fbp) ud.fbp = fbp;
   const value = MENU_VALUES[menu] || 0;
   const pd = JSON.stringify({ data: [{ event_name: 'Schedule', event_time: Math.floor(Date.now()/1000), event_id: `sch_${Date.now()}`, action_source: 'website', event_source_url: sourceUrl || 'https://naau-noa.vercel.app/booking.html', user_data: ud, custom_data: { content_name: menu || '予約', value, currency: 'JPY' } }] });
   return new Promise((resolve, reject) => {
@@ -204,8 +208,11 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
 
   try {
-    const { slotId, name, email, phone, menu, message, sourceUrl } = req.body;
+    const { slotId, name, email, phone, menu, message, sourceUrl, fbc, fbp } = req.body;
     if (!slotId || !name || !email || !phone || !menu) return res.status(400).json({ error: '必須項目が不足しています' });
+    // クライアント情報取得
+    const clientIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || '';
+    const userAgent = req.headers['user-agent'] || '';
 
     // 対象スロットを確認
     const check = await supabase(`/rest/v1/slots?id=eq.${slotId}&is_available=eq.true&is_booked=eq.false`);
@@ -248,7 +255,7 @@ module.exports = async (req, res) => {
     }
 
     // Meta CAPI
-    try { await sendCAPI({ name, email, phone, sourceUrl, menu }); } catch(e) { console.error('CAPI:', e); }
+    try { await sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAgent, fbc, fbp }); } catch(e) { console.error('CAPI:', e); }
 
     res.status(200).json({ success: true });
   } catch(e) {
