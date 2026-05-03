@@ -29,9 +29,8 @@ fbq('track','PageView');
     '《2回目以降》オンラインリリースワーク（90分）33,000円': 33000
   };
   const value = valueMap[menu] || 0;
-  fbq('track','Schedule',{
+  fbq('track','CompleteRegistration',{
     content_name: menu,
-    content_category: 'Booking',
     value: value,
     currency: 'JPY'
   });
