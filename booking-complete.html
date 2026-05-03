@@ -5,6 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ご予約ありがとうございます | Na'au Noa</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2080933312746435');
+fbq('track','PageView');
+// URLパラメータからメニュー情報を取得してScheduleイベント発火
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  const menu = p.get('menu') || '予約';
+  const name = p.get('name') || '';
+  // メニューに応じた金額を設定
+  const valueMap = {
+    '《新規限定》オンライン無料個別相談': 0,
+    '《新規10:00~17:00限定》AET自律神経整体付き個別相談（60分）4980円': 4980,
+    '《10:00~17:00限定》AETエネルギー整体（90分）33,000円': 33000,
+    '《2回目以降》オンラインリリースワーク（90分）33,000円': 33000
+  };
+  const value = valueMap[menu] || 0;
+  fbq('track','Schedule',{
+    content_name: menu,
+    content_category: 'Booking',
+    value: value,
+    currency: 'JPY'
+  });
+})();
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2080933312746435&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; min-height: 100vh; display: flex; flex-direction: column; }

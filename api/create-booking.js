@@ -38,14 +38,23 @@ function supabase(path, method = 'GET', body = null) {
 }
 
 // ── Meta CAPI ──
-async function sendCAPI({ name, email, phone, sourceUrl }) {
-  const PID = process.env.META_PIXEL_ID, AT = process.env.META_ACCESS_TOKEN;
-  if (!PID || !AT) return;
+const MENU_VALUES = {
+  '《新規限定》オンライン無料個別相談': 0,
+  '《新規10:00~17:00限定》AET自律神経整体付き個別相談（60分）4980円': 4980,
+  '《10:00~17:00限定》AETエネルギー整体（90分）33,000円': 33000,
+  '《2回目以降》オンラインリリースワーク（90分）33,000円': 33000
+};
+
+async function sendCAPI({ name, email, phone, sourceUrl, menu }) {
+  const PID = '2080933312746435';
+  const AT = process.env.META_ACCESS_TOKEN;
+  if (!AT) return;
   const ud = {};
   if (email) ud.em = [hashData(email)];
   if (phone) ud.ph = [hashData(phone.replace(/\D/g,''))];
   if (name) { const p = name.trim().split(/\s+/); ud.fn = [hashData(p[0])]; if (p.length > 1) ud.ln = [hashData(p[p.length-1])]; }
-  const pd = JSON.stringify({ data: [{ event_name: 'Schedule', event_time: Math.floor(Date.now()/1000), event_id: `sch_${Date.now()}`, action_source: 'website', event_source_url: sourceUrl || 'https://naau-noa.vercel.app/booking.html', user_data: ud, custom_data: { content_name: '予約' } }] });
+  const value = MENU_VALUES[menu] || 0;
+  const pd = JSON.stringify({ data: [{ event_name: 'Schedule', event_time: Math.floor(Date.now()/1000), event_id: `sch_${Date.now()}`, action_source: 'website', event_source_url: sourceUrl || 'https://naau-noa.vercel.app/booking.html', user_data: ud, custom_data: { content_name: menu || '予約', value, currency: 'JPY' } }] });
   return new Promise((resolve, reject) => {
     const req = https.request({ hostname: 'graph.facebook.com', path: `/v19.0/${PID}/events?access_token=${AT}`, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(pd) } }, (res) => { let d=''; res.on('data', c=>d+=c); res.on('end', ()=>resolve(d)); });
     req.on('error', reject);
@@ -239,7 +248,7 @@ module.exports = async (req, res) => {
     }
 
     // Meta CAPI
-    try { await sendCAPI({ name, email, phone, sourceUrl }); } catch(e) { console.error('CAPI:', e); }
+    try { await sendCAPI({ name, email, phone, sourceUrl, menu }); } catch(e) { console.error('CAPI:', e); }
 
     res.status(200).json({ success: true });
   } catch(e) {

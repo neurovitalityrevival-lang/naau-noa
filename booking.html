@@ -84,6 +84,22 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
   .time-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,"script",
+  "https://connect.facebook.net/en_US/fbevents.js");
+  fbq("init","2080933312746435");
+  fbq("track","PageView");
+  fbq("track","ViewContent",{content_name:"予約ページ",content_category:"Booking"});
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2080933312746435&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
 </head>
 <body>
 <header><a href="index.html">Na'au Noa</a></header>
@@ -433,7 +449,7 @@ async function submitBooking() {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      window.location.href = 'booking-complete.html';
+      const params = new URLSearchParams({ menu: selectedMenuKey, name }); window.location.href = 'booking-complete.html?' + params.toString();
     } else {
       throw new Error(data.error || '送信に失敗しました');
     }
