@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料オンライン相談 | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2080933312746435');
+fbq('track','PageView');
+fbq('track','ViewContent',{
+  content_name: '無料オンライン相談LP',
+  content_category: 'LP'
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2080933312746435&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; }
+
+/* ── ヘッダー ── */
+header { background: #1a3a3a; padding: 16px 24px; text-align: center; }
+header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spacing: 0.1em; }
+
+/* ── ヒーロー ── */
+.hero { background: #1a3a3a; padding: 48px 24px 56px; text-align: center; }
+.hero-eyebrow { color: #b8976a; font-size: 0.8rem; letter-spacing: 0.2em; margin-bottom: 20px; }
+.hero-title { color: #fff; font-size: clamp(1.3rem, 4vw, 1.9rem); line-height: 1.7; margin-bottom: 12px; }
+.hero-title span { color: #b8976a; }
+.hero-sub { color: #c8b89a; font-size: 0.9rem; line-height: 1.8; margin-bottom: 40px; }
+
+/* ── VSL ── */
+.vsl-wrap { max-width: 720px; margin: 0 auto 40px; }
+.vsl-container {
+  position: relative; padding-top: 56.25%;
+  background: #0d2020; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+}
+.vsl-container iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+}
+.vsl-placeholder {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #b8976a;
+}
+.vsl-placeholder .play-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.8; }
+.vsl-placeholder p { font-size: 0.9rem; color: #c8b89a; }
+
+/* ── CTAボタン ── */
+.cta-wrap { text-align: center; margin: 0 auto; }
+.cta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #b8976a, #d4a96a);
+  color: #fff; text-decoration: none;
+  padding: 20px 48px; border-radius: 50px;
+  font-size: 1.1rem; font-weight: 600; letter-spacing: 0.05em;
+  box-shadow: 0 4px 24px rgba(184,151,106,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer; border: none; font-family: 'Noto Serif JP', serif;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(184,151,106,0.5); }
+.cta-note { color: #c8b89a; font-size: 0.8rem; margin-top: 12px; }
+
+/* ── セクション共通 ── */
+.section { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
+.section-label { color: #b8976a; font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 12px; }
+.section-title { color: #1a3a3a; font-size: clamp(1.2rem, 3.5vw, 1.6rem); line-height: 1.7; margin-bottom: 32px; }
+
+/* ── こんな方へ ── */
+.for-who { background: #fff; }
+.pain-list { list-style: none; }
+.pain-list li {
+  padding: 14px 0; border-bottom: 1px solid #f0ebe3;
+  font-size: 0.95rem; color: #444; line-height: 1.7;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.pain-list li::before { content: '…'; color: #b8976a; flex-shrink: 0; font-size: 1.2rem; }
+.pain-list li:last-child { border-bottom: none; }
+
+/* ── 変革 ── */
+.transform { background: #1a3a3a; }
+.transform .section-label { color: #b8976a; }
+.transform .section-title { color: #fff; }
+.transform-text { color: #c8b89a; font-size: 1rem; line-height: 2.2; }
+.transform-text strong { color: #b8976a; }
+
+/* ── 口コミ ── */
+.reviews { background: #faf8f5; }
+.review-grid { display: flex; flex-direction: column; gap: 24px; }
+.review-card {
+  background: #fff; border-radius: 12px; padding: 28px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  border-left: 4px solid #b8976a;
+}
+.review-text { font-size: 0.92rem; color: #444; line-height: 2; margin-bottom: 16px; font-style: italic; }
+.review-meta { font-size: 0.8rem; color: #b8976a; }
+
+/* 口コミ追加エリア */
+.review-placeholder {
+  background: #f0ebe3; border-radius: 12px; padding: 32px;
+  text-align: center; color: #aaa; font-size: 0.85rem;
+  border: 2px dashed #d8cfc5;
+}
+
+/* ── プロフィール ── */
+.profile { background: #fff; }
+.profile-inner { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
+.profile-img {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: #e0d8cc; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #b8976a; font-size: 0.75rem; text-align: center;
+  overflow: hidden;
+}
+.profile-img img { width: 100%; height: 100%; object-fit: cover; }
+.profile-content { flex: 1; min-width: 200px; }
+.profile-name { font-size: 1.1rem; color: #1a3a3a; margin-bottom: 4px; }
+.profile-title { font-size: 0.8rem; color: #b8976a; margin-bottom: 16px; }
+.profile-text { font-size: 0.9rem; color: #555; line-height: 2; }
+
+/* ── 最終CTA ── */
+.final-cta { background: #1a3a3a; padding: 64px 24px; text-align: center; }
+.final-cta h2 { color: #fff; font-size: clamp(1.2rem, 3.5vw, 1.6rem); line-height: 1.7; margin-bottom: 12px; }
+.final-cta p { color: #c8b89a; font-size: 0.9rem; margin-bottom: 36px; line-height: 1.8; }
+.slots { display: inline-block; background: rgba(184,151,106,0.15); border: 1px solid #b8976a; color: #b8976a; padding: 8px 24px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 24px; }
+
+/* ── フッター ── */
+footer { background: #0d2020; padding: 24px; text-align: center; }
+footer p { color: #888; font-size: 0.78rem; }
+
+@media (max-width: 600px) {
+  .hero { padding: 36px 20px 48px; }
+  .section { padding: 48px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header><a href="index.html">Na'au Noa</a></header>
+
+<!-- ── ヒーロー + VSL ── -->
+<div class="hero">
+  <p class="hero-eyebrow">FREE ONLINE CONSULTATION</p>
+  <h1 class="hero-title">
+    頑張りたいのに、<br>
+    なぜか心と体が<span>動かない</span>人へ。
+  </h1>
+  <p class="hero-sub">
+    人の顔色を伺わず、不安に怯えることなく、<br>
+    自分の本音で生きられるようになる。
+  </p>
+
+  <div class="vsl-wrap">
+    <div class="vsl-container" id="vslContainer">
+      <!-- YouTube URL取得後、下記のプレースホルダーをiframeに差し替え -->
+      <!-- <iframe src="https://www.youtube.com/embed/XXXXXXXX?rel=0&modestbranding=1" allowfullscreen></iframe> -->
+      <div class="vsl-placeholder">
+        <div class="play-icon">▶</div>
+        <p>動画を準備中です</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <div class="slots">今月残り3名</div><br>
+    <button class="cta-btn" onclick="handleCTA()">
+      無料オンライン相談を予約する
+    </button>
+    <p class="cta-note">完全無料・オンライン・約60分</p>
+  </div>
+</div>
+
+<!-- ── こんな方へ ── -->
+<div class="for-who">
+  <div class="section">
+    <p class="section-label">FOR YOU</p>
+    <h2 class="section-title">こんな気持ち、ありませんか？</h2>
+    <ul class="pain-list">
+      <li>真面目に誰よりも頑張ってきた。なのに上手くいかない、動けない</li>
+      <li>人の顔色を伺って、いつも誰かの機嫌に振り回されている</li>
+      <li>本当はやりたいことがあるのに、怖くて動けない</li>
+      <li>断れなくて、気づいたら自分を後回しにしてばかり</li>
+      <li>朝起きると胸が重く、なんとなくしんどい日が続いている</li>
+      <li>この違和感の正体が、何なのかわからない</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ── 変革 ── -->
+<div class="transform">
+  <div class="section">
+    <p class="section-label">TRANSFORMATION</p>
+    <h2 class="section-title">問題はやる気でも、<br>努力不足でもない。</h2>
+    <p class="transform-text">
+      ずっと誰かの機嫌と感情に振り回されて、<br>
+      自分に正直に生きていなかっただけ。<br><br>
+      あなたは<strong>人の顔色を伺わずに</strong>、<br>
+      <strong>不安に怯えることなく</strong>、<br>
+      自分にも人にも優しく、<br>
+      <strong>自分の本音で生きられるようになる。</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ── 口コミ ── -->
+<div class="reviews">
+  <div class="section">
+    <p class="section-label">VOICE</p>
+    <h2 class="section-title">セッションを受けた方の声</h2>
+    <div class="review-grid">
+
+      <!-- 口コミ① -->
+      <div class="review-card">
+        <p class="review-text">「人の言葉を気にしてしまったり、いつも何かに怯えていたことがわかりました。今はどちらも気にならなくなって、身体の緊張も緩んで、心穏やかにゆったり過ごせるようになりました。」</p>
+        <p class="review-meta">30代女性</p>
+      </div>
+
+      <!-- 口コミ②〜 届き次第追加 -->
+      <div class="review-placeholder">
+        📩 口コミ追加予定
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── プロフィール ── -->
+<div class="profile">
+  <div class="section">
+    <p class="section-label">PROFILE</p>
+    <div class="profile-inner">
+      <div class="profile-img">
+        <!-- <img src="profile.jpg" alt="小松大介"> -->
+        写真<br>準備中
+      </div>
+      <div class="profile-content">
+        <p class="profile-name">小松 大介</p>
+        <p class="profile-title">Na'au Noa / AETセラピスト・メンタルシフトコーチ</p>
+        <p class="profile-text">
+          自身も10年間パニックを抱えながら教職を続け、休職・辞職・転職を繰り返した経験を持つ。
+          本当の問題が「自分に正直に生きていなかったこと」だと気づき、
+          古代ハワイの叡智（Huna）とNLPを組み合わせた独自メソッドで克服。
+          現在は同じ苦しみを持つ女性が、自分軸で生きられるようサポートしている。
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 最終CTA ── -->
+<div class="final-cta">
+  <h2>一人で抱え込まなくていい。<br>話すだけでいい。</h2>
+  <p>
+    まずは無料で話しましょう。<br>
+    あなたの状況を聞かせてください。
+  </p>
+  <div><span class="slots">今月残り3名</span></div>
+  <br>
+  <button class="cta-btn" onclick="handleCTA()">
+    無料オンライン相談を予約する
+  </button>
+  <p class="cta-note" style="margin-top:16px;">完全無料・オンライン・約60分</p>
+</div>
+
+<footer>
+  <p>© 2026 Na'au Noa | <a href="index.html" style="color:#888;">トップページ</a></p>
+</footer>
+
+<script>
+function handleCTA() {
+  // Meta Pixel: Leadイベント（ボタンクリック = 予約意欲のシグナル）
+  fbq('track', 'Lead', {
+    content_name: '無料相談予約ボタン',
+    content_category: 'LP'
+  });
+  // 予約ページへ遷移
+  window.location.href = 'booking.html';
+}
+</script>
+
+</body>
+</html>
