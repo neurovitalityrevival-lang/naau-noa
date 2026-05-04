@@ -694,6 +694,69 @@ input, textarea, select, button,
 .menu-entry-divider span { font-size: .75rem; color: var(--text-light); letter-spacing: .12em; white-space: nowrap; }
 
 /* ===================================================
+   ── LUXURY FOREST GREEN OVERRIDES ──
+   =================================================== */
+
+/* Concept — Forest Green */
+.concept { background: #1a3a3a; }
+.concept .section-tag { color: #b8976a; }
+.concept .section-title { color: #fff; }
+.concept-hawaiian { color: #b8976a !important; }
+.concept-meaning  { color: #c8b89a !important; }
+.concept-text p   { color: rgba(255,255,255,.75) !important; font-weight: 300; }
+
+/* AET message — Forest Green */
+.aet-message {
+  background: #1a3a3a !important;
+  border-left: 3px solid #b8976a !important;
+}
+.aet-message p        { color: rgba(255,255,255,.75) !important; }
+.aet-message strong   { color: #b8976a !important; }
+.aet-closing-strong   { color: var(--amber) !important; }
+
+/* Profile section — Forest Green */
+.profile { background: #1a3a3a !important; }
+.profile .section-tag   { color: #b8976a; }
+.profile .section-title { color: #fff; }
+.profile-name   { color: #fff !important; }
+.profile-kana   { color: #c8b89a !important; }
+.profile-role   { color: #b8976a !important; }
+.avatar-wrap    { border-color: rgba(184,151,106,.45) !important; box-shadow: 0 12px 44px rgba(0,0,0,.35) !important; }
+.profile-message {
+  background: rgba(255,255,255,.05) !important;
+  border-left: 3px solid #b8976a !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,.2) !important;
+}
+.profile-message::before { color: rgba(184,151,106,.2) !important; }
+.profile-message p       { color: rgba(255,255,255,.8) !important; }
+.credentials-title {
+  color: #b8976a !important;
+  border-bottom-color: rgba(184,151,106,.3) !important;
+}
+.credentials-list li          { color: #c8b89a !important; border-bottom-color: rgba(255,255,255,.07) !important; }
+.credentials-list li::before  { color: #b8976a !important; }
+.credentials-highlight        { color: #d4a96a !important; font-weight: 600 !important; }
+
+/* ===== VOICE section (HP) ===== */
+.voice { background: #1a3a3a; }
+.voice .section-tag   { color: #b8976a; }
+.voice .section-title { color: #fff; }
+.voice-grid {
+  display: flex; flex-direction: column; gap: 28px;
+  max-width: 760px; margin: 0 auto;
+}
+.voice-card {
+  background: rgba(255,255,255,.06);
+  border-radius: 14px; padding: 32px 36px;
+  border-left: 4px solid #b8976a;
+  transition: background .3s ease;
+}
+.voice-card:hover { background: rgba(255,255,255,.09); }
+.voice-stars  { color: #b8976a; font-size: 1rem; margin-bottom: 14px; letter-spacing: 3px; }
+.voice-text   { font-size: .93rem; color: #c8b89a; line-height: 2.2; margin-bottom: 18px; font-style: italic; font-family: 'Noto Serif JP', serif; }
+.voice-meta   { font-size: .82rem; color: #b8976a; font-weight: 600; }
+
+/* ===================================================
    Responsive — Tablet (≤ 960px)
    =================================================== */
 @media (max-width: 960px) {
@@ -725,6 +788,7 @@ input, textarea, select, button,
   .contact-form-wrap { padding: 34px 26px; }
   .access-map iframe { height: 300px; }
   .float-cta { bottom: 20px; right: 20px; }
+  .voice-card { padding: 24px 22px; }
 }
 
 /* ===================================================
