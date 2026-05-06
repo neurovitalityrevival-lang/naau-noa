@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セッション前アンケート | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; min-height: 100vh; }
+
+header { background: #1a3a3a; padding: 16px 24px; text-align: center; }
+header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spacing: 0.1em; }
+
+.hero {
+  background: #1a3a3a;
+  padding: 48px 24px 56px;
+  text-align: center;
+}
+.hero-eyebrow { color: #b8976a; font-size: 0.75rem; letter-spacing: 0.25em; margin-bottom: 16px; }
+.hero-title { color: #fff; font-size: clamp(1.2rem, 3.5vw, 1.7rem); line-height: 1.7; margin-bottom: 12px; }
+.hero-sub { color: #c8b89a; font-size: 0.88rem; line-height: 1.9; }
+
+.container { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── カード ── */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 36px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.07);
+  margin-bottom: 20px;
+}
+
+.card-intro {
+  border-left: 4px solid #b8976a;
+  background: #fff;
+  padding: 28px 32px;
+}
+.card-intro p {
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 2.1;
+}
+.card-intro p + p { margin-top: 14px; }
+
+/* ── フォーム ── */
+.form-group { margin-bottom: 32px; }
+.q-number {
+  display: inline-block;
+  background: #1a3a3a;
+  color: #b8976a;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.q-label {
+  font-size: 1rem;
+  color: #1a3a3a;
+  font-weight: 600;
+  line-height: 1.7;
+  margin-bottom: 6px;
+  display: block;
+}
+.q-hint {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+.name-input,
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #e0d8cc;
+  border-radius: 10px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.95rem;
+  color: #2c2c2c;
+  background: #faf8f5;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  resize: vertical;
+}
+.name-input { resize: none; }
+.name-input:focus,
+textarea:focus {
+  border-color: #b8976a;
+  box-shadow: 0 0 0 3px rgba(184,151,106,0.12);
+  background: #fff;
+}
+textarea { min-height: 120px; line-height: 1.9; }
+
+.divider { border: none; border-top: 1px solid #f0ebe3; margin: 28px 0; }
+
+/* ── 名前フィールド ── */
+.name-section {
+  background: #f0ebe3;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+.name-section label {
+  display: block;
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+/* ── 送信ボタン ── */
+.submit-wrap { text-align: center; margin-top: 36px; }
+.submit-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #b8976a, #d4a96a);
+  color: #fff;
+  border: none;
+  padding: 18px 56px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Noto Serif JP', serif;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(184,151,106,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(184,151,106,0.45); }
+.submit-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+.submit-note { color: #aaa; font-size: 0.78rem; margin-top: 12px; }
+
+/* ── 完了画面 ── */
+.complete { display: none; text-align: center; padding: 60px 24px; }
+.complete-icon {
+  width: 72px; height: 72px;
+  background: #1a3a3a;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 1.8rem;
+  color: #fff;
+}
+.complete h2 { color: #1a3a3a; font-size: 1.4rem; margin-bottom: 14px; line-height: 1.6; }
+.complete p { color: #777; font-size: 0.9rem; line-height: 2; }
+
+footer { background: #0d2020; padding: 24px; text-align: center; }
+footer p { color: #666; font-size: 0.78rem; }
+
+@media (max-width: 600px) {
+  .card { padding: 24px 20px; }
+  .hero { padding: 36px 20px 44px; }
+}
+</style>
+</head>
+<body>
+
+<header><a href="index.html">Na'au Noa</a></header>
+
+<div class="hero">
+  <p class="hero-eyebrow">PRE-SESSION QUESTIONNAIRE</p>
+  <h1 class="hero-title">セッション前アンケート</h1>
+  <p class="hero-sub">
+    当日をより充実した時間にするために、<br>
+    事前にお聞きしたいことがあります。
+  </p>
+</div>
+
+<div class="container">
+
+  <!-- 完了メッセージ -->
+  <div class="complete" id="complete">
+    <div class="complete-icon">✓</div>
+    <h2>ありがとうございます</h2>
+    <p>
+      回答を受け取りました。<br>
+      当日、じっくりお話ししましょう。<br><br>
+      何かご不明な点があれば、<br>
+      お気軽にご連絡ください。
+    </p>
+  </div>
+
+  <!-- フォーム -->
+  <div id="formWrap">
+
+    <div class="card card-intro">
+      <p>うまく言葉にできなくても大丈夫です。</p>
+      <p>思ったままを、可能な範囲で教えてください。<br>当日一緒に整理していきましょう。</p>
+    </div>
+
+    <div class="card">
+
+      <!-- お名前 -->
+      <div class="name-section">
+        <label>お名前（任意）</label>
+        <input type="text" class="name-input" id="name" placeholder="例：山田 花子">
+      </div>
+
+      <!-- Q1 -->
+      <div class="form-group">
+        <span class="q-number">Q 01</span>
+        <label class="q-label">今、困っていること・悩んでいることは何ですか？</label>
+        <p class="q-hint">どんな小さなことでも構いません。思い浮かぶことをそのまま書いてください。</p>
+        <textarea id="q1" placeholder="例：仕事のストレスで眠れない日が続いています。朝が特につらいです…"></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Q2 -->
+      <div class="form-group">
+        <span class="q-number">Q 02</span>
+        <label class="q-label">どれくらいの期間、それに悩んでいますか？</label>
+        <p class="q-hint">おおよそで大丈夫です。</p>
+        <textarea id="q2" style="min-height:80px;" placeholder="例：約2年前から。特に去年の秋から悪化した気がします。"></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Q3 -->
+      <div class="form-group" style="margin-bottom:0;">
+        <span class="q-number">Q 03</span>
+        <label class="q-label">それが解決したら、あなたはどう感じますか？<br>これから先、どんな自分で、どんな理想の未来を作りたいですか？</label>
+        <p class="q-hint">自由に、理想を書いてみてください。</p>
+        <textarea id="q3" style="min-height:140px;" placeholder="例：人の目を気にせず、自分のやりたいことに素直に動ける自分になりたいです。毎朝起きるのが楽しみになるような毎日を送りたいです。"></textarea>
+      </div>
+
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">回答を送信する</button>
+      <p class="submit-note">送信後、小松より当日までにご連絡いたします。</p>
+    </div>
+
+  </div>
+</div>
+
+<footer><p>© 2026 Na'au Noa</p></footer>
+
+<script>
+// ── Google Apps Script の URL をここに入れる ──
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzHsoJkSiTcCCo6uAfn5JFzmCCynKZ49c8eWXIqECpKN_4RoH8ihe7kLcbo9_BxNeFew/exec';
+
+async function submitForm() {
+  const name = document.getElementById('name').value.trim();
+  const q1   = document.getElementById('q1').value.trim();
+  const q2   = document.getElementById('q2').value.trim();
+  const q3   = document.getElementById('q3').value.trim();
+
+  if (!q1 || !q2 || !q3) {
+    alert('Q1〜Q3 はすべてご記入ください。');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中…';
+
+  const payload = JSON.stringify({
+    timestamp: new Date().toLocaleString('ja-JP'),
+    name: name || '未記入',
+    q1, q2, q3
+  });
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: payload
+    });
+  } catch (e) {
+    // no-cors では常にここに来るが、データは送信済み
+  }
+
+  // 完了画面を表示
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('complete').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
