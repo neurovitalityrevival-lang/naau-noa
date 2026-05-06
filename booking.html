@@ -303,7 +303,7 @@ function getValidSlots(dateStr) {
   if (!cfg) return slots;
   return slots.filter(s => {
     const t = s.start_time.substring(0, 5);
-    if (t >= '22:00') return false;
+    if (t > '21:15') return false;
     if (cfg.minStart && t < cfg.minStart) return false;
     if (cfg.maxStart && t > cfg.maxStart) return false;
     return hasConsecutiveSlots(dateStr, t, cfg.duration);
