@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>無料オンライン相談 | Na'au Noa</title>
+<title>ライフデトックスプログラム | Na'au Noa</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
 
 <!-- Meta Pixel -->
@@ -31,15 +31,52 @@ src="https://www.facebook.com/tr?id=2080933312746435&ev=PageView&noscript=1"/></
 body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; }
 
 /* ── ヘッダー ── */
-header { background: #1a3a3a; padding: 16px 24px; text-align: center; }
-header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spacing: 0.1em; }
+header { background: #1a3a3a; padding: 14px 24px; text-align: center; }
+header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spacing: 0.1em; }
 
 /* ── ヒーロー ── */
-.hero { background: #1a3a3a; padding: 48px 24px 56px; text-align: center; }
-.hero-eyebrow { color: #b8976a; font-size: 0.8rem; letter-spacing: 0.2em; margin-bottom: 20px; }
-.hero-title { color: #fff; font-size: clamp(1.3rem, 4vw, 1.9rem); line-height: 1.7; margin-bottom: 12px; }
+.hero { background: #1a3a3a; padding: 52px 24px 60px; text-align: center; }
+
+.program-badge {
+  display: inline-block;
+  border: 1px solid rgba(184,151,106,0.5);
+  color: #b8976a;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 6px 18px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.program-name {
+  color: #fff;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  line-height: 1.9;
+  font-weight: 600;
+  margin-bottom: 28px;
+  padding: 0 8px;
+}
+.program-name em {
+  font-style: normal;
+  color: #b8976a;
+  border-bottom: 1px solid rgba(184,151,106,0.4);
+  padding-bottom: 1px;
+}
+
+.hero-divider {
+  width: 40px; height: 1px;
+  background: rgba(184,151,106,0.4);
+  margin: 0 auto 28px;
+}
+
+.hero-title {
+  color: #fff;
+  font-size: clamp(1.3rem, 4.5vw, 2rem);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
 .hero-title span { color: #b8976a; }
-.hero-sub { color: #c8b89a; font-size: 0.9rem; line-height: 1.8; margin-bottom: 40px; }
+.hero-sub { color: #c8b89a; font-size: 0.9rem; line-height: 1.9; margin-bottom: 44px; }
 
 /* ── VSL ── */
 .vsl-wrap { max-width: 720px; margin: 0 auto 40px; }
@@ -51,54 +88,52 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spac
 .vsl-container iframe {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
 }
-.vsl-placeholder {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: #b8976a;
+
+/* ── CTAバッジ群 ── */
+.cta-badges {
+  display: flex; justify-content: center; gap: 10px;
+  flex-wrap: wrap; margin-bottom: 20px;
 }
-.vsl-placeholder .play-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.8; }
-.vsl-placeholder p { font-size: 0.9rem; color: #c8b89a; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(184,151,106,0.15);
+  border: 1px solid rgba(184,151,106,0.4);
+  color: #d4a96a; font-size: 0.8rem;
+  padding: 7px 16px; border-radius: 50px;
+  letter-spacing: 0.03em;
+}
 
 /* ── CTAボタン ── */
-.cta-wrap { text-align: center; margin: 0 auto; }
+.cta-wrap { text-align: center; }
 .cta-btn {
   display: inline-block;
   background: linear-gradient(135deg, #b8976a, #d4a96a);
   color: #fff; text-decoration: none;
-  padding: 20px 48px; border-radius: 50px;
-  font-size: 1.1rem; font-weight: 600; letter-spacing: 0.05em;
-  box-shadow: 0 4px 24px rgba(184,151,106,0.4);
+  padding: 22px 52px; border-radius: 50px;
+  font-size: 1.15rem; font-weight: 600; letter-spacing: 0.05em;
+  box-shadow: 0 6px 32px rgba(184,151,106,0.45);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer; border: none; font-family: 'Noto Serif JP', serif;
 }
-.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(184,151,106,0.5); }
+.cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(184,151,106,0.55); }
 .cta-note { color: #c8b89a; font-size: 0.8rem; margin-top: 12px; }
-
-/* ── セクション共通 ── */
-.section { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
-.section-label { color: #b8976a; font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 12px; }
-.section-title { color: #1a3a3a; font-size: clamp(1.2rem, 3.5vw, 1.6rem); line-height: 1.7; margin-bottom: 32px; }
-
-/* ── こんな方へ ── */
-.for-who { background: #fff; }
-.pain-list { list-style: none; }
-.pain-list li {
-  padding: 14px 0; border-bottom: 1px solid #f0ebe3;
-  font-size: 0.95rem; color: #444; line-height: 1.7;
-  display: flex; align-items: flex-start; gap: 12px;
+.slots {
+  display: inline-block;
+  background: rgba(184,151,106,0.15); border: 1px solid #b8976a;
+  color: #b8976a; padding: 7px 22px; border-radius: 50px;
+  font-size: 0.8rem; margin-bottom: 20px;
+  animation: pulse 2s infinite;
 }
-.pain-list li::before { content: '…'; color: #b8976a; flex-shrink: 0; font-size: 1.2rem; }
-.pain-list li:last-child { border-bottom: none; }
-
-/* ── 変革 ── */
-.transform { background: #1a3a3a; }
-.transform .section-label { color: #b8976a; }
-.transform .section-title { color: #fff; }
-.transform-text { color: #c8b89a; font-size: 1rem; line-height: 2.2; }
-.transform-text strong { color: #b8976a; }
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
 
 /* ── 口コミ ── */
-.reviews { background: #faf8f5; }
+.reviews { background: #faf8f5; padding: 72px 24px; }
+.reviews-inner { max-width: 720px; margin: 0 auto; }
+.section-label { color: #b8976a; font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 10px; text-align: center; }
+.section-title { color: #1a3a3a; font-size: clamp(1.15rem, 3.5vw, 1.55rem); line-height: 1.7; margin-bottom: 36px; text-align: center; }
 .review-grid { display: flex; flex-direction: column; gap: 24px; }
 .review-card {
   background: #fff; border-radius: 12px; padding: 28px;
@@ -106,38 +141,22 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spac
   border-left: 4px solid #b8976a;
 }
 .review-stars { color: #b8976a; font-size: 1rem; margin-bottom: 12px; letter-spacing: 2px; }
-.review-text { font-size: 0.92rem; color: #444; line-height: 2; margin-bottom: 16px; font-style: italic; }
+.review-text { font-size: 0.92rem; color: #444; line-height: 2.1; margin-bottom: 16px; font-style: italic; }
 .review-meta { font-size: 0.82rem; color: #b8976a; font-weight: 600; }
 
-/* ── プロフィール ── */
-.profile { background: #fff; }
-.profile-inner { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
-.profile-img {
-  width: 120px; height: 120px; border-radius: 50%;
-  background: #e0d8cc; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  color: #b8976a; font-size: 0.75rem; text-align: center;
-  overflow: hidden;
-}
-.profile-img img { width: 100%; height: 100%; object-fit: cover; }
-.profile-content { flex: 1; min-width: 200px; }
-.profile-name { font-size: 1.1rem; color: #1a3a3a; margin-bottom: 4px; }
-.profile-title { font-size: 0.8rem; color: #b8976a; margin-bottom: 16px; }
-.profile-text { font-size: 0.9rem; color: #555; line-height: 2; }
-
 /* ── 最終CTA ── */
-.final-cta { background: #1a3a3a; padding: 64px 24px; text-align: center; }
-.final-cta h2 { color: #fff; font-size: clamp(1.2rem, 3.5vw, 1.6rem); line-height: 1.7; margin-bottom: 12px; }
-.final-cta p { color: #c8b89a; font-size: 0.9rem; margin-bottom: 36px; line-height: 1.8; }
-.slots { display: inline-block; background: rgba(184,151,106,0.15); border: 1px solid #b8976a; color: #b8976a; padding: 8px 24px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 24px; }
+.final-cta { background: #1a3a3a; padding: 72px 24px; text-align: center; }
+.final-cta h2 { color: #fff; font-size: clamp(1.2rem, 3.5vw, 1.6rem); line-height: 1.7; margin-bottom: 14px; }
+.final-cta p { color: #c8b89a; font-size: 0.9rem; margin-bottom: 36px; line-height: 1.9; }
 
 /* ── フッター ── */
 footer { background: #0d2020; padding: 24px; text-align: center; }
 footer p { color: #888; font-size: 0.78rem; }
 
 @media (max-width: 600px) {
-  .hero { padding: 36px 20px 48px; }
-  .section { padding: 48px 20px; }
+  .hero { padding: 40px 20px 52px; }
+  .cta-btn { padding: 18px 36px; font-size: 1rem; }
+  .reviews { padding: 56px 20px; }
 }
 </style>
 </head>
@@ -145,68 +164,55 @@ footer p { color: #888; font-size: 0.78rem; }
 
 <header><a href="index.html">Na'au Noa</a></header>
 
-<!-- ── ヒーロー + VSL ── -->
+<!-- ── ヒーロー ── -->
 <div class="hero">
-  <p class="hero-eyebrow">FREE ONLINE CONSULTATION</p>
-  <h1 class="hero-title">
+
+  <p class="program-badge">LIFE DETOX PROGRAM</p>
+
+  <h1 class="program-name">
+    <em>適応障害・パニック障害</em>を一瞬で手放し、<br>
+    他人や感情に支配されず、<br>
+    <em>自分に正直に生きられるようになる</em><br>
+    ライフデトックスプログラム
+  </h1>
+
+  <div class="hero-divider"></div>
+
+  <p class="hero-title">
     頑張りたいのに、<br>
     なぜか心と体が<span>動かない</span>人へ。
-  </h1>
+  </p>
   <p class="hero-sub">
     人の顔色を伺わず、不安に怯えることなく、<br>
     自分の本音で生きられるようになる。
   </p>
 
+  <!-- VSL -->
   <div class="vsl-wrap">
-    <div class="vsl-container" id="vslContainer">
+    <div class="vsl-container">
       <iframe src="https://www.youtube.com/embed/zvfNq6eNcqU?rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
   </div>
 
+  <!-- CTA -->
   <div class="cta-wrap">
-    <div class="slots">今月残り3名</div><br>
+    <div class="cta-badges">
+      <span class="badge">✓ 完全無料</span>
+      <span class="badge">✓ オンライン（Zoom）</span>
+      <span class="badge">✓ 約60分</span>
+    </div>
+    <div><span class="slots">📅 今月残り3名</span></div>
     <button class="cta-btn" onclick="handleCTA()">
       無料オンライン相談を予約する
     </button>
-    <p class="cta-note">完全無料・オンライン・約60分</p>
+    <p class="cta-note">まずは話すだけでOK。</p>
   </div>
-</div>
 
-<!-- ── こんな方へ ── -->
-<div class="for-who">
-  <div class="section">
-    <p class="section-label">FOR YOU</p>
-    <h2 class="section-title">こんな気持ち、ありませんか？</h2>
-    <ul class="pain-list">
-      <li>真面目に誰よりも頑張ってきた。なのに上手くいかない、動けない</li>
-      <li>人の顔色を伺って、いつも誰かの機嫌に振り回されている</li>
-      <li>本当はやりたいことがあるのに、怖くて動けない</li>
-      <li>断れなくて、気づいたら自分を後回しにしてばかり</li>
-      <li>朝起きると胸が重く、なんとなくしんどい日が続いている</li>
-      <li>この違和感の正体が、何なのかわからない</li>
-    </ul>
-  </div>
-</div>
-
-<!-- ── 変革 ── -->
-<div class="transform">
-  <div class="section">
-    <p class="section-label">TRANSFORMATION</p>
-    <h2 class="section-title">問題はやる気でも、<br>努力不足でもない。</h2>
-    <p class="transform-text">
-      ずっと誰かの機嫌と感情に振り回されて、<br>
-      自分に正直に生きていなかっただけ。<br><br>
-      あなたは<strong>人の顔色を伺わずに</strong>、<br>
-      <strong>不安に怯えることなく</strong>、<br>
-      自分にも人にも優しく、<br>
-      <strong>自分の本音で生きられるようになる。</strong>
-    </p>
-  </div>
 </div>
 
 <!-- ── 口コミ ── -->
 <div class="reviews">
-  <div class="section">
+  <div class="reviews-inner">
     <p class="section-label">VOICE</p>
     <h2 class="section-title">セッションを受けた方の声</h2>
     <div class="review-grid">
@@ -219,55 +225,34 @@ footer p { color: #888; font-size: 0.78rem; }
 
       <div class="review-card">
         <p class="review-stars">★★★★★</p>
-        <p class="review-text">「娘のこと。自傷行為を繰り返し、摂食障害に悩む娘とどう接すればいいのか分からなくなり、お手上げ状態でした。<br><br>小松さんは、まず、私自身が無理矢理押し込めていた辛い嫌な記憶を整理して、もう今は本当に安全で安心できる生活が送れていることを自覚させてくれました。無意識に抱え続けていた不安が消えて、当時のことを思い浮かべても恐怖を感じることがなくなりました。<br><br>そして、娘とやりとりしている時に感じる苦しさが和らぎ、落ち着いて対処できるようになりました。うれしいことに、娘の言動も良い方向に変わってきています。<br><br>何か抱えているものがあると、小松さんはそれを感じ取って自然に聞き出してくれるので話しやすい（いつのまにかお話ししちゃってる感じ）です。」</p>
+        <p class="review-text">「娘のこと。自傷行為を繰り返し、摂食障害に悩む娘とどう接すればいいのか分からなくなり、お手上げ状態でした。<br><br>小松さんは、まず、私自身が無理矢理押し込めていた辛い嫌な記憶を整理して、もう今は本当に安全で安心できる生活が送れていることを自覚させてくれました。無意識に抱え続けていた不安が消えて、当時のことを思い浮かべても恐怖を感じることがなくなりました。<br><br>そして、娘とやりとりしている時に感じる苦しさが和らぎ、落ち着いて対処できるようになりました。うれしいことに、娘の言動も良い方向に変わってきています。」</p>
         <p class="review-meta">— 40代女性・主婦</p>
       </div>
 
       <div class="review-card">
         <p class="review-stars">★★★★★</p>
-        <p class="review-text">「小松さんは個人的に本当に本当にパーソナルに考えてくれるセラピストなんだ、と施術とセッションを通して感じました。<br><br>これまで整体に行ったことはありますが、体を任せることへの知識、安心感ももちろんピカイチです。なかなか話せない個人的な悩み事は、赤裸々にこんなに語っちゃっていいのかなって事まで全部話せるし、霊的な部分まで施されたと実感しています。<br><br>悩み事は、誰かに相談したいけど言いにくい、そんな場面もあるかと思いますがとってもいつもどんな下らないような悩みも小松さんは聴いてくれます。本物の悩める人へのセラピストだと思ってます。」</p>
+        <p class="review-text">「小松さんは個人的に本当に本当にパーソナルに考えてくれるセラピストなんだ、と施術とセッションを通して感じました。<br><br>なかなか話せない個人的な悩み事は、赤裸々にこんなに語っちゃっていいのかなって事まで全部話せるし、本物の悩める人へのセラピストだと思ってます。」</p>
         <p class="review-meta">— 女性</p>
       </div>
 
       <div class="review-card">
         <p class="review-stars">★★★★★</p>
-        <p class="review-text">「職場での不満やストレスを吐き出した後、先生から言われた言葉が刺さりました。『その不満は他人に対してではなく、自分自身に対する不満ですよ』と。<br><br>そこで気づいたのは、私生活がとても荒んでいたこと。他人軸ではなく、まず自分を大切にすること。部屋を掃除して、心地よい音楽を聴いて、美味しいものを食べて自分を労るようになってから、職場への不満が減ったことに気づきました。」</p>
+        <p class="review-text">「職場での不満やストレスを吐き出した後、先生から言われた言葉が刺さりました。『その不満は他人に対してではなく、自分自身に対する不満ですよ』と。<br><br>他人軸ではなく、まず自分を大切にすることを意識するようになってから、職場への不満が減ったことに気づきました。」</p>
         <p class="review-meta">— 女性・会社員</p>
       </div>
 
       <div class="review-card">
         <p class="review-stars">★★★★★</p>
-        <p class="review-text">「長年の腰痛と足の痺れで、小松先生の施術を受けることにしました。先生自身がパニック障害の体験者であり、脳科学や古代ハワイの技術を学んだことを話してくださいました。<br><br>その正直さに、不思議と家族の悩みまで自然と話すことができました。心が軽くなったと同時に、足の痺れが一瞬でなくなり、以後もありません。心の悩みが腰痛に大きく関与しているということを体験できた出来事でした。」</p>
+        <p class="review-text">「長年の腰痛と足の痺れで、小松先生の施術を受けることにしました。先生自身がパニック障害の体験者であり、脳科学や古代ハワイの技術を学んだことを話してくださいました。<br><br>心が軽くなったと同時に、足の痺れが一瞬でなくなり、以後もありません。心の悩みが腰痛に大きく関与しているということを体験できた出来事でした。」</p>
         <p class="review-meta">— 女性</p>
       </div>
 
       <div class="review-card">
         <p class="review-stars">★★★★★</p>
-        <p class="review-text">「体調がすぐれず毎日悶々としていた中でセッションして頂きました。会話していくうちに自分の気持ちが整理され、悩みの根本にあるもの〜自分はどんな性格の人間で、何を大切にしていて、どのような人生を送りたいのか〜ということが見えて来ました。<br><br>自分の信念が明確になると気持ちが落ち着いて楽になり、今まで悩んだりこだわっていたことはマイナスに働くのではなく、逆にこれからの自分の力になっていくのだと考えられるようになりました。<br><br>先生はとても話し易く、ご自身も心身共に辛い経験をされた方なので、私の繊細な部分を理解してくれます。先生に巡り逢えたご縁に感謝しています。」</p>
+        <p class="review-text">「体調がすぐれず毎日悶々としていた中でセッションして頂きました。会話していくうちに自分の気持ちが整理され、悩みの根本にあるもの〜自分はどんな性格の人間で、何を大切にしていて、どのような人生を送りたいのか〜ということが見えて来ました。<br><br>先生はとても話し易く、ご自身も心身共に辛い経験をされた方なので、私の繊細な部分を理解してくれます。先生に巡り逢えたご縁に感謝しています。」</p>
         <p class="review-meta">— 女性</p>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<!-- ── プロフィール ── -->
-<div class="profile">
-  <div class="section">
-    <p class="section-label">PROFILE</p>
-    <div class="profile-inner">
-      <div class="profile-img">
-        <img src="profile.jpg" alt="小松大将">
-      </div>
-      <div class="profile-content">
-        <p class="profile-name">小松　大将</p>
-        <p class="profile-title">Na'au Noa / AETセラピスト・メンタルシフトコーチ</p>
-        <p class="profile-text">
-          自身も10年間パニックを抱えた経験者。教職員時代に適応障害になり1年間の休職・辞職を経験。その後、都内23区にて行政委託事業にて不登校児童や母親のメンタルサポート、カウンセリング、講演を行うが、利益重視の上司と合わず転職。
-          セラピストとして独立開業し、米国最新脳科学と古代ハワイの叡智（Huna）に出会い、本当の問題が「自分に正直に生きていなかったこと」だと気づき、克服。
-          現在は同じ苦しみを持つ感受性の高い繊細な方が、自分軸で生きられるようサポートしている。
-        </p>
-      </div>
     </div>
   </div>
 </div>
@@ -279,12 +264,17 @@ footer p { color: #888; font-size: 0.78rem; }
     まずは無料で話しましょう。<br>
     あなたの状況を聞かせてください。
   </p>
-  <div><span class="slots">今月残り3名</span></div>
+  <div class="cta-badges" style="justify-content:center;margin-bottom:20px;">
+    <span class="badge">✓ 完全無料</span>
+    <span class="badge">✓ オンライン（Zoom）</span>
+    <span class="badge">✓ 約60分</span>
+  </div>
+  <div><span class="slots">📅 今月残り3名</span></div>
   <br>
   <button class="cta-btn" onclick="handleCTA()">
     無料オンライン相談を予約する
   </button>
-  <p class="cta-note" style="margin-top:16px;">完全無料・オンライン・約60分</p>
+  <p class="cta-note" style="margin-top:14px;">まずは話すだけでOK。</p>
 </div>
 
 <footer>
@@ -293,12 +283,10 @@ footer p { color: #888; font-size: 0.78rem; }
 
 <script>
 function handleCTA() {
-  // Meta Pixel: Leadイベント（ボタンクリック = 予約意欲のシグナル）
   fbq('track', 'Lead', {
     content_name: '無料相談予約ボタン',
     content_category: 'LP'
   });
-  // 予約ページへ遷移
   window.location.href = 'booking.html';
 }
 </script>
