@@ -37,6 +37,8 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 /* ── ヒーロー ── */
 .hero { background: #1a3a3a; padding: 52px 24px 60px; text-align: center; }
 
+.hero-eyebrow { color: #b8976a; font-size: 0.75rem; letter-spacing: 0.25em; margin-bottom: 24px; }
+
 .program-badge {
   display: inline-block;
   border: 1px solid rgba(184,151,106,0.5);
@@ -113,10 +115,30 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
   padding: 22px 52px; border-radius: 50px;
   font-size: 1.15rem; font-weight: 600; letter-spacing: 0.05em;
   box-shadow: 0 6px 32px rgba(184,151,106,0.45);
-  transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer; border: none; font-family: 'Noto Serif JP', serif;
+  position: relative; overflow: hidden;
+  animation: ctaFloat 3s ease-in-out infinite;
 }
-.cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(184,151,106,0.55); }
+.cta-btn::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: ctaShine 3s ease-in-out infinite;
+}
+.cta-btn:hover {
+  animation: none;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 44px rgba(184,151,106,0.6);
+}
+@keyframes ctaFloat {
+  0%,100% { transform: translateY(0);    box-shadow: 0 6px 32px rgba(184,151,106,0.45); }
+  50%      { transform: translateY(-5px); box-shadow: 0 14px 44px rgba(184,151,106,0.55); }
+}
+@keyframes ctaShine {
+  0%   { left: -100%; }
+  40%,100% { left: 160%; }
+}
 .cta-note { color: #c8b89a; font-size: 0.8rem; margin-top: 12px; }
 .slots {
   display: inline-block;
@@ -168,15 +190,7 @@ footer p { color: #888; font-size: 0.78rem; }
 <!-- ── ヒーロー ── -->
 <div class="hero">
 
-  <p class="program-badge">LIFE DETOX PROGRAM</p>
-
-  <h1 class="program-name">
-    <em>適応障害・パニック障害</em>を一瞬で手放し、<br>
-    他人や感情に支配されず、<br>
-    <em>自分に正直に生きられるようになる</em>
-  </h1>
-
-  <div class="hero-divider"></div>
+  <p class="hero-eyebrow">FREE ONLINE CONSULTATION</p>
 
   <p class="hero-title">
     無料個別相談で<br>
