@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アンケート管理 | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #0d1f1f; color: #e0d8cc; min-height: 100vh; }
+
+/* ── ログイン ── */
+.login-wrap {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+}
+.login-box {
+  background: #1a3a3a;
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  text-align: center;
+}
+.login-box h1 { color: #b8976a; font-size: 1.1rem; letter-spacing: 0.15em; margin-bottom: 8px; }
+.login-box p { color: #888; font-size: 0.82rem; margin-bottom: 28px; }
+.login-box input {
+  width: 100%; padding: 14px 16px;
+  border: 1.5px solid #3a5a5a; border-radius: 10px;
+  background: #0d2020; color: #fff;
+  font-family: 'Noto Serif JP', serif; font-size: 0.95rem;
+  outline: none; margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.login-box input:focus { border-color: #b8976a; }
+.login-box button {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #b8976a, #d4a96a);
+  color: #fff; border: none; border-radius: 50px;
+  font-family: 'Noto Serif JP', serif; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer;
+  transition: opacity 0.2s;
+}
+.login-box button:hover { opacity: 0.9; }
+.login-error { color: #e07070; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+/* ── 管理画面 ── */
+.admin { display: none; }
+.top-bar {
+  background: #1a3a3a;
+  padding: 16px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.top-bar h1 { color: #b8976a; font-size: 1rem; letter-spacing: 0.1em; }
+.top-bar .meta { color: #888; font-size: 0.78rem; }
+.logout-btn {
+  background: none; border: 1px solid #3a5a5a;
+  color: #888; padding: 6px 16px; border-radius: 20px;
+  cursor: pointer; font-size: 0.78rem; font-family: inherit;
+  transition: border-color 0.2s;
+}
+.logout-btn:hover { border-color: #b8976a; color: #b8976a; }
+
+.main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-bottom: 32px;
+}
+.stat-card {
+  background: #1a3a3a; border-radius: 12px; padding: 20px 24px;
+  text-align: center;
+}
+.stat-card .num { font-size: 2rem; color: #b8976a; font-weight: 600; }
+.stat-card .label { font-size: 0.78rem; color: #888; margin-top: 4px; }
+
+.section-title {
+  font-size: 0.82rem; color: #b8976a; letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.response-list { display: flex; flex-direction: column; gap: 16px; }
+
+.response-card {
+  background: #1a3a3a; border-radius: 12px; padding: 24px 28px;
+  border-left: 4px solid #b8976a;
+}
+.response-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.response-name { font-size: 1rem; font-weight: 600; color: #e0d8cc; }
+.response-date { font-size: 0.78rem; color: #666; }
+.response-body { display: grid; gap: 12px; }
+.response-item label {
+  display: block; font-size: 0.72rem; color: #b8976a;
+  letter-spacing: 0.08em; margin-bottom: 4px;
+}
+.response-item p {
+  font-size: 0.88rem; color: #c8b89a; line-height: 1.8;
+  background: #0d2020; border-radius: 8px; padding: 10px 14px;
+}
+
+.empty { text-align: center; padding: 60px; color: #555; }
+
+.refresh-btn {
+  background: none; border: 1px solid #b8976a;
+  color: #b8976a; padding: 8px 20px; border-radius: 20px;
+  cursor: pointer; font-size: 0.82rem; font-family: inherit;
+  margin-bottom: 20px; transition: background 0.2s;
+}
+.refresh-btn:hover { background: rgba(184,151,106,0.1); }
+
+@media (max-width: 600px) {
+  .stats { grid-template-columns: 1fr; }
+  .top-bar { padding: 14px 20px; }
+  .main { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ログイン画面 -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <h1>Na'au Noa</h1>
+    <p>アンケート管理画面</p>
+    <input type="password" id="pwInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">ログイン</button>
+    <p class="login-error" id="loginError">パスワードが違います</p>
+  </div>
+</div>
+
+<!-- 管理画面 -->
+<div class="admin" id="admin">
+  <div class="top-bar">
+    <h1>📋 アンケート回答一覧</h1>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span class="meta" id="lastUpdated"></span>
+      <button class="logout-btn" onclick="logout()">ログアウト</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="num" id="totalCount">—</div>
+        <div class="label">総回答数</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="todayCount">—</div>
+        <div class="label">本日</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="weekCount">—</div>
+        <div class="label">今週</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <p class="section-title">RESPONSES</p>
+      <button class="refresh-btn" onclick="loadResponses()">↻ 更新</button>
+    </div>
+
+    <div class="response-list" id="responseList">
+      <div class="empty">読み込み中...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD = 'naaunoa2026';
+const SUPABASE_URL = 'https://quacqiugfcwdqxzutqpq.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI';
+
+function login() {
+  const pw = document.getElementById('pwInput').value;
+  if (pw === PASSWORD) {
+    sessionStorage.setItem('survey_auth', '1');
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('admin').style.display = 'block';
+    loadResponses();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('survey_auth');
+  location.reload();
+}
+
+async function loadResponses() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/survey_responses?order=created_at.desc`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    const data = await res.json();
+
+    // 統計
+    const now = new Date();
+    const todayStr = now.toISOString().slice(0, 10);
+    const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
+    document.getElementById('totalCount').textContent = data.length;
+    document.getElementById('todayCount').textContent = data.filter(r => r.created_at.startsWith(todayStr)).length;
+    document.getElementById('weekCount').textContent = data.filter(r => r.created_at >= weekAgo).length;
+    document.getElementById('lastUpdated').textContent = '最終更新: ' + new Date().toLocaleTimeString('ja-JP');
+
+    // 一覧
+    const list = document.getElementById('responseList');
+    if (data.length === 0) {
+      list.innerHTML = '<div class="empty">まだ回答がありません</div>';
+      return;
+    }
+    list.innerHTML = data.map(r => `
+      <div class="response-card">
+        <div class="response-header">
+          <span class="response-name">${esc(r.name)}</span>
+          <span class="response-date">${new Date(r.created_at).toLocaleString('ja-JP')}</span>
+        </div>
+        <div class="response-body">
+          <div class="response-item">
+            <label>Q1 今、困っていること・悩んでいること</label>
+            <p>${esc(r.q1)}</p>
+          </div>
+          <div class="response-item">
+            <label>Q2 悩んでいる期間</label>
+            <p>${esc(r.q2)}</p>
+          </div>
+          <div class="response-item">
+            <label>Q3 理想の未来</label>
+            <p>${esc(r.q3)}</p>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    document.getElementById('responseList').innerHTML = '<div class="empty">読み込みエラー。再読み込みしてください。</div>';
+  }
+}
+
+function esc(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// 認証チェック
+if (sessionStorage.getItem('survey_auth') === '1') {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('admin').style.display = 'block';
+  loadResponses();
+}
+</script>
+</body>
+</html>

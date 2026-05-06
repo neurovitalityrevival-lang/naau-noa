@@ -239,9 +239,6 @@ footer p { color: #666; font-size: 0.78rem; }
 <footer><p>© 2026 Na'au Noa</p></footer>
 
 <script>
-// ── Google Apps Script の URL をここに入れる ──
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyOYx0wQL0Pg3cxOb-ncKfmK1JhqUSaXpN3k4-fniMYaWIwo4GaXiqbRekSA0MOiEmrBA/exec';
-
 async function submitForm() {
   const name = document.getElementById('name').value.trim();
   const q1   = document.getElementById('q1').value.trim();
@@ -261,24 +258,20 @@ async function submitForm() {
   btn.disabled = true;
   btn.textContent = '送信中…';
 
-  const payload = JSON.stringify({
-    timestamp: new Date().toLocaleString('ja-JP'),
-    name: name || '未記入',
-    q1, q2, q3
-  });
-
   try {
-    await fetch(APPS_SCRIPT_URL, {
+    const res = await fetch('/api/submit-survey', {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: payload
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, q1, q2, q3 })
     });
+    if (!res.ok) throw new Error('送信エラー');
   } catch (e) {
-    // no-cors では常にここに来るが、データは送信済み
+    btn.disabled = false;
+    btn.textContent = '回答を送信する';
+    alert('送信に失敗しました。もう一度お試しください。');
+    return;
   }
 
-  // 完了画面を表示
   document.getElementById('formWrap').style.display = 'none';
   document.getElementById('complete').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
