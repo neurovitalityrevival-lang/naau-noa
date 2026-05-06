@@ -213,9 +213,85 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 footer { background: #0d2020; padding: 24px; text-align: center; }
 footer p { color: #888; font-size: 0.78rem; }
 
+/* ── スクロールアニメーション ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.fade-in.visible { opacity: 1; }
+
+.scale-in {
+  opacity: 0;
+  transform: scale(0.94) translateY(20px);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+.scale-in.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+.reveal-line {
+  position: relative; overflow: hidden;
+}
+.reveal-line::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, #b8976a, #d4a96a);
+  transition: width 1s cubic-bezier(0.22,1,0.36,1) 0.3s;
+}
+.reveal-line.visible::after { width: 100%; }
+
+/* 遅延クラス */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+
+/* ── ヒーロー入場アニメーション ── */
+.hero-title .line {
+  display: block;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: heroLine 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.hero-title .line:nth-child(1) { animation-delay: 0.1s; }
+.hero-title .line:nth-child(2) { animation-delay: 0.3s; }
+.hero-title .line:nth-child(3) { animation-delay: 0.5s; }
+.hero-title .line:nth-child(4) { animation-delay: 0.7s; }
+@keyframes heroLine {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── ヒーロー背景パーティクル ── */
+.hero-particles {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: #b8976a;
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat linear infinite;
+}
+@keyframes particleFloat {
+  0%   { transform: translateY(100%) translateX(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-20vh) translateX(30px); opacity: 0; }
+}
+
 @media (max-width: 600px) {
   .hero { padding: 40px 20px 52px; }
-  .cta-btn { padding: 18px 36px; font-size: 1rem; }
+  .cta-btn { padding: 18px 24px; font-size: 1rem; }
   .reviews { padding: 56px 20px; }
 }
 </style>
@@ -225,24 +301,26 @@ footer p { color: #888; font-size: 0.78rem; }
 <header><a href="index.html">Na'au Noa</a></header>
 
 <!-- ── ヒーロー ── -->
-<div class="hero">
+<div class="hero" style="position:relative;">
+
+  <div class="hero-particles" id="heroParticles"></div>
 
   <p class="hero-title">
-    無料個別相談で<br>
-    あなたの首を絞めている<br>
-    <span>無意識プログラム</span>を<br>
-    一緒に見つけてみませんか？
+    <span class="line">無料個別相談で</span>
+    <span class="line">あなたの首を絞めている</span>
+    <span class="line"><span>無意識プログラム</span>を</span>
+    <span class="line">一緒に見つけてみませんか？</span>
   </p>
 
   <!-- VSL -->
-  <div class="vsl-wrap">
+  <div class="vsl-wrap scale-in">
     <div class="vsl-container">
       <iframe src="https://www.youtube.com/embed/zvfNq6eNcqU?rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
   </div>
 
   <!-- CTA -->
-  <div class="cta-wrap">
+  <div class="cta-wrap fade-up">
     <div><span class="slots">🎁 無料相談キャンペーン 5/31まで</span></div>
     <button class="cta-btn" onclick="handleCTA()">
       無料個別相談の空き枠を確認する
@@ -254,41 +332,41 @@ footer p { color: #888; font-size: 0.78rem; }
 <!-- ── 口コミ ── -->
 <div class="reviews">
   <div class="reviews-inner">
-    <p class="section-label">VOICE</p>
-    <h2 class="section-title">セッションを受けた方の声</h2>
+    <p class="section-label fade-up">VOICE</p>
+    <h2 class="section-title fade-up delay-1">セッションを受けた方の声</h2>
     <div class="review-grid">
 
-      <div class="review-card">
+      <div class="review-card fade-up">
         <p class="review-stars">★★★★★</p>
         <p class="review-text">「人の言葉を気にしてしまったり、いつも何かに怯えていたことがわかりました。今はどちらも気にならなくなって、身体の緊張も緩んで、心穏やかにゆったり過ごせるようになりました。」</p>
         <p class="review-meta">— 30代女性・会社員</p>
       </div>
 
-      <div class="review-card">
+      <div class="review-card fade-up delay-1">
         <p class="review-stars">★★★★★</p>
         <p class="review-text">「娘のこと。自傷行為を繰り返し、摂食障害に悩む娘とどう接すればいいのか分からなくなり、お手上げ状態でした。<br><br>小松さんは、まず、私自身が無理矢理押し込めていた辛い嫌な記憶を整理して、もう今は本当に安全で安心できる生活が送れていることを自覚させてくれました。無意識に抱え続けていた不安が消えて、当時のことを思い浮かべても恐怖を感じることがなくなりました。<br><br>そして、娘とやりとりしている時に感じる苦しさが和らぎ、落ち着いて対処できるようになりました。うれしいことに、娘の言動も良い方向に変わってきています。」</p>
         <p class="review-meta">— 40代女性・主婦</p>
       </div>
 
-      <div class="review-card">
+      <div class="review-card fade-up delay-2">
         <p class="review-stars">★★★★★</p>
         <p class="review-text">「小松さんは個人的に本当に本当にパーソナルに考えてくれるセラピストなんだ、と施術とセッションを通して感じました。<br><br>なかなか話せない個人的な悩み事は、赤裸々にこんなに語っちゃっていいのかなって事まで全部話せるし、本物の悩める人へのセラピストだと思ってます。」</p>
         <p class="review-meta">— 女性</p>
       </div>
 
-      <div class="review-card">
+      <div class="review-card fade-up">
         <p class="review-stars">★★★★★</p>
         <p class="review-text">「職場での不満やストレスを吐き出した後、先生から言われた言葉が刺さりました。『その不満は他人に対してではなく、自分自身に対する不満ですよ』と。<br><br>他人軸ではなく、まず自分を大切にすることを意識するようになってから、職場への不満が減ったことに気づきました。」</p>
         <p class="review-meta">— 女性・会社員</p>
       </div>
 
-      <div class="review-card">
+      <div class="review-card fade-up delay-1">
         <p class="review-stars">★★★★★</p>
         <p class="review-text">「長年の腰痛と足の痺れで、小松先生の施術を受けることにしました。先生自身がパニック障害の体験者であり、脳科学や古代ハワイの技術を学んだことを話してくださいました。<br><br>心が軽くなったと同時に、足の痺れが一瞬でなくなり、以後もありません。心の悩みが腰痛に大きく関与しているということを体験できた出来事でした。」</p>
         <p class="review-meta">— 女性</p>
       </div>
 
-      <div class="review-card">
+      <div class="review-card fade-up delay-2">
         <p class="review-stars">★★★★★</p>
         <p class="review-text">「体調がすぐれず毎日悶々としていた中でセッションして頂きました。会話していくうちに自分の気持ちが整理され、悩みの根本にあるもの〜自分はどんな性格の人間で、何を大切にしていて、どのような人生を送りたいのか〜ということが見えて来ました。<br><br>先生はとても話し易く、ご自身も心身共に辛い経験をされた方なので、私の繊細な部分を理解してくれます。先生に巡り逢えたご縁に感謝しています。」</p>
         <p class="review-meta">— 女性</p>
@@ -300,16 +378,18 @@ footer p { color: #888; font-size: 0.78rem; }
 
 <!-- ── 最終CTA ── -->
 <div class="final-cta">
-  <h2>一人で抱え込まなくていい。<br>話すだけでいい。</h2>
-  <p>
+  <h2 class="fade-up">一人で抱え込まなくていい。<br>話すだけでいい。</h2>
+  <p class="fade-up delay-1">
     まずは無料で話しましょう。<br>
     あなたの状況を聞かせてください。
   </p>
-  <div><span class="slots">🎁 無料相談キャンペーン 5/31まで</span></div>
+  <div class="fade-up delay-2"><span class="slots">🎁 無料相談キャンペーン 5/31まで</span></div>
   <br>
-  <button class="cta-btn" onclick="handleCTA()">
-    無料個別相談の空き枠を確認する
-  </button>
+  <div class="fade-up delay-3">
+    <button class="cta-btn" onclick="handleCTA()">
+      無料個別相談の空き枠を確認する
+    </button>
+  </div>
 </div>
 
 <footer>
@@ -324,6 +404,47 @@ function handleCTA() {
   });
   window.location.href = 'booking.html';
 }
+
+/* ── スクロールアニメーション ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-up, .fade-in, .scale-in, .reveal-line').forEach(el => {
+  observer.observe(el);
+});
+
+/* ヒーロー内の要素は即表示 */
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.hero .fade-up, .hero .scale-in').forEach(el => {
+      el.classList.add('visible');
+    });
+  }, 900);
+});
+
+/* ── ヒーロー背景パーティクル ── */
+(function() {
+  const wrap = document.getElementById('heroParticles');
+  if (!wrap) return;
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('span');
+    p.className = 'particle';
+    p.style.left     = Math.random() * 100 + '%';
+    p.style.bottom   = '-10px';
+    p.style.width    = (Math.random() * 3 + 1.5) + 'px';
+    p.style.height   = p.style.width;
+    p.style.animationDuration  = (Math.random() * 8 + 6) + 's';
+    p.style.animationDelay     = (Math.random() * 8) + 's';
+    p.style.opacity  = (Math.random() * 0.5 + 0.1).toString();
+    wrap.appendChild(p);
+  }
+})();
 </script>
 
 </body>
