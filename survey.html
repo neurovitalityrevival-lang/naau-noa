@@ -194,8 +194,8 @@ footer p { color: #666; font-size: 0.78rem; }
 
       <!-- お名前 -->
       <div class="name-section">
-        <label>お名前（任意）</label>
-        <input type="text" class="name-input" id="name" placeholder="例：山田 花子">
+        <label>お名前 <span style="color:#b8976a;font-size:0.75rem;">※必須・ニックネームOK</span></label>
+        <input type="text" class="name-input" id="name" placeholder="例：花子、はなちゃん、山田 花子">
       </div>
 
       <!-- Q1 -->
@@ -230,7 +230,7 @@ footer p { color: #666; font-size: 0.78rem; }
 
     <div class="submit-wrap">
       <button class="submit-btn" id="submitBtn" onclick="submitForm()">回答を送信する</button>
-      <p class="submit-note">送信後、小松より当日までにご連絡いたします。</p>
+      <p class="submit-note">回答内容はセッション当日の参考にさせていただきます。</p>
     </div>
 
   </div>
@@ -240,7 +240,7 @@ footer p { color: #666; font-size: 0.78rem; }
 
 <script>
 // ── Google Apps Script の URL をここに入れる ──
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzHsoJkSiTcCCo6uAfn5JFzmCCynKZ49c8eWXIqECpKN_4RoH8ihe7kLcbo9_BxNeFew/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyOYx0wQL0Pg3cxOb-ncKfmK1JhqUSaXpN3k4-fniMYaWIwo4GaXiqbRekSA0MOiEmrBA/exec';
 
 async function submitForm() {
   const name = document.getElementById('name').value.trim();
@@ -248,6 +248,10 @@ async function submitForm() {
   const q2   = document.getElementById('q2').value.trim();
   const q3   = document.getElementById('q3').value.trim();
 
+  if (!name) {
+    alert('お名前をご記入ください（ニックネームでOKです）。');
+    return;
+  }
   if (!q1 || !q2 || !q3) {
     alert('Q1〜Q3 はすべてご記入ください。');
     return;

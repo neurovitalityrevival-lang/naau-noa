@@ -167,6 +167,11 @@ tr:last-child td { border-bottom:none; }
       </p>
     </div>
     ` : ''}
+    <div style="background:linear-gradient(135deg,#b8976a,#d4a96a);border-radius:12px;padding:24px 28px;margin-bottom:24px;text-align:center;">
+      <p style="color:#fff;font-size:0.85rem;letter-spacing:0.05em;margin:0 0 8px;">▷ セッション前アンケート</p>
+      <p style="color:#fff3e0;font-size:0.82rem;line-height:1.8;margin:0 0 16px;">当日をより充実した時間にするために、<br>事前にご回答をお願いいたします。</p>
+      <a href="https://naau-noa.vercel.app/survey.html" style="display:inline-block;background:#fff;color:#b8976a;font-weight:700;font-size:0.95rem;padding:12px 32px;border-radius:50px;text-decoration:none;letter-spacing:0.05em;">アンケートに答える →</a>
+    </div>
     <p class="note">
       ご不明な点やご変更がございましたら、お気軽にご連絡ください。<br>
       当日のセッションを心よりお待ちしております。<br><br>
