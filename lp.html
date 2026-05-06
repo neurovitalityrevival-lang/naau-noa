@@ -119,49 +119,74 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 }
 
 /* ── CTAボタン ── */
-.cta-wrap { text-align: center; }
+.cta-wrap { text-align: center; padding: 0 16px; }
 .cta-btn {
-  display: inline-block;
-  background: linear-gradient(135deg, #b8976a, #d4a96a);
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #c9a870, #e8c080, #b8976a);
+  background-size: 200% 200%;
   color: #fff; text-decoration: none;
-  padding: 22px 52px; border-radius: 50px;
-  font-size: 1.15rem; font-weight: 600; letter-spacing: 0.05em;
-  box-shadow: 0 6px 32px rgba(184,151,106,0.45);
+  padding: 28px 24px; border-radius: 20px;
+  font-size: clamp(1.15rem, 4vw, 1.45rem);
+  font-weight: 600; letter-spacing: 0.05em;
+  box-shadow:
+    0 8px 40px rgba(184,151,106,0.6),
+    0 0 0 4px rgba(184,151,106,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.25);
   cursor: pointer; border: none; font-family: 'Noto Serif JP', serif;
   position: relative; overflow: hidden;
-  animation: ctaFloat 3s ease-in-out infinite;
+  animation: ctaFloat 2.8s ease-in-out infinite, ctaGlow 2.8s ease-in-out infinite;
+  line-height: 1.5;
 }
 .cta-btn::before {
   content: '';
   position: absolute; top: 0; left: -100%;
-  width: 60%; height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: ctaShine 3s ease-in-out infinite;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: ctaShine 2.8s ease-in-out infinite;
+}
+.cta-btn::after {
+  content: '▶';
+  font-size: 0.9em;
+  margin-left: 10px;
+  display: inline-block;
+  animation: ctaArrow 2.8s ease-in-out infinite;
 }
 .cta-btn:hover {
   animation: none;
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 44px rgba(184,151,106,0.6);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 56px rgba(184,151,106,0.7), 0 0 0 5px rgba(184,151,106,0.3);
 }
 @keyframes ctaFloat {
-  0%,100% { transform: translateY(0);    box-shadow: 0 6px 32px rgba(184,151,106,0.45); }
-  50%      { transform: translateY(-5px); box-shadow: 0 14px 44px rgba(184,151,106,0.55); }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes ctaGlow {
+  0%,100% { box-shadow: 0 8px 40px rgba(184,151,106,0.6), 0 0 0 4px rgba(184,151,106,0.2), inset 0 1px 0 rgba(255,255,255,0.25); }
+  50%      { box-shadow: 0 16px 56px rgba(184,151,106,0.75), 0 0 0 6px rgba(184,151,106,0.3), inset 0 1px 0 rgba(255,255,255,0.25); }
 }
 @keyframes ctaShine {
-  0%   { left: -100%; }
+  0%      { left: -100%; }
   40%,100% { left: 160%; }
 }
+@keyframes ctaArrow {
+  0%,100% { transform: translateX(0); }
+  50%      { transform: translateX(5px); }
+}
+
 .cta-note { color: #c8b89a; font-size: 0.8rem; margin-top: 12px; }
 .slots {
   display: inline-block;
   background: rgba(184,151,106,0.15); border: 1px solid #b8976a;
   color: #b8976a; padding: 7px 22px; border-radius: 50px;
-  font-size: 0.8rem; margin-bottom: 20px;
+  font-size: 0.82rem; margin-bottom: 20px;
   animation: pulse 2s infinite;
 }
 @keyframes pulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(184,151,106,0.3); }
+  50%      { opacity: 0.85; box-shadow: 0 0 0 6px rgba(184,151,106,0); }
 }
 
 /* ── 口コミ ── */
