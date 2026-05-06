@@ -112,6 +112,7 @@ td:last-child { color:#2c2c2c; font-weight:600; }
       <tr><td>お名前</td><td>${name} 様</td></tr>
       <tr><td>メール</td><td>${email}</td></tr>
       <tr><td>電話番号</td><td>${phone}</td></tr>
+      ${menu.includes('オンライン') ? `<tr><td>Zoom</td><td><a href="https://us06web.zoom.us/j/5906154770?pwd=mMgbqphSP1cBUW33dnvKadsBUmHpwz.1">ミーティングに参加</a><br>ID: 590 615 4770 / PW: 777</td></tr>` : ''}
     </table>
   </div>
   <div class="footer">Na'au Noa 自動通知メール</div>
@@ -143,7 +144,7 @@ tr:last-child td { border-bottom:none; }
 <body><div class="wrap">
   <div class="header">
     <div class="logo">Na'au Noa</div>
-    <p>〜 心と体のエネルギー整体 〜</p>
+    <p>〜 内なる心の解放 〜</p>
   </div>
   <div class="body">
     <p class="greeting">${name} 様<br><br>この度はNa'au Noaにご予約いただき、ありがとうございます。<br>以下の内容でご予約を承りました。</p>
@@ -155,6 +156,17 @@ tr:last-child td { border-bottom:none; }
         <tr><td>お名前</td><td>${name} 様</td></tr>
       </table>
     </div>
+    ${menu.includes('オンライン') ? `
+    <div style="background:#1a3a3a;border-radius:10px;padding:20px 24px;margin-bottom:24px;">
+      <h3 style="font-size:0.85rem;color:#b8976a;letter-spacing:0.05em;margin:0 0 14px;">▷ Zoom ミーティング情報</h3>
+      <p style="color:#fff;font-size:0.9rem;line-height:2;margin:0;">
+        <strong style="color:#b8976a;">DAISUKE のパーソナルミーティングルーム</strong><br>
+        <a href="https://us06web.zoom.us/j/5906154770?pwd=mMgbqphSP1cBUW33dnvKadsBUmHpwz.1" style="color:#d4a96a;font-size:1rem;font-weight:600;">Zoom ミーティングに参加する</a><br>
+        ミーティング ID：590 615 4770<br>
+        パスコード：777
+      </p>
+    </div>
+    ` : ''}
     <p class="note">
       ご不明な点やご変更がございましたら、お気軽にご連絡ください。<br>
       当日のセッションを心よりお待ちしております。<br><br>
