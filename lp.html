@@ -73,12 +73,24 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 
 .hero-title {
   color: #fff;
-  font-size: clamp(1.6rem, 5.5vw, 2.6rem);
-  line-height: 1.75;
-  margin-bottom: 36px;
+  font-size: clamp(1.9rem, 6.5vw, 3.2rem);
+  line-height: 1.65;
+  margin-bottom: 44px;
   font-weight: 600;
+  letter-spacing: 0.02em;
 }
-.hero-title span { color: #b8976a; }
+.hero-title span {
+  color: #b8976a;
+  position: relative;
+  display: inline-block;
+}
+.hero-title span::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, #b8976a, #d4a96a);
+  border-radius: 2px;
+}
 .hero-sub { color: #c8b89a; font-size: 0.9rem; line-height: 1.9; margin-bottom: 44px; }
 
 /* ── VSL ── */
@@ -190,8 +202,6 @@ footer p { color: #888; font-size: 0.78rem; }
 <!-- ── ヒーロー ── -->
 <div class="hero">
 
-  <p class="hero-eyebrow">FREE ONLINE CONSULTATION</p>
-
   <p class="hero-title">
     無料個別相談で<br>
     あなたの首を絞めている<br>
@@ -208,16 +218,10 @@ footer p { color: #888; font-size: 0.78rem; }
 
   <!-- CTA -->
   <div class="cta-wrap">
-    <div class="cta-badges">
-      <span class="badge">✓ 完全無料</span>
-      <span class="badge">✓ オンライン（Zoom）</span>
-      <span class="badge">✓ 約60分</span>
-    </div>
     <div><span class="slots">🎁 無料相談キャンペーン 5/31まで</span></div>
     <button class="cta-btn" onclick="handleCTA()">
-      無料オンライン相談を予約する
+      無料個別相談の空き枠を確認する
     </button>
-    <p class="cta-note">まずは話すだけでOK。</p>
   </div>
 
 </div>
@@ -276,17 +280,11 @@ footer p { color: #888; font-size: 0.78rem; }
     まずは無料で話しましょう。<br>
     あなたの状況を聞かせてください。
   </p>
-  <div class="cta-badges" style="justify-content:center;margin-bottom:20px;">
-    <span class="badge">✓ 完全無料</span>
-    <span class="badge">✓ オンライン（Zoom）</span>
-    <span class="badge">✓ 約60分</span>
-  </div>
   <div><span class="slots">🎁 無料相談キャンペーン 5/31まで</span></div>
   <br>
   <button class="cta-btn" onclick="handleCTA()">
-    無料オンライン相談を予約する
+    無料個別相談の空き枠を確認する
   </button>
-  <p class="cta-note" style="margin-top:14px;">まずは話すだけでOK。</p>
 </div>
 
 <footer>
