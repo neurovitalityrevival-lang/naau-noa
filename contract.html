@@ -60,8 +60,8 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 label { display: block; font-size: 0.88rem; color: #555; margin-bottom: 6px; }
 .req { color: #c0392b; font-size: 0.78rem; margin-left: 4px; }
 .opt { color: #999; font-size: 0.78rem; margin-left: 4px; }
-input, textarea { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 1rem; color: #2c2c2c; background: #faf8f5; transition: border-color 0.2s; -webkit-appearance: none; }
-input:focus, textarea:focus { outline: none; border-color: #b8976a; background: #fff; }
+input:not([type="checkbox"]), textarea { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 1rem; color: #2c2c2c; background: #faf8f5; transition: border-color 0.2s; -webkit-appearance: none; }
+input:not([type="checkbox"]):focus, textarea:focus { outline: none; border-color: #b8976a; background: #fff; }
 .err { color: #c0392b; font-size: 0.78rem; margin-top: 4px; display: none; }
 
 /* ── 署名パッド ── */
