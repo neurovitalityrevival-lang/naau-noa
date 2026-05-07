@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
@@ -23,7 +25,36 @@ module.exports = async (req, res) => {
     auth: { user: gmailUser, pass: gmailPass },
   });
 
-  // ── クライアント宛確認メール ──
+  // 署名画像 → Buffer
+  const base64Data = signatureData.replace(/^data:image\/png;base64,/, '');
+  const sigBuffer = Buffer.from(base64Data, 'base64');
+
+  // 契約書PDF読み込み
+  let pdfBuffer = null;
+  try {
+    const pdfPath = path.join(process.cwd(), 'contract-template.pdf');
+    pdfBuffer = fs.readFileSync(pdfPath);
+  } catch(e) {
+    console.error('PDF read error:', e);
+  }
+
+  // ── クライアント宛確認メール（PDF＋署名画像付き） ──
+  const clientAttachments = [
+    {
+      filename: `署名_${name}.png`,
+      content: sigBuffer,
+      contentType: 'image/png',
+      cid: 'client_signature',
+    },
+  ];
+  if (pdfBuffer) {
+    clientAttachments.push({
+      filename: 'ライフデトックスプログラム契約書.pdf',
+      content: pdfBuffer,
+      contentType: 'application/pdf',
+    });
+  }
+
   transporter.sendMail({
     from: `"Na'au Noa BODY detox" <${gmailUser}>`,
     to: email,
@@ -34,18 +65,34 @@ module.exports = async (req, res) => {
           <p style="color:#b8976a;font-size:1.2rem;letter-spacing:0.1em;margin:0;">Na'au Noa BODY detox</p>
         </div>
         <div style="padding:32px;">
-          <h2 style="color:#1a3a3a;font-size:1.1rem;margin-bottom:20px;">電子署名を受け付けました</h2>
-          <p style="color:#555;line-height:1.9;">${name} 様</p>
-          <p style="color:#555;line-height:1.9;margin-bottom:20px;">ライフデトックスプログラム個別コーチング契約書への電子署名が完了しました。</p>
-          <div style="background:#f0ebe3;border-radius:8px;padding:18px 22px;margin-bottom:20px;font-size:0.9rem;color:#1a3a3a;line-height:2.2;">
+          <h2 style="color:#1a3a3a;font-size:1.1rem;margin-bottom:20px;">電子署名が完了しました</h2>
+          <p style="color:#555;line-height:1.9;margin-bottom:6px;">${name} 様</p>
+          <p style="color:#555;line-height:1.9;margin-bottom:24px;">
+            ライフデトックスプログラム個別コーチング契約書への電子署名が完了しました。<br>
+            契約書PDFを添付しておりますので、大切に保存してください。
+          </p>
+
+          <div style="background:#f0ebe3;border-radius:8px;padding:18px 22px;margin-bottom:24px;font-size:0.9rem;color:#1a3a3a;line-height:2.2;">
             <strong>署名日時：</strong>${dateStr}<br>
             <strong>お名前：</strong>${name}<br>
             <strong>メール：</strong>${email}<br>
             <strong>電話番号：</strong>${phone || '—'}<br>
             <strong>ご住所：</strong>${address || '—'}
           </div>
-          <p style="color:#555;line-height:1.9;">本メールが契約締結の証明となります。大切に保管してください。</p>
-          <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e0d8cc;color:#888;font-size:0.82rem;line-height:1.8;">
+
+          <div style="margin-bottom:24px;">
+            <p style="color:#1a3a3a;font-weight:bold;font-size:0.9rem;margin-bottom:10px;">【あなたの電子署名】</p>
+            <div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;display:inline-block;">
+              <img src="cid:client_signature" style="max-width:100%;height:auto;display:block;" alt="${name}様の署名">
+            </div>
+          </div>
+
+          <div style="background:#fff8e8;border-left:4px solid #b8976a;border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:0.85rem;color:#7a5c2a;line-height:1.9;">
+            ご不明な点がございましたら、お気軽にご連絡ください。<br>
+            📞 <a href="tel:07091974336" style="color:#b8976a;">070-9197-4336</a>
+          </div>
+
+          <div style="padding-top:20px;border-top:1px solid #e0d8cc;color:#888;font-size:0.82rem;line-height:1.8;">
             Na'au Noa BODY detox　代表 小松 大将<br>
             神奈川県茅ヶ崎市中海岸1-1-46<br>
             TEL: 070-9197-4336
@@ -53,43 +100,38 @@ module.exports = async (req, res) => {
         </div>
       </div>
     `,
-  }).catch(() => {});
+    attachments: clientAttachments,
+  }).catch(e => console.error('Client mail error:', e));
 
   // ── 小松さん宛通知メール（署名画像付き） ──
-  try {
-    // base64 → Buffer に変換して添付
-    const base64Data = signatureData.replace(/^data:image\/png;base64,/, '');
-    const sigBuffer = Buffer.from(base64Data, 'base64');
-
-    await transporter.sendMail({
-      from: `"Na'au Noa System" <${gmailUser}>`,
-      to: gmailUser,
-      subject: `【契約署名】${name} 様が署名しました`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-          <h2 style="color:#1a3a3a;border-bottom:2px solid #b8976a;padding-bottom:8px;">新しい契約署名が届きました</h2>
-          <table style="border-collapse:collapse;width:100%;font-size:0.9rem;margin-bottom:20px;">
-            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;width:30%;border-bottom:1px solid #e0d8cc;">署名日時</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${dateStr}</td></tr>
-            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">お名前</td><td style="padding:10px 14px;border-bottom:1px solid #eee;"><strong>${name}</strong></td></tr>
-            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">メール</td><td style="padding:10px 14px;border-bottom:1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
-            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">電話番号</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${phone || '—'}</td></tr>
-            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">ご住所</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${address || '—'}</td></tr>
-            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">IPアドレス</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${clientIp}</td></tr>
-          </table>
-          <p style="color:#555;margin-bottom:10px;font-weight:bold;">署名画像（添付ファイルをご確認ください）</p>
-          <img src="cid:signature" style="border:1px solid #ddd;border-radius:8px;max-width:100%;" alt="署名">
-        </div>
-      `,
-      attachments: [{
-        filename: `署名_${name}_${dateStr.replace(/[/:]/g, '-')}.png`,
+  transporter.sendMail({
+    from: `"Na'au Noa System" <${gmailUser}>`,
+    to: gmailUser,
+    subject: `【契約署名】${name} 様が署名しました`,
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+        <h2 style="color:#1a3a3a;border-bottom:2px solid #b8976a;padding-bottom:8px;">新しい契約署名が届きました</h2>
+        <table style="border-collapse:collapse;width:100%;font-size:0.9rem;margin-bottom:20px;">
+          <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;width:30%;border-bottom:1px solid #e0d8cc;">署名日時</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${dateStr}</td></tr>
+          <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">お名前</td><td style="padding:10px 14px;border-bottom:1px solid #eee;"><strong>${name}</strong></td></tr>
+          <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">メール</td><td style="padding:10px 14px;border-bottom:1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
+          <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">電話番号</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${phone || '—'}</td></tr>
+          <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">ご住所</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${address || '—'}</td></tr>
+          <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">IPアドレス</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${clientIp}</td></tr>
+        </table>
+        <p style="color:#555;margin-bottom:10px;font-weight:bold;">署名画像：</p>
+        <img src="cid:owner_signature" style="border:1px solid #ddd;border-radius:8px;max-width:100%;" alt="署名">
+      </div>
+    `,
+    attachments: [
+      {
+        filename: `署名_${name}_${dateStr.replace(/[/:年月日\s]/g, '_')}.png`,
         content: sigBuffer,
         contentType: 'image/png',
-        cid: 'signature',
-      }],
-    });
-  } catch(e) {
-    console.error('Mail error:', e);
-  }
+        cid: 'owner_signature',
+      },
+    ],
+  }).catch(e => console.error('Owner mail error:', e));
 
   return res.status(200).json({ success: true });
 };
