@@ -1,38 +1,21 @@
-const https = require('https');
 const nodemailer = require('nodemailer');
 
-const SUPABASE_URL = 'https://quacqiugfcwdqxzutqpq.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI';
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-function supabase(path, method = 'GET', body = null) {
-  const url = new URL(SUPABASE_URL + path);
-  return new Promise((resolve, reject) => {
-    const data = body ? JSON.stringify(body) : null;
-    const headers = {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation',
-    };
-    if (data) headers['Content-Length'] = Buffer.byteLength(data);
-    const req = https.request(
-      { hostname: url.hostname, path: url.pathname + url.search, method, headers },
-      (res) => {
-        let d = '';
-        res.on('data', c => d += c);
-        res.on('end', () => {
-          try { resolve({ status: res.statusCode, data: JSON.parse(d) }); }
-          catch(e) { resolve({ status: res.statusCode, data: d }); }
-        });
-      }
-    );
-    req.on('error', reject);
-    if (data) req.write(data);
-    req.end();
+  const { name, address, phone, email, signatureData, agreedAt } = req.body || {};
+
+  if (!name || !email || !signatureData) {
+    return res.status(400).json({ error: '必須項目が不足しています' });
+  }
+
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || '';
+  const dateStr = new Date(agreedAt || Date.now()).toLocaleString('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit',
   });
-}
 
-async function sendEmails({ name, email, phone, address, agreedAt }) {
   const gmailUser = process.env.GMAIL_USER || 'neuro.vitality.revival@gmail.com';
   const gmailPass = process.env.GMAIL_APP_PASSWORD || 'hpjhneugdbybxplq';
   const transporter = nodemailer.createTransport({
@@ -40,13 +23,7 @@ async function sendEmails({ name, email, phone, address, agreedAt }) {
     auth: { user: gmailUser, pass: gmailPass },
   });
 
-  const dateStr = new Date(agreedAt).toLocaleString('ja-JP', {
-    timeZone: 'Asia/Tokyo',
-    year: 'numeric', month: 'long', day: 'numeric',
-    hour: '2-digit', minute: '2-digit',
-  });
-
-  // ── クライアント宛 ──
+  // ── クライアント宛確認メール ──
   transporter.sendMail({
     from: `"Na'au Noa BODY detox" <${gmailUser}>`,
     to: email,
@@ -59,15 +36,15 @@ async function sendEmails({ name, email, phone, address, agreedAt }) {
         <div style="padding:32px;">
           <h2 style="color:#1a3a3a;font-size:1.1rem;margin-bottom:20px;">電子署名を受け付けました</h2>
           <p style="color:#555;line-height:1.9;">${name} 様</p>
-          <p style="color:#555;line-height:1.9;">ライフデトックスプログラム個別コーチング契約書への電子署名が完了しました。</p>
-          <div style="background:#f0ebe3;border-radius:8px;padding:18px 22px;margin:20px 0;font-size:0.9rem;color:#1a3a3a;line-height:2;">
+          <p style="color:#555;line-height:1.9;margin-bottom:20px;">ライフデトックスプログラム個別コーチング契約書への電子署名が完了しました。</p>
+          <div style="background:#f0ebe3;border-radius:8px;padding:18px 22px;margin-bottom:20px;font-size:0.9rem;color:#1a3a3a;line-height:2.2;">
             <strong>署名日時：</strong>${dateStr}<br>
             <strong>お名前：</strong>${name}<br>
             <strong>メール：</strong>${email}<br>
-            <strong>電話番号：</strong>${phone}
+            <strong>電話番号：</strong>${phone || '—'}<br>
+            <strong>ご住所：</strong>${address || '—'}
           </div>
           <p style="color:#555;line-height:1.9;">本メールが契約締結の証明となります。大切に保管してください。</p>
-          <p style="color:#555;line-height:1.9;">ご不明な点がございましたら、お気軽にご連絡ください。</p>
           <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e0d8cc;color:#888;font-size:0.82rem;line-height:1.8;">
             Na'au Noa BODY detox　代表 小松 大将<br>
             神奈川県茅ヶ崎市中海岸1-1-46<br>
@@ -78,60 +55,41 @@ async function sendEmails({ name, email, phone, address, agreedAt }) {
     `,
   }).catch(() => {});
 
-  // ── 小松さん宛通知 ──
-  transporter.sendMail({
-    from: `"Na'au Noa System" <${gmailUser}>`,
-    to: gmailUser,
-    subject: `【契約署名通知】${name} 様が署名しました`,
-    html: `
-      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-        <h2 style="color:#1a3a3a;">新しい契約署名が届きました</h2>
-        <table style="border-collapse:collapse;width:100%;font-size:0.9rem;">
-          <tr><td style="padding:10px;background:#f0ebe3;font-weight:bold;width:30%;">署名日時</td><td style="padding:10px;border-bottom:1px solid #eee;">${dateStr}</td></tr>
-          <tr><td style="padding:10px;background:#f0ebe3;font-weight:bold;">お名前</td><td style="padding:10px;border-bottom:1px solid #eee;">${name}</td></tr>
-          <tr><td style="padding:10px;background:#f0ebe3;font-weight:bold;">メール</td><td style="padding:10px;border-bottom:1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
-          <tr><td style="padding:10px;background:#f0ebe3;font-weight:bold;">電話番号</td><td style="padding:10px;border-bottom:1px solid #eee;">${phone}</td></tr>
-          <tr><td style="padding:10px;background:#f0ebe3;font-weight:bold;">ご住所</td><td style="padding:10px;border-bottom:1px solid #eee;">${address}</td></tr>
-        </table>
-        <p style="margin-top:16px;color:#555;">管理画面で詳細・署名画像をご確認いただけます。</p>
-      </div>
-    `,
-  }).catch(() => {});
-}
+  // ── 小松さん宛通知メール（署名画像付き） ──
+  try {
+    // base64 → Buffer に変換して添付
+    const base64Data = signatureData.replace(/^data:image\/png;base64,/, '');
+    const sigBuffer = Buffer.from(base64Data, 'base64');
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
-
-  const { name, address, phone, email, signatureData, agreedAt } = req.body || {};
-
-  if (!name || !email || !signatureData) {
-    return res.status(400).json({ error: '必須項目が不足しています' });
+    await transporter.sendMail({
+      from: `"Na'au Noa System" <${gmailUser}>`,
+      to: gmailUser,
+      subject: `【契約署名】${name} 様が署名しました`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+          <h2 style="color:#1a3a3a;border-bottom:2px solid #b8976a;padding-bottom:8px;">新しい契約署名が届きました</h2>
+          <table style="border-collapse:collapse;width:100%;font-size:0.9rem;margin-bottom:20px;">
+            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;width:30%;border-bottom:1px solid #e0d8cc;">署名日時</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${dateStr}</td></tr>
+            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">お名前</td><td style="padding:10px 14px;border-bottom:1px solid #eee;"><strong>${name}</strong></td></tr>
+            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">メール</td><td style="padding:10px 14px;border-bottom:1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
+            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">電話番号</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${phone || '—'}</td></tr>
+            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">ご住所</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${address || '—'}</td></tr>
+            <tr><td style="padding:10px 14px;background:#f0ebe3;font-weight:bold;border-bottom:1px solid #e0d8cc;">IPアドレス</td><td style="padding:10px 14px;border-bottom:1px solid #eee;">${clientIp}</td></tr>
+          </table>
+          <p style="color:#555;margin-bottom:10px;font-weight:bold;">署名画像（添付ファイルをご確認ください）</p>
+          <img src="cid:signature" style="border:1px solid #ddd;border-radius:8px;max-width:100%;" alt="署名">
+        </div>
+      `,
+      attachments: [{
+        filename: `署名_${name}_${dateStr.replace(/[/:]/g, '-')}.png`,
+        content: sigBuffer,
+        contentType: 'image/png',
+        cid: 'signature',
+      }],
+    });
+  } catch(e) {
+    console.error('Mail error:', e);
   }
-
-  const clientIp =
-    req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
-    req.socket?.remoteAddress || '';
-  const userAgent = req.headers['user-agent'] || '';
-
-  // Supabase に保存
-  const result = await supabase('/rest/v1/contract_signatures', 'POST', {
-    name,
-    address: address || '',
-    phone: phone || '',
-    email,
-    signature_data: signatureData,
-    agreed_at: agreedAt || new Date().toISOString(),
-    ip_address: clientIp,
-    user_agent: userAgent,
-  });
-
-  if (result.status !== 201) {
-    console.error('Supabase error:', result.data);
-    return res.status(500).json({ error: 'データの保存に失敗しました' });
-  }
-
-  // メール送信（fire and forget）
-  sendEmails({ name, email, phone, address, agreedAt }).catch(() => {});
 
   return res.status(200).json({ success: true });
 };
