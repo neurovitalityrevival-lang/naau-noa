@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>契約書への同意・電子署名 | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #faf8f5; color: #2c2c2c; }
+header { background: #1a3a3a; padding: 16px 24px; text-align: center; }
+header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spacing: 0.1em; }
+.hero { background: linear-gradient(135deg, #1a3a3a, #2a5a5a); color: #fff; text-align: center; padding: 40px 24px 36px; }
+.hero h1 { font-size: 1.4rem; color: #f0e8d8; margin-bottom: 8px; }
+.hero p { color: #c8b89a; font-size: 0.88rem; }
+
+.container { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+
+/* ── 契約書本文 ── */
+.contract-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  max-height: 520px;
+  overflow-y: auto;
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: #333;
+}
+.contract-box::-webkit-scrollbar { width: 6px; }
+.contract-box::-webkit-scrollbar-track { background: #f0ebe3; border-radius: 10px; }
+.contract-box::-webkit-scrollbar-thumb { background: #b8976a; border-radius: 10px; }
+.contract-title-main { text-align: center; font-size: 1.15rem; font-weight: 600; color: #1a3a3a; margin-bottom: 6px; }
+.contract-title-sub { text-align: center; font-size: 1rem; font-weight: 600; color: #1a3a3a; margin-bottom: 20px; }
+.contract-preamble { margin-bottom: 18px; }
+.contract-article { margin-bottom: 20px; }
+.contract-article h3 { font-size: 0.92rem; font-weight: 600; color: #1a3a3a; border-bottom: 1px solid #e0d8cc; padding-bottom: 6px; margin-bottom: 8px; }
+.contract-article p { margin-bottom: 6px; }
+.contract-article ul { padding-left: 20px; }
+.contract-article ul li { margin-bottom: 4px; }
+.warn-label { color: #8B0000; font-weight: 600; }
+.scroll-hint { text-align: center; font-size: 0.78rem; color: #aaa; margin-top: 8px; margin-bottom: 24px; }
+
+/* ── カード ── */
+.card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); margin-bottom: 20px; }
+.card h2 { font-size: 0.95rem; color: #1a3a3a; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #f0ebe3; }
+
+/* ── チェックボックス ── */
+.check-list { display: flex; flex-direction: column; gap: 12px; }
+.check-item { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+.check-item input[type="checkbox"] { width: 20px; height: 20px; min-width: 20px; accent-color: #1a3a3a; cursor: pointer; margin-top: 2px; }
+.check-item span { font-size: 0.88rem; line-height: 1.7; color: #333; }
+.check-item span strong { color: #8B0000; }
+
+/* ── フォーム ── */
+.form-group { margin-bottom: 16px; }
+label { display: block; font-size: 0.88rem; color: #555; margin-bottom: 6px; }
+.req { color: #c0392b; font-size: 0.78rem; margin-left: 4px; }
+.opt { color: #999; font-size: 0.78rem; margin-left: 4px; }
+input, textarea { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 1rem; color: #2c2c2c; background: #faf8f5; transition: border-color 0.2s; -webkit-appearance: none; }
+input:focus, textarea:focus { outline: none; border-color: #b8976a; background: #fff; }
+.err { color: #c0392b; font-size: 0.78rem; margin-top: 4px; display: none; }
+
+/* ── 署名パッド ── */
+.sig-wrap { border: 2px solid #ddd; border-radius: 10px; overflow: hidden; position: relative; background: #fff; }
+.sig-canvas { display: block; width: 100%; touch-action: none; cursor: crosshair; }
+.sig-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #ccc; font-size: 0.85rem; pointer-events: none; text-align: center; line-height: 1.8; }
+.sig-clear { display: block; margin-top: 8px; background: none; border: 1px solid #ddd; color: #888; padding: 6px 18px; border-radius: 20px; font-family: 'Noto Serif JP', serif; font-size: 0.8rem; cursor: pointer; transition: border-color 0.2s; }
+.sig-clear:hover { border-color: #b8976a; color: #b8976a; }
+.err-sig { color: #c0392b; font-size: 0.78rem; margin-top: 6px; display: none; }
+
+/* ── 最終確認バナー ── */
+.confirm-banner {
+  background: #fff8e8;
+  border: 2px solid #b8976a;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: #6b4c1e;
+}
+.confirm-banner strong { color: #8B0000; }
+
+/* ── 送信ボタン ── */
+.submit-btn {
+  width: 100%; padding: 18px;
+  background: linear-gradient(135deg, #1a3a3a, #2a5a5a);
+  color: #fff; border: none; border-radius: 8px;
+  font-family: 'Noto Serif JP', serif; font-size: 1rem;
+  font-weight: 600; cursor: pointer; letter-spacing: 0.05em;
+  transition: opacity 0.2s;
+}
+.submit-btn:hover { opacity: 0.88; }
+.submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+@media (max-width: 480px) {
+  .contract-box { padding: 18px 16px; }
+  .card { padding: 18px 14px; }
+}
+</style>
+</head>
+<body>
+<header><a href="index.html">Na'au Noa</a></header>
+<div class="hero">
+  <h1>ライフデトックスプログラム</h1>
+  <p>個別コーチング契約書への同意・電子署名</p>
+</div>
+
+<div class="container">
+
+  <!-- 契約書本文 -->
+  <div class="contract-box" id="contractBox">
+    <p class="contract-title-main">ライフデトックスプログラム</p>
+    <p class="contract-title-sub">個別コーチング契約書</p>
+    <p class="contract-preamble">　Na'au Noa BODY detox（以下「提供者」）とクライアント（以下「依頼者」）は、ライフデトックスプログラム（以下「本プログラム」）の提供に関して、以下のとおり合意し、本契約を締結します。</p>
+
+    <div class="contract-article">
+      <h3>第１条　プログラム内容</h3>
+      <p>本プログラムは、心身の根本的なバランスの回復を目的とした３ヶ月間の個別コーチングです。提供者は依頼者に対し、以下のサービスを提供します。</p>
+      <ul><li>個別セッション（オンラインまたは対面）</li><li>セッション間のメッセージサポート</li><li>古代ハワイのエネルギー療法 Huna に基づくエネルギー調整</li><li>現代解剖学・整体・呼吸・潜在意識アプローチを組み合わせた総合的サポート</li></ul>
+    </div>
+
+    <div class="contract-article">
+      <h3>第２条　契約期間</h3>
+      <p>本契約の期間は、契約締結日から３ヶ月間とします。双方の合意がある場合は延長または変更が可能です。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第３条　料金および支払い</h3>
+      <p>料金・支払い方法・支払い期日については、別途提示する料金案内に従うものとします。</p>
+      <p>依頼者が支払いを遅延した場合、提供者はサービスの提供を一時停止することができます。</p>
+      <p>一度お支払いいただいた料金は、第６条に定める場合を除き、原則として返金いたしません。依頼者自身の都合によるキャンセル・途中解約の場合も同様とします。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第４条　免責事項（重要）</h3>
+      <p class="warn-label">【本プログラムは医療行為ではありません】</p>
+      <p>本プログラムは医師法その他の医療・治療に関する法律に基づく医療行為ではありません。疾病の診断・治療・処方を目的とするものではなく、医療の代替として利用することはできません。現在治療中の疾患がある方は、必ず担当医の指示に従い、本プログラムと並行して医療を継続してください。</p>
+      <p class="warn-label">【効果・結果の保証について】</p>
+      <p>本プログラムは特定の効果・結果を保証するものではありません。心身の変化・回復の程度には著しい個人差があり、提供者はその結果について一切の責任を負いません。</p>
+      <p class="warn-label">【症状の悪化・緊急時について】</p>
+      <p>セッション中または終了後に依頼者の心身の状態が悪化した場合、提供者はその責任を負いません。緊急の場合は速やかに医療機関または救急に連絡するものとします。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第５条　依頼者の自己責任と取り組み</h3>
+      <p>本プログラムの成果は依頼者自身の取り組みと行動によって大きく左右されます。依頼者は以下を理解・同意した上で参加します。</p>
+      <ul><li>セッションへの積極的な参加と自己開示に努めること</li><li>プログラム外での行動・選択は依頼者自身の判断と責任において行うこと</li><li>進捗や結果が期待と異なる場合でも、その原因を提供者に帰属させないこと</li><li>心身の状態に変化があった場合は速やかに提供者に報告すること</li></ul>
+    </div>
+
+    <div class="contract-article">
+      <h3>第６条　キャンセルおよび解約</h3>
+      <p>以下に該当する場合、提供者は契約を即時解除することができます。この場合、既払い料金の返金義務は生じません。</p>
+      <ul><li>依頼者が提供者または第三者を誹謗中傷した場合</li><li>依頼者が虚偽の情報を申告した場合</li><li>依頼者が提供者の業務遂行を著しく妨害した場合</li><li>依頼者の言動により提供者の精神的・肉体的健康が著しく損なわれると判断した場合</li><li>その他、本契約の継続が著しく困難と提供者が判断した場合</li></ul>
+      <p>提供者側の事情（疾病・天災等）による中断が生じた場合は、未実施分を按分計算した金額を返金します。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第７条　医療機関受診の継続義務</h3>
+      <p>適応障害・パニック障害・うつ病・自律神経失調症その他の精神疾患・身体疾患で医療機関を受診中の依頼者は、本プログラム参加中も医師の指示に従い受診を継続するものとします。</p>
+      <p>提供者の判断により医療的サポートが必要と判断した場合、提供者は依頼者に医療機関の受診を強く勧めることがあります。依頼者がこれを拒否した場合、提供者は本契約を解除することができます。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第８条　録音・録画・情報の取り扱い</h3>
+      <p>依頼者は、提供者の書面による事前承諾なく、セッションを録音・録画・スクリーンショット等の方法で記録することを禁じます。提供者が提供するコンテンツの無断複製・転載・SNS投稿・第三者への共有を禁じます。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第９条　誹謗中傷および虚偽の申告の禁止</h3>
+      <p>依頼者は、本プログラムの内容・提供者・関係者に関して、SNS・口コミサイト等において事実に反する情報や誹謗中傷を投稿・発言することを禁じます。違反により提供者に損害が生じた場合、依頼者は損害賠償責任を負います。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第１０条　健全な関係性の維持</h3>
+      <p>本プログラムは依頼者の自立を支援することを目的とし、提供者への過度な依存関係の形成を意図するものではありません。提供者への連絡はセッション時間および所定のサポート時間内に限るものとし、深夜・早朝の緊急連絡や過度な対応の要求には応じられない場合があります。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第１１条　個人情報の取り扱い</h3>
+      <p>提供者は依頼者から取得した個人情報を本プログラムの提供目的以外に使用せず、第三者に提供しません（依頼者の安全確保のために必要と判断した場合を除く）。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第１２条　秘密保持</h3>
+      <p>提供者および依頼者は、本プログラムを通じて知り得た相手方の情報を、相手方の書面による同意なく第三者に開示・漏洩しないものとします。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第１３条　準拠法および管轄</h3>
+      <p>本契約は日本法に準拠します。紛争については神奈川県を管轄する裁判所を第一審の専属的合意管轄裁判所とします。</p>
+    </div>
+
+    <div class="contract-article">
+      <h3>第１４条　協議解決</h3>
+      <p>本契約に定めのない事項または解釈に疑義が生じた場合には、双方誠意をもって協議し解決するものとします。</p>
+    </div>
+  </div>
+  <p class="scroll-hint">↑ スクロールして全文をお読みください</p>
+
+  <!-- 重要事項チェック -->
+  <div class="card">
+    <h2>✅ 重要事項の確認</h2>
+    <div class="check-list">
+      <label class="check-item">
+        <input type="checkbox" id="chk1">
+        <span>本プログラムは<strong>医療行為ではなく</strong>、疾病の診断・治療・処方を目的とするものではないことを理解しました。</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" id="chk2">
+        <span><strong>特定の効果・結果は保証されない</strong>ことを理解し、成果は自身の取り組みによることに同意します。</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" id="chk3">
+        <span>医療機関を受診中の場合は受診を継続し、<strong>本プログラムを医療の代替として使用しない</strong>ことに同意します。</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" id="chk4">
+        <span>依頼者の都合によるキャンセル・途中解約の場合、<strong>既払い料金は返金されない</strong>ことに同意します。</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" id="chk5">
+        <span>セッションの<strong>無断録音・録画・SNS等への投稿を行わない</strong>ことに同意します。</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" id="chk6">
+        <span>上記の契約書全文を読み、<strong>全ての条項に同意します</strong>。</span>
+      </label>
+    </div>
+    <div class="err" id="chkErr">すべての項目にチェックを入れてください</div>
+  </div>
+
+  <!-- 依頼者情報 -->
+  <div class="card">
+    <h2>📝 依頼者情報の入力</h2>
+    <div class="form-group">
+      <label>お名前<span class="req">*必須</span></label>
+      <input type="text" id="name" placeholder="山田 花子">
+      <div class="err" id="nameErr">お名前を入力してください</div>
+    </div>
+    <div class="form-group">
+      <label>ご住所<span class="req">*必須</span></label>
+      <input type="text" id="address" placeholder="神奈川県横浜市○○区...">
+      <div class="err" id="addrErr">ご住所を入力してください</div>
+    </div>
+    <div class="form-group">
+      <label>電話番号<span class="req">*必須</span></label>
+      <input type="tel" id="phone" placeholder="090-1234-5678">
+      <div class="err" id="phoneErr">電話番号を入力してください</div>
+    </div>
+    <div class="form-group">
+      <label>メールアドレス<span class="req">*必須</span></label>
+      <input type="email" id="email" placeholder="example@email.com">
+      <div class="err" id="emailErr">正しいメールアドレスを入力してください</div>
+    </div>
+  </div>
+
+  <!-- 電子署名 -->
+  <div class="card">
+    <h2>✍️ 電子署名</h2>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:14px;">下の枠内に、マウスまたは指でサインしてください。</p>
+    <div class="sig-wrap">
+      <canvas id="sigCanvas" class="sig-canvas" height="180"></canvas>
+      <div class="sig-hint" id="sigHint">ここにサインしてください<br><span style="font-size:0.75rem;">（マウスまたは指で書いてください）</span></div>
+    </div>
+    <button class="sig-clear" onclick="clearSig()">消去してやり直す</button>
+    <div class="err err-sig" id="sigErr">署名を記入してください</div>
+  </div>
+
+  <!-- 最終確認 -->
+  <div class="confirm-banner">
+    本フォームを送信することにより、上記契約書の全条項に電子的に署名・同意したものとみなします。<br>
+    署名日時・IPアドレスが記録されます。<strong>送信後の取り消しはできません。</strong>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="submitContract()">上記に同意して電子署名を送信する</button>
+
+</div>
+
+<script>
+// ── 署名パッド初期化 ──
+const canvas = document.getElementById('sigCanvas');
+const sigPad = new SignaturePad(canvas, {
+  backgroundColor: 'rgb(255,255,255)',
+  penColor: '#1a3a3a',
+  minWidth: 1.5,
+  maxWidth: 3,
+});
+
+function resizeCanvas() {
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  const w = canvas.offsetWidth;
+  canvas.width = w * ratio;
+  canvas.height = 180 * ratio;
+  canvas.getContext('2d').scale(ratio, ratio);
+  sigPad.clear();
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+sigPad.addEventListener('beginStroke', () => {
+  document.getElementById('sigHint').style.display = 'none';
+});
+
+function clearSig() {
+  sigPad.clear();
+  document.getElementById('sigHint').style.display = 'block';
+}
+
+// ── バリデーション ──
+function show(id, visible) {
+  document.getElementById(id).style.display = visible ? 'block' : 'none';
+}
+
+async function submitContract() {
+  let valid = true;
+
+  // チェックボックス全確認
+  const checks = ['chk1','chk2','chk3','chk4','chk5','chk6'];
+  const allChecked = checks.every(id => document.getElementById(id).checked);
+  show('chkErr', !allChecked);
+  if (!allChecked) valid = false;
+
+  // フォーム
+  const name    = document.getElementById('name').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+  const email   = document.getElementById('email').value.trim();
+
+  show('nameErr',  !name);    if (!name)  valid = false;
+  show('addrErr',  !address); if (!address) valid = false;
+  show('phoneErr', !phone);   if (!phone) valid = false;
+  const emailOk = email && /\S+@\S+\.\S+/.test(email);
+  show('emailErr', !emailOk); if (!emailOk) valid = false;
+
+  // 署名
+  const sigEmpty = sigPad.isEmpty();
+  show('sigErr', sigEmpty);
+  if (sigEmpty) valid = false;
+
+  if (!valid) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  try {
+    const signatureData = sigPad.toDataURL('image/png');
+    const res = await fetch('/api/sign-contract', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, address, phone, email, signatureData, agreedAt: new Date().toISOString() }),
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      window.location.href = 'contract-signed.html?name=' + encodeURIComponent(name);
+    } else {
+      throw new Error(data.error || '送信に失敗しました');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '上記に同意して電子署名を送信する';
+    alert(e.message || '送信中にエラーが発生しました。もう一度お試しください。');
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>契約署名管理 | Na'au Noa</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Serif JP', serif; background: #0d1f1f; color: #e0d8cc; min-height: 100vh; }
+
+/* ── ログイン ── */
+.login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+.login-box { background: #1a3a3a; border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 360px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); text-align: center; }
+.login-box h1 { color: #b8976a; font-size: 1.1rem; letter-spacing: 0.15em; margin-bottom: 8px; }
+.login-box p { color: #888; font-size: 0.82rem; margin-bottom: 28px; }
+.login-box input { width: 100%; padding: 14px 16px; border: 1.5px solid #3a5a5a; border-radius: 10px; background: #0d2020; color: #fff; font-family: 'Noto Serif JP', serif; font-size: 0.95rem; outline: none; margin-bottom: 16px; transition: border-color 0.2s; }
+.login-box input:focus { border-color: #b8976a; }
+.login-box button { width: 100%; padding: 14px; background: linear-gradient(135deg, #b8976a, #d4a96a); color: #fff; border: none; border-radius: 50px; font-family: 'Noto Serif JP', serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+.login-error { color: #e07070; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+/* ── 管理画面 ── */
+.admin { display: none; }
+.top-bar { background: #1a3a3a; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.top-bar h1 { color: #b8976a; font-size: 1rem; letter-spacing: 0.1em; }
+.top-bar-right { display: flex; align-items: center; gap: 12px; }
+.meta { color: #888; font-size: 0.78rem; }
+.logout-btn { background: none; border: 1px solid #3a5a5a; color: #888; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 0.78rem; font-family: inherit; transition: border-color 0.2s; }
+.logout-btn:hover { border-color: #b8976a; color: #b8976a; }
+.refresh-btn { background: none; border: 1px solid #b8976a; color: #b8976a; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 0.78rem; font-family: inherit; transition: background 0.2s; }
+.refresh-btn:hover { background: rgba(184,151,106,0.1); }
+
+.main { padding: 24px 32px; }
+.stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat-card { background: #1a3a3a; border-radius: 10px; padding: 16px 24px; text-align: center; min-width: 120px; }
+.stat-card .num { font-size: 1.8rem; color: #b8976a; font-weight: 600; }
+.stat-card .label { font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+/* ── カード一覧 ── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.sig-card { background: #1a3a3a; border-radius: 12px; padding: 20px; }
+.sig-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.sig-name { font-size: 1rem; font-weight: 600; color: #e0d8cc; }
+.sig-date { font-size: 0.75rem; color: #888; margin-top: 4px; }
+.sig-badge { background: #2a5a2a; color: #6dba6d; font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+.sig-info { font-size: 0.82rem; color: #c8b89a; line-height: 1.9; margin-bottom: 14px; }
+.sig-info span { color: #888; font-size: 0.75rem; }
+.sig-img-wrap { background: #fff; border-radius: 8px; padding: 8px; }
+.sig-img-wrap img { width: 100%; height: auto; border-radius: 4px; display: block; }
+.empty { text-align: center; padding: 60px; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <h1>Na'au Noa</h1>
+    <p>契約署名管理画面</p>
+    <input type="password" id="pwInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">ログイン</button>
+    <p class="login-error" id="loginError">パスワードが違います</p>
+  </div>
+</div>
+
+<div class="admin" id="admin">
+  <div class="top-bar">
+    <h1>📝 契約署名一覧</h1>
+    <div class="top-bar-right">
+      <span class="meta" id="lastUpdated"></span>
+      <button class="refresh-btn" onclick="loadData()">↻ 更新</button>
+      <button class="logout-btn" onclick="logout()">ログアウト</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="totalCount">—</div><div class="label">総署名数</div></div>
+      <div class="stat-card"><div class="num" id="todayCount">—</div><div class="label">本日</div></div>
+      <div class="stat-card"><div class="num" id="weekCount">—</div><div class="label">今週</div></div>
+    </div>
+    <div class="card-grid" id="cardGrid">
+      <div style="color:#555;padding:40px;">読み込み中...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD   = 'naaunoa2026';
+const SUPABASE_URL = 'https://quacqiugfcwdqxzutqpq.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_eyMShPrkyDZvtSejJDx9HA_UgMsRwJI';
+
+function login() {
+  if (document.getElementById('pwInput').value === PASSWORD) {
+    sessionStorage.setItem('contract_auth', '1');
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('admin').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function logout() { sessionStorage.removeItem('contract_auth'); location.reload(); }
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function loadData() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/contract_signatures?order=created_at.desc`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+
+    const now = new Date();
+    const todayStr = now.toISOString().slice(0,10);
+    const weekAgo  = new Date(now - 7*24*60*60*1000).toISOString();
+    document.getElementById('totalCount').textContent = data.length;
+    document.getElementById('todayCount').textContent = data.filter(r => r.created_at.startsWith(todayStr)).length;
+    document.getElementById('weekCount').textContent  = data.filter(r => r.created_at >= weekAgo).length;
+    document.getElementById('lastUpdated').textContent = '最終更新: ' + new Date().toLocaleTimeString('ja-JP');
+
+    const grid = document.getElementById('cardGrid');
+    if (!data.length) {
+      grid.innerHTML = '<div class="empty">まだ署名がありません</div>';
+      return;
+    }
+
+    grid.innerHTML = data.map(r => {
+      const dt = new Date(r.agreed_at || r.created_at).toLocaleString('ja-JP', {
+        month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'
+      });
+      return `
+        <div class="sig-card">
+          <div class="sig-card-header">
+            <div>
+              <div class="sig-name">${esc(r.name)}</div>
+              <div class="sig-date">${dt}</div>
+            </div>
+            <span class="sig-badge">署名済</span>
+          </div>
+          <div class="sig-info">
+            <span>メール</span><br>${esc(r.email)}<br>
+            <span>電話</span><br>${esc(r.phone)}<br>
+            <span>住所</span><br>${esc(r.address)}<br>
+            <span>IP</span><br>${esc(r.ip_address)}
+          </div>
+          ${r.signature_data ? `<div class="sig-img-wrap"><img src="${r.signature_data}" alt="署名"></div>` : ''}
+        </div>
+      `;
+    }).join('');
+  } catch(e) {
+    document.getElementById('cardGrid').innerHTML = '<div class="empty">読み込みエラー</div>';
+  }
+}
+
+if (sessionStorage.getItem('contract_auth') === '1') {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('admin').style.display = 'block';
+  loadData();
+}
+</script>
+</body>
+</html>
