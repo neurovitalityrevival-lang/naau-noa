@@ -11,6 +11,7 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: '必須項目が不足しています' });
   }
 
+  try {
   const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || '';
   const dateStr = new Date(agreedAt || Date.now()).toLocaleString('ja-JP', {
     timeZone: 'Asia/Tokyo',
@@ -55,7 +56,7 @@ module.exports = async (req, res) => {
     });
   }
 
-  transporter.sendMail({
+  await transporter.sendMail({
     from: `"Na'au Noa BODY detox" <${gmailUser}>`,
     to: email,
     subject: '【Na\'au Noa】ライフデトックスプログラム 契約書への電子署名を受け付けました',
@@ -101,10 +102,10 @@ module.exports = async (req, res) => {
       </div>
     `,
     attachments: clientAttachments,
-  }).catch(e => console.error('Client mail error:', e));
+  });
 
   // ── 小松さん宛通知メール（署名画像付き） ──
-  transporter.sendMail({
+  await transporter.sendMail({
     from: `"Na'au Noa System" <${gmailUser}>`,
     to: gmailUser,
     subject: `【契約署名】${name} 様が署名しました`,
@@ -131,7 +132,11 @@ module.exports = async (req, res) => {
         cid: 'owner_signature',
       },
     ],
-  }).catch(e => console.error('Owner mail error:', e));
+  });
 
   return res.status(200).json({ success: true });
+  } catch(e) {
+    console.error('sign-contract error:', e);
+    return res.status(500).json({ error: e.message || 'メール送信に失敗しました' });
+  }
 };
