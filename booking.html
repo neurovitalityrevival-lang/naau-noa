@@ -34,35 +34,133 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spac
 .cal-header h3 { font-size: 1rem; color: #1a3a3a; font-weight: 600; }
 .cal-nav { background: none; border: 1px solid #ddd; border-radius: 6px; width: 32px; height: 32px; cursor: pointer; font-size: 1.1rem; color: #555; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
 .cal-nav:hover { border-color: #b8976a; color: #b8976a; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
 .cal-day-label { text-align: center; font-size: 0.73rem; color: #aaa; padding: 5px 0; }
 .cal-day-label:first-child { color: #e74c3c; }
 .cal-day-label:last-child { color: #3498db; }
-.cal-cell { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; font-size: 0.88rem; position: relative; transition: all 0.2s; cursor: default; gap: 1px; }
-.cal-cell .date-num { line-height: 1; }
-.cal-cell .dot { font-size: 10px; line-height: 1; }
+
+/* ── セル基本 ── */
+.cal-cell {
+  min-height: 58px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  position: relative;
+  cursor: default;
+  gap: 5px;
+  padding: 6px 2px;
+}
+.cal-cell .date-num { font-size: 0.95rem; line-height: 1; font-weight: 600; }
 .cal-cell.empty { }
 .cal-cell.past { color: #ccc; }
-.cal-cell.available { cursor: pointer; background: #f0ebe3; color: #1a3a3a; font-weight: 600; }
-.cal-cell.available:hover { background: #b8976a; color: #fff; }
-.cal-cell.available:hover .dot { opacity: 0.9; }
-.cal-cell.selected { background: #1a3a3a !important; color: #fff !important; }
-.cal-cell.selected .dot { opacity: 1 !important; }
-.cal-cell.no-slots { color: #aaa; }
-/* ── 空き状況ドット ── */
-.dot-open { color: #2e7d32; font-size: 0.85rem; }   /* 緑◎ 全枠空き */
-.dot-some { color: #f59e0b; font-size: 0.85rem; }   /* 黄○ 残りあり */
-.dot-few  { color: #e53935; font-size: 0.85rem; }   /* 赤△ 残り2以下 */
-.dot-full { color: #e53935; font-size: 0.78rem; font-weight:600; } /* 赤満 満席 */
+
+/* ── 予約可能セル ── */
+.cal-cell.available {
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #e8e0d4;
+  color: #1a3a3a;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.cal-cell.available:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  border-color: #b8976a;
+}
+.cal-cell.available:active {
+  transform: scale(0.94);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.cal-cell.selected {
+  background: #1a3a3a !important;
+  border-color: #1a3a3a !important;
+  color: #fff !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(26,58,58,0.3) !important;
+}
+
+/* ── 満席セル ── */
+.cal-cell.no-slots {
+  background: #fafafa;
+  border: 1px solid #eee;
+  color: #ccc;
+}
+
+/* ── ステータスバッジ ── */
+.status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+.badge-open {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+.badge-some {
+  background: #fff8e1;
+  color: #e65100;
+  border: 1px solid #ffcc80;
+}
+.badge-few {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+.badge-full {
+  background: #f5f5f5;
+  color: #aaa;
+  border: 1px solid #e0e0e0;
+  font-size: 0.75rem;
+}
+
+/* ── アニメーション ── */
+@keyframes pulse-few {
+  0%, 100% { box-shadow: 0 2px 6px rgba(198,40,40,0.15); }
+  50%       { box-shadow: 0 2px 14px rgba(198,40,40,0.35); }
+}
+.cal-cell.cell-few {
+  animation: pulse-few 1.8s ease-in-out infinite;
+}
+
 .cal-loading { grid-column: span 7; text-align: center; color: #999; padding: 20px; font-size: 0.88rem; }
-.cal-notice { font-size: 0.78rem; color: #aaa; margin-top: 10px; display: flex; gap: 14px; flex-wrap: wrap; }
-.cal-notice span { display: flex; align-items: center; gap: 4px; }
+.cal-notice { font-size: 0.78rem; color: #aaa; margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+.cal-notice span { display: flex; align-items: center; gap: 5px; }
 
 /* ── Time Selection ── */
 .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.time-btn { padding: 14px 8px; border: 1px solid #ddd; border-radius: 8px; background: #faf8f5; font-family: 'Noto Serif JP', serif; font-size: 0.92rem; color: #555; cursor: pointer; text-align: center; transition: all 0.2s; }
-.time-btn:hover { border-color: #b8976a; color: #b8976a; background: #fff; }
-.time-btn.selected { background: #1a3a3a; border-color: #1a3a3a; color: #fff; }
+.time-btn {
+  padding: 16px 8px;
+  border: 1px solid #e8e0d4;
+  border-radius: 10px;
+  background: #fff;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.92rem;
+  color: #1a3a3a;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.time-btn:hover {
+  border-color: #b8976a;
+  background: #fdf8f2;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(184,151,106,0.2);
+}
+.time-btn:active { transform: scale(0.94); }
+.time-btn.selected {
+  background: #1a3a3a;
+  border-color: #1a3a3a;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(26,58,58,0.3);
+  transform: translateY(-2px);
+}
 
 /* ── Form ── */
 .selected-info { background: #f0ebe3; border-radius: 8px; padding: 14px 18px; margin-bottom: 18px; font-size: 0.88rem; color: #1a3a3a; line-height: 2; }
@@ -154,10 +252,10 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
         <div class="cal-loading">メニューを選んでください</div>
       </div>
       <div class="cal-notice">
-        <span><span style="color:#2e7d32;">◎</span> 空きあり</span>
-        <span><span style="color:#f59e0b;">○</span> 残りわずか</span>
-        <span><span style="color:#e53935;">△</span> 残り2枠</span>
-        <span><span style="color:#e53935;font-weight:600;">満</span> 満席</span>
+        <span><span class="status-badge badge-open" style="font-size:0.65rem;">◎ 空き多数</span></span>
+        <span><span class="status-badge badge-some" style="font-size:0.65rem;">○ 空きあり</span></span>
+        <span><span class="status-badge badge-few" style="font-size:0.65rem;">△ 残りわずか</span></span>
+        <span><span class="status-badge badge-full" style="font-size:0.65rem;">満席</span></span>
       </div>
     </div>
   </div>
@@ -338,22 +436,26 @@ function renderCalendar() {
     if (remaining === 0 && hasAny) {
       // 満席
       html += `<div class="cal-cell no-slots">
-        <span class="date-num">${d}</span><span class="dot dot-full">満</span>
+        <span class="date-num">${d}</span>
+        <span class="status-badge badge-full">満席</span>
       </div>`;
     } else if (remaining <= 2 && remaining > 0) {
-      // 残り2枠以下 → 赤△
-      html += `<div class="cal-cell available${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
-        <span class="date-num">${d}</span><span class="dot dot-few">△</span>
+      // 残り2枠以下 → 赤△ + パルスアニメ
+      html += `<div class="cal-cell available cell-few${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
+        <span class="date-num">${d}</span>
+        <span class="status-badge badge-few">△ 残り${remaining}</span>
       </div>`;
     } else if (remaining < maxSlots && remaining > 0) {
       // 1枠以上減っている → 黄○
       html += `<div class="cal-cell available${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
-        <span class="date-num">${d}</span><span class="dot dot-some">○</span>
+        <span class="date-num">${d}</span>
+        <span class="status-badge badge-some">○ 空きあり</span>
       </div>`;
     } else if (remaining >= maxSlots) {
       // 全枠空き → 緑◎
       html += `<div class="cal-cell available${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
-        <span class="date-num">${d}</span><span class="dot dot-open">◎</span>
+        <span class="date-num">${d}</span>
+        <span class="status-badge badge-open">◎ 空き多数</span>
       </div>`;
     } else {
       html += `<div class="cal-cell"><span class="date-num">${d}</span></div>`;
