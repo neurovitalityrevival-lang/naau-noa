@@ -88,36 +88,12 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.3rem; letter-spac
   color: #ccc;
 }
 
-/* ── ステータスバッジ ── */
-.status-badge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 20px;
-  letter-spacing: 0.03em;
-  line-height: 1.4;
-}
-.badge-open {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #a5d6a7;
-}
-.badge-some {
-  background: #fff8e1;
-  color: #e65100;
-  border: 1px solid #ffcc80;
-}
-.badge-few {
-  background: #ffebee;
-  color: #c62828;
-  border: 1px solid #ef9a9a;
-}
-.badge-full {
-  background: #f5f5f5;
-  color: #aaa;
-  border: 1px solid #e0e0e0;
-  font-size: 0.75rem;
-}
+/* ── カレンダードット ── */
+.cal-dot { font-size: 8px; line-height: 1; }
+.cal-dot-open { color: #4caf50; }
+.cal-dot-some { color: #f59e0b; }
+.cal-dot-few  { color: #e53935; }
+.cal-dot-full { color: #ccc; font-size: 7px; }
 
 /* ── アニメーション ── */
 @keyframes pulse-few {
@@ -205,9 +181,9 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
 <body>
 <header><a href="index.html">Na'au Noa</a></header>
 <div class="hero">
-  <span class="badge">対面・茅ヶ崎サロン｜初回限定</span>
-  <h1>AETエネルギー整体付き個別相談</h1>
-  <p>90分 / ¥4,980 / 茅ヶ崎サロン（対面のみ）</p>
+  <span class="badge">オンライン・対面</span>
+  <h1>ご予約</h1>
+  <p>ご希望のメニューと日時をお選びください。</p>
 </div>
 <div class="container">
 
@@ -252,10 +228,10 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
         <div class="cal-loading">メニューを選んでください</div>
       </div>
       <div class="cal-notice">
-        <span><span class="status-badge badge-open" style="font-size:0.65rem;">◎ 空き多数</span></span>
-        <span><span class="status-badge badge-some" style="font-size:0.65rem;">○ 空きあり</span></span>
-        <span><span class="status-badge badge-few" style="font-size:0.65rem;">△ 残りわずか</span></span>
-        <span><span class="status-badge badge-full" style="font-size:0.65rem;">満席</span></span>
+        <span><span class="cal-dot cal-dot-open">●</span> 空き多数</span>
+        <span><span class="cal-dot cal-dot-some">●</span> 残りあり</span>
+        <span><span class="cal-dot cal-dot-few">●</span> 残りわずか</span>
+        <span><span class="cal-dot cal-dot-full">●</span> 満席</span>
       </div>
     </div>
   </div>
@@ -437,25 +413,25 @@ function renderCalendar() {
       // 満席
       html += `<div class="cal-cell no-slots">
         <span class="date-num">${d}</span>
-        <span class="status-badge badge-full">満席</span>
+        <span class="cal-dot cal-dot-full">●</span>
       </div>`;
     } else if (remaining <= 2 && remaining > 0) {
-      // 残り2枠以下 → 赤△ + パルスアニメ
+      // 残り2枠以下 → 赤 + パルスアニメ
       html += `<div class="cal-cell available cell-few${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
         <span class="date-num">${d}</span>
-        <span class="status-badge badge-few">△ 残り${remaining}</span>
+        <span class="cal-dot cal-dot-few">●</span>
       </div>`;
     } else if (remaining < maxSlots && remaining > 0) {
-      // 1枠以上減っている → 黄○
+      // 1枠以上減っている → 黄
       html += `<div class="cal-cell available${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
         <span class="date-num">${d}</span>
-        <span class="status-badge badge-some">○ 空きあり</span>
+        <span class="cal-dot cal-dot-some">●</span>
       </div>`;
     } else if (remaining >= maxSlots) {
-      // 全枠空き → 緑◎
+      // 全枠空き → 緑
       html += `<div class="cal-cell available${isSel ? ' selected' : ''}" onclick="selectDate('${dateStr}')">
         <span class="date-num">${d}</span>
-        <span class="status-badge badge-open">◎ 空き多数</span>
+        <span class="cal-dot cal-dot-open">●</span>
       </div>`;
     } else {
       html += `<div class="cal-cell"><span class="date-num">${d}</span></div>`;
