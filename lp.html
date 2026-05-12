@@ -73,11 +73,18 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 
 .hero-title {
   color: #fff;
-  font-size: clamp(1.9rem, 6.5vw, 3.2rem);
-  line-height: 1.65;
+  font-size: clamp(1.55rem, 5.8vw, 3.2rem);
+  line-height: 1.75;
   margin-bottom: 44px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+}
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(1.35rem, 6.5vw, 1.7rem);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
 }
 .hero-title .accent {
   color: #b8976a;
@@ -300,7 +307,8 @@ footer p { color: #888; font-size: 0.78rem; }
   <div class="hero-particles" id="heroParticles"></div>
 
   <p class="hero-title">
-    <span class="line">適応障害・パニックを最短で手放し、</span>
+    <span class="line">適応障害・パニックを</span>
+    <span class="line">最短で手放し、</span>
     <span class="line">自分に正直に生きる</span>
     <span class="line">人生にシフトする</span>
     <span class="line"><span class="accent">ライフデトックスプログラム</span></span>
