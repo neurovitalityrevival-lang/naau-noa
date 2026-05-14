@@ -488,6 +488,13 @@ input, textarea, select, button,
   padding: 26px 26px 30px;
   display: flex; flex-direction: column; gap: 12px; min-height: 440px;
 }
+.menu-feat-content .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
 
 .menu-card-badge {
   font-size: .68rem; font-weight: 600; letter-spacing: .2em;
@@ -827,7 +834,7 @@ input, textarea, select, button,
 
   .menu-btns { flex-direction: column; }
   .menu-btns .btn, .menu-btns a { width: 100%; text-align: center; }
-  .menu-feat-content .btn { width: 100%; text-align: center; }
+  .menu-feat-content .btn { width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
 
   .profile-grid { gap: 32px; }
   .profile-message { padding: 26px 18px; }
