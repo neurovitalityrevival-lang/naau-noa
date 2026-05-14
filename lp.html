@@ -116,6 +116,42 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
   letter-spacing: 0.03em;
 }
 
+/* ── LINEボタン ── */
+.line-btn {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: 14px auto 0;
+  background: #06C755;
+  color: #fff;
+  text-decoration: none;
+  padding: 18px 20px;
+  border-radius: 20px;
+  font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  word-break: keep-all;
+  text-align: center;
+  font-family: 'Noto Serif JP', serif;
+  box-shadow: 0 6px 24px rgba(6,199,85,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.line-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(6,199,85,0.45);
+}
+.line-btn::before {
+  content: '📲 ';
+}
+.cta-divider {
+  color: rgba(200,184,154,0.6);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin: 16px auto 0;
+  text-align: center;
+  display: block;
+}
+
 /* ── CTAボタン ── */
 .cta-wrap { text-align: center; padding: 0 16px; }
 .cta-btn {
@@ -331,6 +367,11 @@ footer p { color: #888; font-size: 0.78rem; }
       【5/31まで】無料個別相談の空き枠を確認する
     </button>
     <p style="color:#c8b89a;font-size:0.8rem;margin-top:12px;letter-spacing:0.03em;white-space:nowrap;">✔ オンライン（Zoom）・対面、どちらでも対応可能</p>
+    <span class="cta-divider">── または ──</span>
+    <a href="https://lin.ee/SrPf2j1" class="line-btn" target="_blank" rel="noopener noreferrer">
+      まずはLINEで気軽に相談する
+    </a>
+    <p style="color:#c8b89a;font-size:0.75rem;margin-top:10px;letter-spacing:0.03em;">日程を決めなくてもOK。気になることを送るだけでOK</p>
   </div>
 
 </div>
@@ -404,6 +445,11 @@ footer p { color: #888; font-size: 0.78rem; }
       【5/31まで】無料個別相談の空き枠を確認する
     </button>
     <p style="color:#c8b89a;font-size:0.8rem;margin-top:12px;letter-spacing:0.03em;white-space:nowrap;">✔ オンライン（Zoom）・対面、どちらでも対応可能</p>
+    <span class="cta-divider">── または ──</span>
+    <a href="https://lin.ee/SrPf2j1" class="line-btn" target="_blank" rel="noopener noreferrer">
+      まずはLINEで気軽に相談する
+    </a>
+    <p style="color:#c8b89a;font-size:0.75rem;margin-top:10px;letter-spacing:0.03em;">日程を決めなくてもOK。気になることを送るだけでOK</p>
   </div>
 </div>
 
