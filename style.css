@@ -536,13 +536,13 @@ input, textarea, select, button,
 .profile-left { text-align: center; }
 
 .avatar-wrap {
-  width: 196px; height: 196px; border-radius: 50%; overflow: hidden;
+  width: 240px; height: 240px; border-radius: 50%; overflow: hidden;
   margin: 0 auto 22px;
   box-shadow: 0 12px 44px rgba(26,80,98,.2);
   border: 3px solid rgba(196,180,156,.5);
   background: linear-gradient(145deg, var(--teal-light), var(--deep));
 }
-.avatar-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.avatar-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; transform: scale(1.15); transform-origin: center 20%; }
 
 .profile-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
 .profile-kana  { font-size: .78rem; color: var(--text-light); letter-spacing: .12em; margin-bottom: 10px; font-family: var(--font-sans); }
