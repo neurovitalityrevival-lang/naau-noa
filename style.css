@@ -541,7 +541,7 @@ input, textarea, select, button,
   box-shadow: 0 12px 44px rgba(26,80,98,.2);
   border: 3px solid rgba(196,180,156,.5);
 }
-.avatar-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.avatar-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
 
 .profile-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
 .profile-kana  { font-size: .78rem; color: var(--text-light); letter-spacing: .12em; margin-bottom: 10px; font-family: var(--font-sans); }
