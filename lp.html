@@ -81,9 +81,13 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 }
 @media (max-width: 480px) {
   .hero-title {
-    font-size: clamp(1.05rem, 5.5vw, 1.55rem);
-    line-height: 1.85;
+    font-size: clamp(1.1rem, 5.8vw, 1.5rem);
+    line-height: 2.0;
     letter-spacing: 0.01em;
+    padding: 0 8px;
+  }
+  .hero-title .line {
+    font-size: 1em;
   }
 }
 .hero-title .accent {
@@ -364,7 +368,8 @@ footer p { color: #888; font-size: 0.78rem; }
   <div class="hero-particles" id="heroParticles"></div>
 
   <p class="hero-title">
-    <span class="line">パニックを起点に、</span>
+    <span class="line">パニック・心身の不安を</span>
+    <span class="line"><span class="accent">一瞬で手放し、</span></span>
     <span class="line">仕事も、人間関係も、自分軸も——</span>
     <span class="line"><span class="accent">人生ごと変える3ヶ月。</span></span>
     <span class="line" style="font-size:0.6em;letter-spacing:0.2em;color:rgba(184,151,106,0.8);">ライフデトックスプログラム</span>
