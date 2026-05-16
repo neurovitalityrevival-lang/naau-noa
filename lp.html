@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ライフデトックスプログラム | Na'au Noa</title>
+<title>パニックを起点に、人生ごと変える3ヶ月 | Identity Rebirth | Na'au Noa</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
 
 <!-- Meta Pixel -->
@@ -224,6 +224,22 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
   50%      { opacity: 0.85; box-shadow: 0 0 0 6px rgba(184,151,106,0); }
 }
 
+/* ── このまま放置したら ── */
+.risk-section { background: #0d1f1f; padding: 72px 24px; }
+.risk-inner { max-width: 720px; margin: 0 auto; }
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+@media (max-width: 560px) { .risk-grid { grid-template-columns: 1fr; } }
+.risk-card {
+  background: rgba(139,28,28,0.18);
+  border: 1px solid rgba(200,60,60,0.35);
+  border-radius: 10px;
+  padding: 20px 18px;
+}
+.risk-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+.risk-card-title { color: #e8a0a0; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.04em; }
+.risk-card-body { color: #c8a8a8; font-size: 0.8rem; line-height: 1.85; }
+.risk-lead { color: #c8b89a; font-size: 0.9rem; line-height: 1.9; text-align: center; margin-bottom: 0; }
+
 /* ── 口コミ ── */
 .reviews { background: #faf8f5; padding: 72px 24px; }
 .reviews-inner { max-width: 720px; margin: 0 auto; }
@@ -348,10 +364,10 @@ footer p { color: #888; font-size: 0.78rem; }
   <div class="hero-particles" id="heroParticles"></div>
 
   <p class="hero-title">
-    <span class="line">パニック障害を一瞬で手放し、</span>
-    <span class="line">たった3ヶ月で堂々とした</span>
-    <span class="line">理想の自分にシフトする</span>
-    <span class="line"><span class="accent">ライフデトックスプログラム</span></span>
+    <span class="line">パニックを起点に、</span>
+    <span class="line">仕事も、人間関係も、自分軸も——</span>
+    <span class="line"><span class="accent">人生ごと変える3ヶ月。</span></span>
+    <span class="line" style="font-size:0.6em;letter-spacing:0.2em;color:rgba(184,151,106,0.8);">Identity Rebirth Program</span>
   </p>
 
   <!-- VSL -->
@@ -363,7 +379,7 @@ footer p { color: #888; font-size: 0.78rem; }
 
   <!-- CTA -->
   <div class="cta-wrap fade-up">
-    <p style="color:#c8b89a;font-size:0.85rem;line-height:2;margin-bottom:20px;letter-spacing:0.04em;text-align:center;">このプログラムは、<br>パニックを本気で手放す、<br>そして理想の自分に変える覚悟のある方、<br>自分の人生のために本気で投資できる方の<br>ためのプログラムです。</p>
+    <p style="color:#c8b89a;font-size:0.85rem;line-height:2;margin-bottom:20px;letter-spacing:0.04em;text-align:center;">このプログラムは、<br>パニックを「人生の転換点」にする覚悟のある方、<br>症状だけでなく、仕事・人間関係・自分軸まで<br>丸ごと変えたい方のためのプログラムです。</p>
     <button class="cta-btn" onclick="handleCTA()">
       【5/31まで】無料個別相談の空き枠を確認する
     </button>
@@ -375,6 +391,47 @@ footer p { color: #888; font-size: 0.78rem; }
     <p style="color:#c8b89a;font-size:0.75rem;margin-top:10px;letter-spacing:0.03em;">日程を決めなくてもOK。気になることを送るだけでOK</p>
   </div>
 
+</div>
+
+<!-- ── このまま放置したら ── -->
+<div class="risk-section">
+  <div class="risk-inner">
+    <p class="section-label fade-up" style="color:#e8a0a0;">RISK</p>
+    <h2 class="section-title fade-up" style="color:#fff;">このまま放置すると、どうなるか。</h2>
+    <p class="risk-lead fade-up delay-1">「いつか治るだろう」と思い続けた先に、何が待っているか——</p>
+    <div class="risk-grid">
+      <div class="risk-card fade-up">
+        <div class="risk-card-icon">💼</div>
+        <p class="risk-card-title">キャリアの機会損失が積み重なる</p>
+        <p class="risk-card-body">昇進・転職・起業——「今の状態では無理」と先送りしている間に、同年代との差は静かに広がっていく。</p>
+      </div>
+      <div class="risk-card fade-up delay-1">
+        <div class="risk-card-icon">👥</div>
+        <p class="risk-card-title">人間関係がさらに縮小する</p>
+        <p class="risk-card-body">会食を断り、集まりを避け、気づけば「安全な人」しか周りにいない。世界がどんどん小さくなっていく。</p>
+      </div>
+      <div class="risk-card fade-up delay-2">
+        <div class="risk-card-icon">🔄</div>
+        <p class="risk-card-title">「また戻った」を繰り返す</p>
+        <p class="risk-card-body">薬・カウンセリング・呼吸法で一時的に楽になっても、根本のパターンが変わらない限り症状は戻り続ける。</p>
+      </div>
+      <div class="risk-card fade-up delay-3">
+        <div class="risk-card-icon">🪞</div>
+        <p class="risk-card-title">本当の自分から遠ざかる</p>
+        <p class="risk-card-body">他人の目を先読みし、自分の感情を後回しにし続ける。やがて「本来の自分が何者か」すらわからなくなる。</p>
+      </div>
+      <div class="risk-card fade-up">
+        <div class="risk-card-icon">⏳</div>
+        <p class="risk-card-title">時間とお金だけが消えていく</p>
+        <p class="risk-card-body">効果の薄いアプローチに何年も費やすコストは、もはや症状そのものより大きいかもしれない。</p>
+      </div>
+      <div class="risk-card fade-up delay-1">
+        <div class="risk-card-icon">💔</div>
+        <p class="risk-card-title">「自分には無理」が刷り込まれる</p>
+        <p class="risk-card-body">変わろうとして変われない経験を重ねるほど、「どうせ自分は」という信念が深く根を張っていく。</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ── 口コミ ── -->
@@ -439,10 +496,10 @@ footer p { color: #888; font-size: 0.78rem; }
 
 <!-- ── 最終CTA ── -->
 <div class="final-cta">
-  <h2 class="fade-up">一人で抱え込まなくていい。<br>話すだけでいい。</h2>
-  <p class="fade-up delay-1">オンラインでも、対面でも。<br>本気で改善したいなら、まず話しましょう。</p>
+  <h2 class="fade-up">パニックを、<br>人生が変わる起点にしよう。</h2>
+  <p class="fade-up delay-1">症状を治すだけじゃない。仕事も、関係性も、自分軸も——<br>根本から変えたいなら、まず話しましょう。</p>
   <div class="fade-up delay-3">
-    <p style="color:#c8b89a;font-size:0.85rem;line-height:2;margin-bottom:20px;letter-spacing:0.04em;text-align:center;">このプログラムは、<br>パニックを本気で手放す、<br>そして理想の自分に変える覚悟のある方、<br>自分の人生のために本気で投資できる方の<br>ためのプログラムです。</p>
+    <p style="color:#c8b89a;font-size:0.85rem;line-height:2;margin-bottom:20px;letter-spacing:0.04em;text-align:center;">このプログラムは、<br>パニックを「人生の転換点」にする覚悟のある方、<br>症状だけでなく、仕事・人間関係・自分軸まで<br>丸ごと変えたい方のためのプログラムです。</p>
     <button class="cta-btn" onclick="handleCTA()">
       【5/31まで】無料個別相談の空き枠を確認する
     </button>
