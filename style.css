@@ -540,14 +540,35 @@ input, textarea, select, button,
   margin: 0 auto 22px;
   box-shadow: 0 12px 44px rgba(26,80,98,.2);
   border: 3px solid rgba(196,180,156,.5);
-  background: linear-gradient(145deg, var(--teal-light), var(--deep));
+  background: #1a3a3a;
 }
-.avatar-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; transform: scale(1.3); transform-origin: center 15%; }
+.avatar-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center 8%; display: block; }
 
 .profile-name { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
 .profile-kana  { font-size: .78rem; color: var(--text-light); letter-spacing: .12em; margin-bottom: 10px; font-family: var(--font-sans); }
 .profile-role  { font-size: .8rem; color: var(--teal-mid); letter-spacing: .06em; line-height: 1.7; font-family: var(--font-sans); margin-bottom: 12px; }
-.profile-credentials { font-size: .78rem; color: var(--text-light); line-height: 2.0; font-family: var(--font-sans); letter-spacing: .03em; margin-top: 8px; }
+.profile-credentials {
+  list-style: none;
+  padding: 0;
+  margin: 10px auto 0;
+  max-width: 260px;
+  font-size: .78rem;
+  color: var(--text-light);
+  line-height: 1.9;
+  font-family: var(--font-sans);
+  letter-spacing: .03em;
+  text-align: left;
+}
+.profile-credentials li {
+  padding-left: 1em;
+  text-indent: -1em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.profile-credentials li::before {
+  content: "・";
+  color: #b8976a;
+}
 
 .profile-message {
   background: var(--white); border-radius: var(--radius);
@@ -729,7 +750,8 @@ input, textarea, select, button,
 .profile-name   { color: #fff !important; }
 .profile-kana   { color: #c8b89a !important; }
 .profile-role   { color: #b8976a !important; }
-.profile-credentials { color: #c8b89a !important; }
+.profile-credentials,
+.profile-credentials li { color: #c8b89a !important; }
 .avatar-wrap    { border-color: rgba(184,151,106,.45) !important; box-shadow: 0 12px 44px rgba(0,0,0,.35) !important; }
 .profile-message {
   background: rgba(255,255,255,.05) !important;
