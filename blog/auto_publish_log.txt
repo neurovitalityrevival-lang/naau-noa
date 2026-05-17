@@ -1,0 +1,14 @@
+
+=== 自動投稿ログ: 2026-05-16 (JST) ===
+実行時刻: $(date '+%Y-%m-%d %H:%M:%S UTC')
+[成功] publish.js 実行
+  - 公開: post16.html (2026年5月16日)
+  - index.html 更新完了 (16件)
+[失敗] git コミット・プッシュ
+  - 原因1: .git/index.lock および HEAD.lock が残存（2026-05-14 の残骸）
+  - 原因2: VM内からGitHubへのネットワーク接続が制限されている
+[要手動作業] ローカルファイルは更新済み。以下をターミナルで実行してください:
+  cd ~/Desktop/myhp
+  git add -A
+  git commit -m "ブログ自動投稿 2026-05-16"
+  git push origin main
