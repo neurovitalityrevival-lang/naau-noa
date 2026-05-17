@@ -181,7 +181,7 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
 <body>
 <header><a href="index.html">Na'au Noa</a></header>
 <div class="hero">
-  <span class="badge">オンライン・対面</span>
+  <span class="badge">🌐 全国オンライン対応（Zoom）</span>
   <h1>ご予約</h1>
   <p>ご希望のメニューと日時をお選びください。</p>
 </div>
@@ -194,14 +194,14 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
     <div class="card">
       <h2>① ご希望のメニューを選んでください</h2>
       <div class="menu-options" id="menuOptions">
-        <div class="menu-opt" data-key="《新規限定》オンライン無料個別相談" onclick="selectMenu(this)">
-          <div class="menu-opt-title">オンライン無料個別相談</div>
-          <div class="menu-opt-detail">60分 / 無料 / Zoom</div>
+        <div class="menu-opt" data-key="オンライン無料個別相談" onclick="selectMenu(this)">
+          <div class="menu-opt-title">🎁 無料個別相談</div>
+          <div class="menu-opt-detail">60分 / 無料 / Zoom（全国対応）</div>
           <span class="menu-check">✓</span>
         </div>
-        <div class="menu-opt" data-key="《初回限定》AETエネルギー整体付き個別相談" onclick="selectMenu(this)">
-          <div class="menu-opt-title">AETエネルギー整体付き個別相談</div>
-          <div class="menu-opt-detail">90分 / ¥55,000 / 茅ヶ崎サロン</div>
+        <div class="menu-opt" data-key="メンタルシフトセッション" onclick="selectMenu(this)">
+          <div class="menu-opt-title">⚡ メンタルシフトセッション</div>
+          <div class="menu-opt-detail">60分 / ¥33,000 / Zoom（全国対応）</div>
           <span class="menu-check">✓</span>
         </div>
       </div>
@@ -284,18 +284,18 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
 <script>
 // ── メニュー設定 ──
 const MENU_CONFIG = {
-  '《新規限定》オンライン無料個別相談': {
+  'オンライン無料個別相談': {
     duration: 60, type: 'online'
   },
-  '《初回限定》AETエネルギー整体付き個別相談': {
-    duration: 90, type: 'inperson'
+  'メンタルシフトセッション': {
+    duration: 60, type: 'online'
   }
 };
 
 // ── メニューごとの最大枠数 ──
 const MENU_MAX_SLOTS = {
-  '《新規限定》オンライン無料個別相談': 17,
-  '《初回限定》AETエネルギー整体付き個別相談': 11
+  'オンライン無料個別相談': 17,
+  'メンタルシフトセッション': 17
 };
 
 // ── 状態 ──
