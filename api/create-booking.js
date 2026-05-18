@@ -4,12 +4,17 @@ const nodemailer = require('nodemailer');
 
 // ── メニューごとの所要時間（分）──
 const MENU_DURATIONS = {
+  'オンライン無料個別相談': 60,
+  'メンタルシフトセッション': 60,
   '《新規限定》オンライン無料個別相談': 60,
   '《初回限定》AETエネルギー整体付き個別相談': 90,
   '《初回》潜在意識の書き換え｜AETエネルギー整体orオンラインリリースワーク（90分）55,000円': 90,
   '《10:00~17:00限定》AETエネルギー整体（90分）33,000円': 90,
   '《2回目以降》オンラインリリースワーク（90分）33,000円': 90
 };
+
+// ── Zoomオンライン対応メニュー ──
+const ONLINE_MENUS = ['オンライン', 'メンタルシフトセッション'];
 
 // ── Supabase ──
 function hashData(d) {
@@ -40,6 +45,8 @@ function supabase(path, method = 'GET', body = null) {
 
 // ── Meta CAPI ──
 const MENU_VALUES = {
+  'オンライン無料個別相談': 0,
+  'メンタルシフトセッション': 33000,
   '《新規限定》オンライン無料個別相談': 0,
   '《新規限定》対面無料個別相談': 0,
   '《初回》潜在意識の書き換え｜AETエネルギー整体orオンラインリリースワーク（90分）55,000円': 55000,
@@ -112,7 +119,7 @@ td:last-child { color:#2c2c2c; font-weight:600; }
       <tr><td>お名前</td><td>${name} 様</td></tr>
       <tr><td>メール</td><td>${email}</td></tr>
       <tr><td>電話番号</td><td>${phone}</td></tr>
-      ${menu.includes('オンライン') ? `<tr><td>Zoom</td><td><a href="https://us06web.zoom.us/j/5906154770?pwd=mMgbqphSP1cBUW33dnvKadsBUmHpwz.1">ミーティングに参加</a><br>ID: 590 615 4770 / PW: 777</td></tr>` : ''}
+      ${ONLINE_MENUS.some(k => menu.includes(k)) ? `<tr><td>Zoom</td><td><a href="https://us06web.zoom.us/j/5906154770?pwd=mMgbqphSP1cBUW33dnvKadsBUmHpwz.1">ミーティングに参加</a><br>ID: 590 615 4770 / PW: 777</td></tr>` : ''}
     </table>
   </div>
   <div class="footer">Na'au Noa 自動通知メール</div>
@@ -156,7 +163,7 @@ tr:last-child td { border-bottom:none; }
         <tr><td>お名前</td><td>${name} 様</td></tr>
       </table>
     </div>
-    ${menu.includes('オンライン') ? `
+    ${ONLINE_MENUS.some(k => menu.includes(k)) ? `
     <div style="background:#1a3a3a;border-radius:10px;padding:20px 24px;margin-bottom:24px;">
       <h3 style="font-size:0.85rem;color:#b8976a;letter-spacing:0.05em;margin:0 0 14px;">▷ Zoom ミーティング情報</h3>
       <p style="color:#fff;font-size:0.9rem;line-height:2;margin:0;">
@@ -164,6 +171,15 @@ tr:last-child td { border-bottom:none; }
         <a href="https://us06web.zoom.us/j/5906154770?pwd=mMgbqphSP1cBUW33dnvKadsBUmHpwz.1" style="color:#d4a96a;font-size:1rem;font-weight:600;">Zoom ミーティングに参加する</a><br>
         ミーティング ID：590 615 4770<br>
         パスコード：777
+      </p>
+    </div>
+    <div style="background:#f7f3ee;border-radius:10px;padding:18px 24px;margin-bottom:24px;border-left:4px solid #b8976a;">
+      <h3 style="font-size:0.85rem;color:#b8976a;letter-spacing:0.05em;margin:0 0 10px;">▷ オンライン受講の注意事項</h3>
+      <p style="color:#555;font-size:0.85rem;line-height:2;margin:0;">
+        ・セッション開始5分前までにZoomにご入室ください。<br>
+        ・通信環境の安定した、静かな場所でのご参加をお願いします。<br>
+        ・スマートフォンの場合は事前にZoomアプリのインストールをお願いします。<br>
+        ・カメラとマイクが使用できる状態でご参加ください。
       </p>
     </div>
     ` : ''}
