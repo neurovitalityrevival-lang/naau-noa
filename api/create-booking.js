@@ -1,6 +1,6 @@
 const https = require('https');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 // ── メニューごとの所要時間（分）──
 const MENU_DURATIONS = {
@@ -78,13 +78,8 @@ async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAge
 
 // ── メール送信 ──
 async function sendEmails({ name, email, phone, menu, date, startTime, endTime }) {
-  const user = process.env.GMAIL_USER || 'neuro.vitality.revival@gmail.com';
-  const pass = process.env.GMAIL_APP_PASSWORD || 'hpjhneugdbybxplq';
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user, pass }
-  });
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const adminEmail = 'neuro.vitality.revival@gmail.com';
 
   // 日付フォーマット
   const [y, m, d] = date.split('-').map(Number);
@@ -199,17 +194,19 @@ tr:last-child td { border-bottom:none; }
 
   await Promise.allSettled([
     // 管理者通知
-    transporter.sendMail({
-      from: `"Na'au Noa 予約" <${user}>`,
-      to: user,
+    resend.emails.send({
+      from: "Na'au Noa 予約 <onboarding@resend.dev>",
+      to: adminEmail,
+      reply_to: adminEmail,
       subject: `【予約通知】${name}様 ${dateLabel} ${startTime}〜`,
       html: adminHtml
     }),
     // お客様確認
-    transporter.sendMail({
-      from: `"Na'au Noa" <${user}>`,
+    resend.emails.send({
+      from: "Na'au Noa <onboarding@resend.dev>",
       to: email,
-      subject: `【Na'au Noa】ご予約を承りました（${dateLabel} ${startTime}〜）`,
+      reply_to: adminEmail,
+      subject: `ご予約を承りました（${dateLabel} ${startTime}〜）`,
       html: customerHtml
     })
   ]);
