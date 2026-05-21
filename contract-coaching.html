@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>利用規約への同意・電子署名 | Na'au Noa 3ヶ月ブレイクスルーコーチング</title>
+<title>利用規約への同意・電子署名 | Na'au Noa ライフデトックスコーチング</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 <style>
@@ -105,7 +105,7 @@ input:not([type="checkbox"]):focus, textarea:focus { outline: none; border-color
 <body>
 <header><a href="index.html">Na'au Noa</a></header>
 <div class="hero">
-  <h1>3ヶ月ブレイクスルーコーチング</h1>
+  <h1>ライフデトックスコーチング</h1>
   <p>プログラム利用規約への同意・電子署名</p>
 </div>
 
@@ -113,19 +113,20 @@ input:not([type="checkbox"]):focus, textarea:focus { outline: none; border-color
 
   <!-- 契約書本文 -->
   <div class="contract-box" id="contractBox">
-    <p class="contract-title-main">3ヶ月ブレイクスルーコーチング</p>
+    <p class="contract-title-main">ライフデトックスコーチング</p>
     <p class="contract-title-sub">プログラム利用規約</p>
-    <p class="contract-preamble">　Na'au Noa BODY detox（以下「提供者」）とクライアント（以下「依頼者」）は、3ヶ月ブレイクスルーコーチングプログラム（以下「本プログラム」）の提供に関して、以下のとおり合意の上、本規約を締結します。</p>
+    <p class="contract-preamble">　Na'au Noa BODY detox（以下「提供者」）とクライアント（以下「依頼者」）は、ライフデトックスコーチングプログラム（以下「本プログラム」）の提供に関して、以下のとおり合意の上、本規約を締結します。</p>
 
     <div class="contract-article">
       <h3>第１条　サービス内容</h3>
-      <p>本プログラムは、NLP（神経言語プログラミング）および潜在意識へのアプローチを軸に、依頼者の夢・目標達成を阻むゴールへの地図（無意識のプログラム）を3ヶ月かけて整理・最適化し、最短ルートでのゴール到達をサポートするオンラインコーチングプログラムです。</p>
+      <p>本プログラムは、NLP（神経言語プログラミング）および潜在意識へのアプローチを軸に、パニック・予期不安・自信がない・人目が気になる自分から最短でなりたい自分へ変化することを目的とした、約3ヶ月の伴走サポートプログラムです。</p>
       <ul>
-        <li>期間：契約締結日より3ヶ月間</li>
+        <li>期間：契約締結日より約3ヶ月間</li>
         <li>形式：Zoomによるオンラインセッション（全国対応）</li>
-        <li>セッション頻度・回数：個別相談にてご案内します</li>
+        <li>内容：計6回のメンタルシフトセッション＋ゴールセット＋約3ヶ月の伴走サポート</li>
         <li>料金：個別相談にてご案内します</li>
       </ul>
+      <p style="margin-top:10px;">結果には個人差があり、1回で手放す人もいれば複数回ゴールまでにかかる人もあります。その速度はその方の状態や覚悟によって変動します。その上で、依頼者の安心安全なペースに合わせて伴走します。</p>
     </div>
 
     <div class="contract-article">
@@ -391,7 +392,7 @@ async function submitContract() {
 
   try {
     const signatureData = sigPad.toDataURL('image/png');
-    const contractType = '3ヶ月ブレイクスルーコーチング';
+    const contractType = 'ライフデトックスコーチング';
     const res = await fetch('/api/sign-contract', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
