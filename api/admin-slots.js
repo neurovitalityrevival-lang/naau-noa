@@ -47,21 +47,31 @@ module.exports = async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { date, times } = req.body;
+    const { date, times, blocked } = req.body;
     if (!date || !times?.length) return res.status(400).json({ error: 'date and times required' });
-    const slots = times.map(t => ({ date, start_time: t, is_available: true, is_booked: false }));
+    // blocked=true のときは手動ブロック枠（赤）として追加
+    const slots = times.map(t => ({
+      date,
+      start_time: t,
+      is_available: blocked ? false : true,
+      is_booked: blocked ? true : false
+    }));
     const r = await supabase('/rest/v1/slots', 'POST', slots);
     return res.status(200).json(r.data);
   }
 
   if (req.method === 'DELETE') {
     const { id, ids, force } = req.query;
+    const isForce = force === 'true';
 
-    // 一括削除（予約済みは除く）
+    // 一括削除（force=true なら予約済みも含む）
     if (ids) {
       const idList = ids.split(',').filter(Boolean);
       if (!idList.length) return res.status(400).json({ error: 'ids is empty' });
-      await supabase(`/rest/v1/slots?id=in.(${idList.join(',')})&is_booked=eq.false`, 'DELETE');
+      const q = isForce
+        ? `/rest/v1/slots?id=in.(${idList.join(',')})`
+        : `/rest/v1/slots?id=in.(${idList.join(',')})&is_booked=eq.false`;
+      await supabase(q, 'DELETE');
       return res.status(200).json({ success: true });
     }
 

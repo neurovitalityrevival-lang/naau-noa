@@ -192,7 +192,7 @@ tr:last-child td { border-bottom:none; }
   <div class="footer"><p>Na'au Noa | naau-noa.vercel.app</p></div>
 </div></body></html>`;
 
-  await Promise.allSettled([
+  const [adminResult, customerResult] = await Promise.allSettled([
     // 管理者通知
     resend.emails.send({
       from: "Na'au Noa 予約 <onboarding@resend.dev>",
@@ -201,15 +201,33 @@ tr:last-child td { border-bottom:none; }
       subject: `【予約通知】${name}様 ${dateLabel} ${startTime}〜`,
       html: adminHtml
     }),
-    // お客様確認
+    // お客様確認（adminにBCCも送信）
     resend.emails.send({
       from: "Na'au Noa <onboarding@resend.dev>",
       to: email,
+      bcc: adminEmail,
       reply_to: adminEmail,
       subject: `ご予約を承りました（${dateLabel} ${startTime}〜）`,
       html: customerHtml
     })
   ]);
+
+  // Resend v4 はエラーを throw しないので明示的にチェック
+  if (adminResult.status === 'fulfilled') {
+    const { data, error } = adminResult.value || {};
+    if (error) console.error('Admin email error:', JSON.stringify(error));
+    else console.log('Admin email sent:', data?.id);
+  } else {
+    console.error('Admin email rejected:', adminResult.reason);
+  }
+
+  if (customerResult.status === 'fulfilled') {
+    const { data, error } = customerResult.value || {};
+    if (error) console.error('Customer email error:', JSON.stringify(error));
+    else console.log('Customer email sent:', data?.id);
+  } else {
+    console.error('Customer email rejected:', customerResult.reason);
+  }
 }
 
 // ── 時間計算ヘルパー ──
@@ -255,6 +273,23 @@ module.exports = async (req, res) => {
 
     // 連続枠チェック
     const duration = MENU_DURATIONS[menu] || 60;
+
+    // ── 1日あたりの上限チェック ──
+    try {
+      let dailyCapacityMins = 180; // デフォルト
+      const settingRes = await supabase('/rest/v1/admin_settings?key=eq.daily_capacity_mins');
+      if (Array.isArray(settingRes.data) && settingRes.data.length > 0) {
+        dailyCapacityMins = parseInt(settingRes.data[0].value) || 180;
+      }
+      const bookedRes = await supabase(`/rest/v1/slots?date=eq.${date}&is_booked=eq.true`);
+      const bookedMins = Array.isArray(bookedRes.data) ? bookedRes.data.length * 15 : 0;
+      if (bookedMins + duration > dailyCapacityMins) {
+        return res.status(409).json({ error: 'この日の予約枠は満枠です。別の日をお選びください。' });
+      }
+    } catch(e) {
+      console.error('capacity check error:', e.message);
+      // チェック失敗時は通過させる（予約は続行）
+    }
     const requiredTimes = getRequiredTimes(start_time, duration);
     const dateSlots = await supabase(`/rest/v1/slots?date=eq.${date}&is_available=eq.true&is_booked=eq.false&order=start_time`);
     if (!dateSlots.data) throw new Error('スロット取得に失敗しました');

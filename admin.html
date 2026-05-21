@@ -69,11 +69,12 @@ td.cell.empty { background: #fafaf8; }
 td.cell.empty:hover { background: #e0f0ff; }
 td.cell.available { background: #c8e6c9; }
 td.cell.available:hover { background: #a5d6a7; }
-td.cell.booked { background: #ffcdd2; cursor: default; }
+td.cell.booked { background: #ffcdd2; cursor: pointer; }
 td.cell.sel-add { background: #90caf9 !important; }
 td.cell.sel-del { background: #ffcc80 !important; }
-td.cell.drag-over { opacity: 0.7; }
-td.cell.booked.sel-add, td.cell.booked.sel-del { background: #ffcdd2 !important; cursor: default; }
+td.cell.sel-booked-del { background: #ce93d8 !important; cursor: pointer; }
+td.cell.drag-over { opacity: 0.75; }
+td.cell.booked.drag-over { background: #e1bee7 !important; opacity: 1; }
 
 .action-bar { display: flex; gap: 10px; margin: 14px 0 0; flex-wrap: wrap; align-items: center; }
 .sel-count { font-size: 0.82rem; color: #888; }
@@ -81,10 +82,28 @@ td.cell.booked.sel-add, td.cell.booked.sel-del { background: #ffcdd2 !important;
 .btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-add-slot { background: #2e7d32; color: #fff; }
 .btn-add-slot:not(:disabled):hover { background: #1b5e20; }
+.btn-block-slot { background: #6a1b9a; color: #fff; }
+.btn-block-slot:not(:disabled):hover { background: #4a148c; }
 .btn-del-slot { background: #c62828; color: #fff; }
 .btn-del-slot:not(:disabled):hover { background: #b71c1c; }
+.btn-del-booked { background: #880e4f; color: #fff; }
+.btn-del-booked:not(:disabled):hover { background: #560027; }
 .btn-clear { background: none; border: 1px solid #ccc; color: #666; padding: 8px 14px; border-radius: 7px; cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; }
 .btn-clear:hover { border-color: #999; }
+
+/* ── 設定セクション ── */
+.settings-section { background: #faf8f5; border-radius: 10px; padding: 20px; margin-top: 24px; border: 1px solid #ece5dc; }
+.settings-section h3 { font-size: 0.92rem; color: #1a3a3a; margin-bottom: 4px; }
+.settings-section .s-desc { font-size: 0.78rem; color: #999; margin-bottom: 16px; }
+.settings-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.settings-row label { font-size: 0.82rem; color: #555; white-space: nowrap; }
+.settings-row input[type="number"] { width: 90px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Noto Serif JP', serif; font-size: 0.9rem; text-align: center; }
+.settings-row input[type="number"]:focus { outline: none; border-color: #b8976a; }
+.s-save-btn { padding: 8px 20px; background: #1a3a3a; color: #fff; border: none; border-radius: 7px; font-family: 'Noto Serif JP', serif; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
+.s-save-btn:hover { background: #2a5a5a; }
+.s-status { font-size: 0.78rem; margin-top: 4px; }
+.s-note { font-size: 0.76rem; color: #aaa; margin-top: 8px; line-height: 1.7; }
+.s-sql { background: #f0f0f0; border-radius: 6px; padding: 10px 14px; font-size: 0.76rem; font-family: monospace; color: #333; margin-top: 8px; white-space: pre-wrap; border: 1px solid #ddd; }
 
 /* ── 定例ブロック section ── */
 .bulk-section { background: #faf8f5; border-radius: 10px; padding: 20px; margin-top: 24px; border: 1px solid #ece5dc; }
@@ -164,8 +183,9 @@ td.cell.booked.sel-add, td.cell.booked.sel-del { background: #ffcdd2 !important;
         <div class="legend-item"><div class="legend-box" style="background:#ffcdd2;"></div>予約済み</div>
         <div class="legend-item"><div class="legend-box" style="background:#90caf9;"></div>追加予定（選択中）</div>
         <div class="legend-item"><div class="legend-box" style="background:#ffcc80;"></div>削除予定（選択中）</div>
+        <div class="legend-item"><div class="legend-box" style="background:#ce93d8;"></div>予約済み削除予定（選択中）</div>
       </div>
-      <p style="font-size:0.76rem;color:#aaa;margin-bottom:10px;">ドラッグして範囲選択できます。緑＝削除予定（オレンジ）、白＝追加予定（青）になります。予約済み（赤）は変更不可。</p>
+      <p style="font-size:0.76rem;color:#aaa;margin-bottom:10px;">ドラッグして範囲選択できます。空き白→青（追加）、緑→オレンジ（削除）、赤→紫（予約済み強制削除）になります。</p>
 
       <!-- Timeline Grid -->
       <div class="timeline-outer" id="timelineOuter">
@@ -176,7 +196,9 @@ td.cell.booked.sel-add, td.cell.booked.sel-del { background: #ffcdd2 !important;
       <div class="action-bar">
         <span class="sel-count" id="selCount">選択なし</span>
         <button class="btn-action btn-add-slot" id="btnAddSlot" onclick="addSelectedSlots()" disabled>✚ 選択枠を追加</button>
+        <button class="btn-action btn-block-slot" id="btnBlockSlot" onclick="addSelectedAsBlocked()" disabled>🔒 ブロック追加</button>
         <button class="btn-action btn-del-slot" id="btnDelSlot" onclick="deleteSelectedSlots()" disabled>✕ 選択枠を削除</button>
+        <button class="btn-action btn-del-booked" id="btnDelBooked" onclick="deleteSelectedBookedSlots()" disabled>🗑 予約済み枠を削除</button>
         <button class="btn-clear" onclick="clearSelection()">選択解除</button>
       </div>
 
@@ -216,6 +238,30 @@ td.cell.booked.sel-add, td.cell.booked.sel-del { background: #ffcdd2 !important;
         </div>
         <p class="bulk-hint">※ 追加：対象月の選択曜日すべてに15分刻みで枠を作成します。削除：該当する枠（予約済みを除く）を削除します。</p>
       </div>
+
+      <!-- 満枠設定 -->
+      <div class="settings-section">
+        <h3>📊 満枠設定</h3>
+        <p class="s-desc">1日に予約が指定した分数に達したら、その日の残り枠を自動で非表示にします。</p>
+        <div class="settings-row">
+          <label>1日の最大予約時間</label>
+          <input type="number" id="dailyCapacityInput" min="15" max="480" step="15" value="180">
+          <span style="font-size:0.82rem;color:#777;">分</span>
+          <button class="s-save-btn" onclick="saveCapacitySetting()">保存</button>
+        </div>
+        <div class="s-status" id="capacityStatus"></div>
+        <p class="s-note" id="capacityNote" style="display:none;">
+          ⚠️ この設定を保存するには、Supabase に下記のテーブルを作成してください（1回のみ）：<br>
+          <a href="https://supabase.com/dashboard/project/quacqiugfcwdqxzutqpq/editor" target="_blank" style="color:#b8976a;">Supabase SQL エディタ</a> を開いて以下を実行↓
+          <span class="s-sql">CREATE TABLE IF NOT EXISTS admin_settings (
+  key text PRIMARY KEY,
+  value text NOT NULL
+);
+INSERT INTO admin_settings (key, value)
+VALUES ('daily_capacity_mins', '180')
+ON CONFLICT (key) DO NOTHING;</span>
+        </p>
+      </div>
     </div>
   </div>
 </div>
@@ -236,7 +282,8 @@ const DAY_NAMES = ['日','月','火','水','木','金','土'];
 let adminPassword = '';
 let weekMonday = getThisMonday(new Date());
 let slotsData = {}; // key: "YYYY-MM-DD|HH:MM" → { id, is_booked, is_available }
-let selectedCells = new Set();
+let selectedCells = new Set();       // 空き・受付中セルの選択
+let selectedBookedCells = new Set(); // 予約済みセルの選択（一括削除用）
 let cellEls = {}; // key: "YYYY-MM-DD|HH:MM" → <td> element
 let isDragging = false;
 let dragStartKey = null;
@@ -340,7 +387,7 @@ function showTab(tab, btn) {
   document.getElementById('tab-bookings').style.display = tab === 'bookings' ? 'block' : 'none';
   document.getElementById('tab-slots').style.display = tab === 'slots' ? 'block' : 'none';
   if (tab === 'bookings') loadBookings();
-  if (tab === 'slots') { weekMonday = getThisMonday(new Date()); loadWeekSlots(); }
+  if (tab === 'slots') { weekMonday = getThisMonday(new Date()); loadWeekSlots(); loadCapacitySetting(); }
 }
 
 // ── Bookings ──
@@ -486,10 +533,11 @@ function getCellCls(key) {
   if (!slot) cls += 'empty';
   else if (slot.is_booked) cls += 'booked';
   else cls += 'available';
-  if (selectedCells.has(key)) {
-    if (!slot || !slot.is_booked) {
-      cls += !slot ? ' sel-add' : ' sel-del';
-    }
+
+  if (selectedBookedCells.has(key)) {
+    cls += ' sel-booked-del';
+  } else if (selectedCells.has(key) && !slotsData[key]?.is_booked) {
+    cls += !slotsData[key] ? ' sel-add' : ' sel-del';
   }
   return cls;
 }
@@ -508,16 +556,6 @@ function attachDragEvents() {
     const td = e.target.closest('td.cell');
     if (!td) return;
     e.preventDefault();
-    const slot = slotsData[td.dataset.key];
-    // 予約済み枠は個別クリックでのみ削除可（ドラッグ選択不可）
-    if (slot?.is_booked) {
-      const key = td.dataset.key;
-      const [, time] = key.split('|');
-      if (confirm(`予約済みの枠（${time}）を強制削除しますか？\n※予約データも無効になります。この操作は取り消せません。`)) {
-        forceDeleteBookedSlot(slot.id, key);
-      }
-      return;
-    }
     isDragging = true;
     dragStartKey = td.dataset.key;
     dragStartDateIdx = parseInt(td.dataset.di);
@@ -545,10 +583,9 @@ function attachDragEvents() {
 }
 
 function updateDragRange() {
-  // Clear previous drag highlight
   dragRangeKeys.forEach(key => {
     const td = cellEls[key];
-    if (td) { td.classList.remove('drag-over'); }
+    if (td) td.classList.remove('drag-over');
   });
   dragRangeKeys.clear();
 
@@ -561,8 +598,6 @@ function updateDragRange() {
   for (let di = minDi; di <= maxDi; di++) {
     for (let ti = minTi; ti <= maxTi; ti++) {
       const key = cellKey(weekDates[di], TIMES[ti]);
-      const slot = slotsData[key];
-      if (slot?.is_booked) continue;
       dragRangeKeys.add(key);
       const td = cellEls[key];
       if (td) td.classList.add('drag-over');
@@ -574,10 +609,15 @@ function commitDrag() {
   dragRangeKeys.forEach(key => {
     const td = cellEls[key];
     if (td) td.classList.remove('drag-over');
-    if (selectedCells.has(key)) {
-      selectedCells.delete(key);
+    const slot = slotsData[key];
+    if (slot?.is_booked) {
+      // 予約済みセルの選択をトグル
+      if (selectedBookedCells.has(key)) selectedBookedCells.delete(key);
+      else selectedBookedCells.add(key);
     } else {
-      selectedCells.add(key);
+      // 空き・受付中セルの選択をトグル
+      if (selectedCells.has(key)) selectedCells.delete(key);
+      else selectedCells.add(key);
     }
     refreshCell(key);
   });
@@ -588,24 +628,31 @@ function commitDrag() {
 function clearSelection() {
   selectedCells.forEach(key => refreshCell(key));
   selectedCells.clear();
+  selectedBookedCells.forEach(key => refreshCell(key));
+  selectedBookedCells.clear();
   updateActionBar();
 }
 
 function updateActionBar() {
-  // Count what's selected
-  let toAdd = 0, toDel = 0;
+  let toAdd = 0, toDel = 0, toBookedDel = 0;
   selectedCells.forEach(key => {
     const slot = slotsData[key];
     if (!slot) toAdd++;
     else if (!slot.is_booked) toDel++;
   });
-  const total = toAdd + toDel;
+  selectedBookedCells.forEach(key => {
+    if (slotsData[key]?.is_booked) toBookedDel++;
+  });
+  const total = toAdd + toDel + toBookedDel;
   const parts = [];
   if (toAdd > 0) parts.push(`追加予定 ${toAdd}枠（青）`);
   if (toDel > 0) parts.push(`削除予定 ${toDel}枠（オレンジ）`);
+  if (toBookedDel > 0) parts.push(`予約済み削除 ${toBookedDel}枠（紫）`);
   document.getElementById('selCount').textContent = total > 0 ? parts.join('　') : '選択なし';
   document.getElementById('btnAddSlot').disabled = toAdd === 0;
+  document.getElementById('btnBlockSlot').disabled = toAdd === 0;
   document.getElementById('btnDelSlot').disabled = toDel === 0;
+  document.getElementById('btnDelBooked').disabled = toBookedDel === 0;
 }
 
 // ── Add Selected Slots（並列実行で高速化）──
@@ -636,21 +683,68 @@ async function addSelectedSlots() {
   await loadWeekSlots();
 }
 
-// ── 予約済み枠の強制削除（個別のみ）──
-async function forceDeleteBookedSlot(id, key) {
+// ── 予約済み枠の一括強制削除 ──
+async function deleteSelectedBookedSlots() {
+  const toDelete = [];
+  selectedBookedCells.forEach(key => {
+    const slot = slotsData[key];
+    if (slot?.is_booked) toDelete.push(slot.id);
+  });
+  if (toDelete.length === 0) return;
+  if (!confirm(`予約済みの枠 ${toDelete.length}個 を強制削除しますか？\n※予約データも無効になります。この操作は取り消せません。`)) return;
+
+  const btn = document.getElementById('btnDelBooked');
+  btn.disabled = true;
+  btn.textContent = '削除中...';
   try {
-    const res = await fetch(`/api/admin-slots?id=${id}&force=true`, {
+    const res = await fetch(`/api/admin-slots?ids=${toDelete.join(',')}&force=true`, {
       method: 'DELETE',
       headers: { 'X-Admin-Password': adminPassword }
     });
+    btn.textContent = '🗑 予約済み枠を削除';
     if (res.ok) {
+      selectedBookedCells.clear();
+      alert(`${toDelete.length}枠を削除しました`);
       await loadWeekSlots();
     } else {
       alert('削除に失敗しました');
     }
   } catch(e) {
+    btn.textContent = '🗑 予約済み枠を削除';
     alert('エラーが発生しました');
   }
+}
+
+// ── ブロック枠として追加（空きセルを手動で予約済みに）──
+async function addSelectedAsBlocked() {
+  const toBlock = {};
+  selectedCells.forEach(key => {
+    if (slotsData[key]) return; // 既存枠はスキップ
+    const [date, time] = key.split('|');
+    if (!toBlock[date]) toBlock[date] = [];
+    toBlock[date].push(time);
+  });
+  const dates = Object.keys(toBlock);
+  if (dates.length === 0) {
+    alert('空き（白）のセルを選択してください');
+    return;
+  }
+
+  const btn = document.getElementById('btnBlockSlot');
+  btn.disabled = true;
+  btn.textContent = '処理中...';
+
+  await Promise.allSettled(dates.map(date =>
+    fetch('/api/admin-slots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+      body: JSON.stringify({ date, times: toBlock[date], blocked: true })
+    })
+  ));
+
+  btn.textContent = '🔒 ブロック追加';
+  selectedCells.clear();
+  await loadWeekSlots();
 }
 
 // ── Delete Selected Slots（一括削除APIで高速化）──
@@ -756,6 +850,54 @@ async function bulkAction(mode) {
     btn.textContent = mode === 'add' ? '✚ 一括追加' : '✕ 一括削除';
   }
   loadWeekSlots();
+}
+
+// ── 満枠設定 ──
+async function loadCapacitySetting() {
+  try {
+    const res = await fetch('/api/admin-settings', { headers: { 'X-Admin-Password': adminPassword } });
+    const data = await res.json();
+    document.getElementById('dailyCapacityInput').value = data.daily_capacity_mins || 180;
+    if (!data._tableReady) {
+      document.getElementById('capacityNote').style.display = 'block';
+      document.getElementById('capacityStatus').textContent = '⚠️ テーブル未作成（デフォルト180分で動作中）';
+      document.getElementById('capacityStatus').style.color = '#e65100';
+    } else {
+      document.getElementById('capacityNote').style.display = 'none';
+      document.getElementById('capacityStatus').textContent = `現在の設定: ${data.daily_capacity_mins}分`;
+      document.getElementById('capacityStatus').style.color = '#2e7d32';
+    }
+  } catch(e) {
+    document.getElementById('capacityStatus').textContent = '設定の読み込みに失敗しました';
+  }
+}
+
+async function saveCapacitySetting() {
+  const val = parseInt(document.getElementById('dailyCapacityInput').value);
+  if (!val || val < 15) { alert('15以上の値を入力してください'); return; }
+  const statusEl = document.getElementById('capacityStatus');
+  statusEl.textContent = '保存中...';
+  statusEl.style.color = '#888';
+  try {
+    const res = await fetch('/api/admin-settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPassword },
+      body: JSON.stringify({ key: 'daily_capacity_mins', value: val })
+    });
+    const data = await res.json();
+    if (data.success) {
+      statusEl.textContent = `✓ 保存しました（${val}分）`;
+      statusEl.style.color = '#2e7d32';
+      document.getElementById('capacityNote').style.display = 'none';
+    } else {
+      statusEl.textContent = '保存失敗: ' + (data.error || '不明なエラー');
+      statusEl.style.color = '#c62828';
+      document.getElementById('capacityNote').style.display = 'block';
+    }
+  } catch(e) {
+    statusEl.textContent = 'エラーが発生しました';
+    statusEl.style.color = '#c62828';
+  }
 }
 
 // ── Init ──

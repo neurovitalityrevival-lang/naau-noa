@@ -39,14 +39,37 @@ module.exports = async (req, res) => {
   const ny = m === 12 ? y + 1 : y;
   const end = `${ny}-${String(nm).padStart(2,'0')}-01`;
 
-  const data = await supabase(
-    `/rest/v1/slots?date=gte.${start}&date=lt.${end}&is_available=eq.true&is_booked=eq.false&order=date,start_time`
-  );
+  // 利用可能枠を取得
+  const [availableData, bookedData, settingData] = await Promise.all([
+    supabase(`/rest/v1/slots?date=gte.${start}&date=lt.${end}&is_available=eq.true&is_booked=eq.false&order=date,start_time`),
+    supabase(`/rest/v1/slots?date=gte.${start}&date=lt.${end}&is_booked=eq.true`),
+    supabase(`/rest/v1/admin_settings?key=eq.daily_capacity_mins`).catch(() => null)
+  ]);
 
-  // 22:00以降の枠を除外
-  const filtered = Array.isArray(data)
-    ? data.filter(s => s.start_time.substring(0, 5) < '22:00')
-    : data;
+  // 1日あたりの上限（分）を取得（デフォルト180分）
+  let dailyCapacityMins = 180;
+  if (Array.isArray(settingData) && settingData.length > 0) {
+    dailyCapacityMins = parseInt(settingData[0].value) || 180;
+  }
+
+  // 22:00以降を除外
+  const available = Array.isArray(availableData)
+    ? availableData.filter(s => s.start_time.substring(0, 5) < '22:00')
+    : [];
+
+  // 日ごとの予約済み分数を計算
+  const bookedMinsPerDay = {};
+  if (Array.isArray(bookedData)) {
+    bookedData.forEach(s => {
+      bookedMinsPerDay[s.date] = (bookedMinsPerDay[s.date] || 0) + 15;
+    });
+  }
+
+  // 満枠（上限以上）の日の枠を非表示にする
+  const filtered = available.filter(s => {
+    const bookedMins = bookedMinsPerDay[s.date] || 0;
+    return bookedMins < dailyCapacityMins;
+  });
 
   res.status(200).json(filtered);
 };
