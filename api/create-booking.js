@@ -6,6 +6,7 @@ const { Resend } = require('resend');
 const MENU_DURATIONS = {
   'オンライン無料個別相談': 60,
   'メンタルシフトセッション': 60,
+  'メンタルシフトセッション（2回目以降）': 60,
   '《新規限定》オンライン無料個別相談': 60,
   '《初回限定》AETエネルギー整体付き個別相談': 90,
   '《初回》潜在意識の書き換え｜AETエネルギー整体orオンラインリリースワーク（90分）55,000円': 90,
@@ -47,6 +48,7 @@ function supabase(path, method = 'GET', body = null) {
 const MENU_VALUES = {
   'オンライン無料個別相談': 0,
   'メンタルシフトセッション': 33000,
+  'メンタルシフトセッション（2回目以降）': 55000,
   '《新規限定》オンライン無料個別相談': 0,
   '《新規限定》対面無料個別相談': 0,
   '《初回》潜在意識の書き換え｜AETエネルギー整体orオンラインリリースワーク（90分）55,000円': 55000,
@@ -77,6 +79,8 @@ async function sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAge
 }
 
 // ── メール送信 ──
+// Resend は onboarding@resend.dev からアカウント登録メール（admin）にしか送れない。
+// お客様メールは Gmail SMTP（nodemailer）を優先し、失敗時 Resend にフォールバック。
 async function sendEmails({ name, email, phone, menu, date, startTime, endTime }) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const adminEmail = 'neuro.vitality.revival@gmail.com';
@@ -192,42 +196,62 @@ tr:last-child td { border-bottom:none; }
   <div class="footer"><p>Na'au Noa | naau-noa.vercel.app</p></div>
 </div></body></html>`;
 
-  const [adminResult, customerResult] = await Promise.allSettled([
-    // 管理者通知
-    resend.emails.send({
-      from: "Na'au Noa 予約 <onboarding@resend.dev>",
-      to: adminEmail,
-      reply_to: adminEmail,
-      subject: `【予約通知】${name}様 ${dateLabel} ${startTime}〜`,
-      html: adminHtml
-    }),
-    // お客様確認（adminにBCCも送信）
-    resend.emails.send({
+  // ── 管理者通知（Resend でOK：アカウント登録Gmailへ）──
+  const adminResult = await resend.emails.send({
+    from: "Na'au Noa 予約 <onboarding@resend.dev>",
+    to: adminEmail,
+    reply_to: adminEmail,
+    subject: `【予約通知】${name}様 ${dateLabel} ${startTime}〜`,
+    html: adminHtml
+  });
+  if (adminResult.error) console.error('Admin email error:', JSON.stringify(adminResult.error));
+  else console.log('Admin email sent:', adminResult.data?.id);
+
+  // ── お客様確認メール（Gmail SMTP 優先 → Resend フォールバック）──
+  let customerEmailSent = false;
+
+  // Gmail SMTP を試みる（env var が設定されている場合）
+  const gmailPass = process.env.GMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS;
+  if (gmailPass) {
+    try {
+      const nodemailer = require('nodemailer');
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: adminEmail, pass: gmailPass }
+      });
+      await transporter.sendMail({
+        from: `"Na'au Noa" <${adminEmail}>`,
+        to: email,
+        replyTo: adminEmail,
+        subject: `ご予約を承りました（${dateLabel} ${startTime}〜）`,
+        html: customerHtml
+      });
+      customerEmailSent = true;
+      console.log('Customer email sent via Gmail SMTP');
+    } catch(e) {
+      console.error('Gmail SMTP error:', e.message);
+    }
+  }
+
+  // Gmail が使えない場合は Resend でフォールバック
+  if (!customerEmailSent) {
+    const customerResult = await resend.emails.send({
       from: "Na'au Noa <onboarding@resend.dev>",
       to: email,
       bcc: adminEmail,
       reply_to: adminEmail,
       subject: `ご予約を承りました（${dateLabel} ${startTime}〜）`,
       html: customerHtml
-    })
-  ]);
-
-  // Resend v4 はエラーを throw しないので明示的にチェック
-  if (adminResult.status === 'fulfilled') {
-    const { data, error } = adminResult.value || {};
-    if (error) console.error('Admin email error:', JSON.stringify(error));
-    else console.log('Admin email sent:', data?.id);
-  } else {
-    console.error('Admin email rejected:', adminResult.reason);
+    });
+    if (customerResult.error) {
+      console.error('Customer email (Resend) error:', JSON.stringify(customerResult.error));
+    } else {
+      customerEmailSent = true;
+      console.log('Customer email sent via Resend:', customerResult.data?.id);
+    }
   }
 
-  if (customerResult.status === 'fulfilled') {
-    const { data, error } = customerResult.value || {};
-    if (error) console.error('Customer email error:', JSON.stringify(error));
-    else console.log('Customer email sent:', data?.id);
-  } else {
-    console.error('Customer email rejected:', customerResult.reason);
-  }
+  return { customerEmailSent };
 }
 
 // ── 時間計算ヘルパー ──
@@ -315,8 +339,10 @@ module.exports = async (req, res) => {
     // メール送信（失敗しても予約は成功扱い）
     const startTime = start_time.substring(0, 5);
     const endTime = calcEndTime(startTime, duration);
+    let emailSent = false;
     try {
-      await sendEmails({ name, email, phone, menu, date, startTime, endTime });
+      const emailResult = await sendEmails({ name, email, phone, menu, date, startTime, endTime });
+      emailSent = emailResult?.customerEmailSent || false;
     } catch(e) {
       console.error('メール送信エラー:', e);
     }
@@ -324,7 +350,7 @@ module.exports = async (req, res) => {
     // Meta CAPI
     try { await sendCAPI({ name, email, phone, sourceUrl, menu, clientIp, userAgent, fbc, fbp }); } catch(e) { console.error('CAPI:', e); }
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, emailSent });
   } catch(e) {
     console.error(e);
     res.status(500).json({ error: e.message });

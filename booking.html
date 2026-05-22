@@ -200,8 +200,20 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
           <span class="menu-check">✓</span>
         </div>
         <div class="menu-opt" data-key="メンタルシフトセッション" onclick="selectMenu(this)">
-          <div class="menu-opt-title">⚡ メンタルシフトセッション</div>
-          <div class="menu-opt-detail">60分 / ¥33,000 / Zoom（全国対応）</div>
+          <div class="menu-opt-title">⚡ メンタルシフトセッション
+            <span style="background:#c0392b;color:#fff;font-size:0.68rem;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:700;vertical-align:middle;">初回割引</span>
+          </div>
+          <div class="menu-opt-detail">60分 / Zoom（全国対応）<br>
+            <span style="font-size:0.88rem;font-weight:700;color:#b8976a;">¥33,000</span>
+            <span style="font-size:0.75rem;color:#aaa;margin-left:4px;text-decoration:line-through;">¥55,000</span>
+          </div>
+          <span class="menu-check">✓</span>
+        </div>
+        <div class="menu-opt" data-key="メンタルシフトセッション（2回目以降）" onclick="selectMenu(this)">
+          <div class="menu-opt-title">⚡ メンタルシフトセッション（2回目以降）</div>
+          <div class="menu-opt-detail">60分 / Zoom（全国対応）<br>
+            <span style="font-size:0.88rem;font-weight:700;">¥55,000</span>
+          </div>
           <span class="menu-check">✓</span>
         </div>
       </div>
@@ -284,18 +296,16 @@ textarea { height: 100px; resize: vertical; line-height: 1.8; }
 <script>
 // ── メニュー設定 ──
 const MENU_CONFIG = {
-  'オンライン無料個別相談': {
-    duration: 60, type: 'online'
-  },
-  'メンタルシフトセッション': {
-    duration: 60, type: 'online'
-  }
+  'オンライン無料個別相談': { duration: 60, type: 'online' },
+  'メンタルシフトセッション': { duration: 60, type: 'online' },
+  'メンタルシフトセッション（2回目以降）': { duration: 60, type: 'online' }
 };
 
 // ── メニューごとの最大枠数 ──
 const MENU_MAX_SLOTS = {
   'オンライン無料個別相談': 17,
-  'メンタルシフトセッション': 17
+  'メンタルシフトセッション': 17,
+  'メンタルシフトセッション（2回目以降）': 17
 };
 
 // ── 状態 ──
@@ -542,7 +552,16 @@ async function submitBooking() {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      const params = new URLSearchParams({ menu: selectedMenuKey, name }); window.location.href = 'booking-complete.html?' + params.toString();
+      const isOnline = MENU_CONFIG[selectedMenuKey]?.type === 'online';
+      const params = new URLSearchParams({
+        menu: selectedMenuKey,
+        name,
+        date: selectedDate || '',
+        time: selectedTime || '',
+        online: isOnline ? '1' : '0',
+        emailSent: data.emailSent ? '1' : '0'
+      });
+      window.location.href = 'booking-complete.html?' + params.toString();
     } else {
       throw new Error(data.error || '送信に失敗しました');
     }

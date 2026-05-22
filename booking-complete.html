@@ -23,6 +23,9 @@ fbq('track','PageView');
   const name = p.get('name') || '';
   // メニューに応じた金額を設定
   const valueMap = {
+    'オンライン無料個別相談': 0,
+    'メンタルシフトセッション': 33000,
+    'メンタルシフトセッション（2回目以降）': 55000,
     '《新規限定》オンライン無料個別相談': 0,
     '《初回》潜在意識の書き換え｜AETエネルギー整体orオンラインリリースワーク（90分）55,000円': 55000,
     '《10:00~17:00限定》AETエネルギー整体（90分）33,000円': 33000,
@@ -54,11 +57,25 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.4rem; letter-spac
 .check-icon { width: 80px; height: 80px; background: #1a3a3a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; font-size: 2rem; color: #fff; }
 h1 { font-size: 1.5rem; color: #1a3a3a; margin-bottom: 16px; line-height: 1.6; }
 .sub { color: #888; font-size: 0.9rem; margin-bottom: 24px; line-height: 1.8; }
-.email-note { background: #fff8e8; border-left: 4px solid #b8976a; border-radius: 4px; padding: 14px 18px; margin-bottom: 28px; text-align: left; font-size: 0.85rem; color: #7a5c2a; line-height: 1.9; }
+.booking-summary { background: #f0ebe3; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; text-align: left; }
+.booking-summary h3 { font-size: 0.82rem; color: #b8976a; letter-spacing: 0.08em; margin-bottom: 10px; }
+.booking-summary table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.booking-summary td { padding: 6px 0; border-bottom: 1px solid #e0d8cc; }
+.booking-summary td:first-child { color: #888; width: 80px; }
+.booking-summary td:last-child { color: #1a3a3a; font-weight: 600; }
+.booking-summary tr:last-child td { border-bottom: none; }
+.zoom-box { background: #1a3a3a; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; text-align: left; }
+.zoom-box h3 { font-size: 0.82rem; color: #b8976a; letter-spacing: 0.08em; margin-bottom: 12px; }
+.zoom-box a { display: block; background: #2d9c5e; color: #fff; text-align: center; padding: 13px 20px; border-radius: 8px; font-size: 1rem; font-weight: 700; text-decoration: none; margin-bottom: 12px; letter-spacing: 0.03em; }
+.zoom-box a:hover { background: #22804d; }
+.zoom-detail { font-size: 0.83rem; color: #c8b89a; line-height: 2; }
+.zoom-detail strong { color: #f0e8d8; }
+.zoom-caution { background: rgba(255,255,255,0.08); border-radius: 8px; padding: 12px 14px; margin-top: 12px; font-size: 0.78rem; color: #c8b89a; line-height: 1.9; }
+.email-note { background: #fff8e8; border-left: 4px solid #b8976a; border-radius: 4px; padding: 14px 18px; margin-bottom: 20px; text-align: left; font-size: 0.84rem; color: #7a5c2a; line-height: 1.9; }
 .email-note a { color: #b8976a; font-weight: 600; text-decoration: none; }
-.info-box { background: #f0ebe3; border-radius: 10px; padding: 24px; margin-bottom: 20px; text-align: left; }
-.info-box h3 { font-size: 0.9rem; color: #b8976a; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 12px; border-bottom: 1px solid #d8cfc5; padding-bottom: 8px; }
-.info-box ul { list-style: none; font-size: 0.88rem; color: #555; line-height: 2; }
+.info-box { background: #f0ebe3; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; text-align: left; }
+.info-box h3 { font-size: 0.82rem; color: #b8976a; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 10px; border-bottom: 1px solid #d8cfc5; padding-bottom: 7px; }
+.info-box ul { list-style: none; font-size: 0.86rem; color: #555; line-height: 2; }
 .info-box ul li::before { content: '✓ '; color: #b8976a; }
 .back-btn { display: inline-block; padding: 14px 40px; background: #1a3a3a; color: #fff; text-decoration: none; border-radius: 8px; font-size: 1rem; letter-spacing: 0.05em; margin-top: 8px; }
 </style>
@@ -69,30 +86,104 @@ h1 { font-size: 1.5rem; color: #1a3a3a; margin-bottom: 16px; line-height: 1.6; }
   <div class="complete-card">
     <div class="check-icon">✓</div>
     <h1>ご予約を受け付けました</h1>
-    <p class="sub">ご予約いただきありがとうございます。<br>予約完了メールが届きます。</p>
-    <div class="email-note">
-      届かない場合は迷惑メールフォルダをご確認ください。<br>
-      それでも届いていない場合は入力間違いの可能性がありますので、<br>
-      下記へお電話ください。<br>
+    <p class="sub" id="subMsg">ご予約いただきありがとうございます。</p>
+
+    <!-- 予約内容サマリー -->
+    <div class="booking-summary" id="bookingSummary" style="display:none;">
+      <h3>▷ ご予約内容</h3>
+      <table>
+        <tr><td>日時</td><td id="summaryDateTime">-</td></tr>
+        <tr><td>メニュー</td><td id="summaryMenu">-</td></tr>
+        <tr><td>お名前</td><td id="summaryName">-</td></tr>
+      </table>
+    </div>
+
+    <!-- Zoom情報（オンラインメニューのみ） -->
+    <div class="zoom-box" id="zoomBox" style="display:none;">
+      <h3>▷ Zoom ミーティング情報</h3>
+      <a href="https://us06web.zoom.us/j/5906154770?pwd=mMgbqphSP1cBUW33dnvKadsBUmHpwz.1" target="_blank">
+        🎥 Zoom ミーティングに参加する
+      </a>
+      <div class="zoom-detail">
+        <strong>ミーティング ID：</strong>590 615 4770<br>
+        <strong>パスコード：</strong>777
+      </div>
+      <div class="zoom-caution">
+        ・セッション開始5分前までにご入室ください<br>
+        ・静かで話せる環境でのご参加をお願いします<br>
+        ・スマホの方は事前にZoomアプリをインストールしてください<br>
+        ・カメラとマイクが使用できる状態でご参加ください
+      </div>
+    </div>
+
+    <!-- メール通知 -->
+    <div class="email-note" id="emailNote">
+      このページを <strong>スクリーンショット</strong> して保存しておいてください。<br>
+      確認メールも送信しましたが、届かない場合は迷惑メールフォルダをご確認ください。<br>
+      ご不明な点は下記へご連絡ください：<br>
       <a href="tel:07091974336">📞 070-9197-4336</a>
     </div>
+
+    <!-- アンケート -->
     <div class="info-box">
-      <h3>オンラインのメニューをご予約の方</h3>
+      <h3>セッション前アンケートのお願い</h3>
       <ul>
-        <li>Zoomのインストール（無料）</li>
-        <li>静かで話せる環境の確保</li>
-        <li>お気持ちを整理しておく（不要でも大丈夫です）</li>
+        <li>当日をより充実した時間にするため、事前アンケートにご回答ください</li>
       </ul>
+      <div style="text-align:center;margin-top:14px;">
+        <a href="https://naau-noa.vercel.app/survey.html" style="display:inline-block;background:#b8976a;color:#fff;padding:10px 28px;border-radius:50px;font-size:0.88rem;text-decoration:none;font-weight:700;">アンケートに回答する →</a>
+      </div>
     </div>
-    <div class="info-box">
-      <h3>AET整体をご予約いただいた方</h3>
-      <ul>
-        <li>開始時間丁度にお越しください</li>
-        <li>ストレッチ性の効く生地が柔らかい服装でお越しください</li>
-        <li>効果には個人差がありますのでご了承ください</li>
-      </ul>
-    </div>
+
     <a href="index.html" class="back-btn">トップページに戻る</a>
+
+    <script>
+    (function() {
+      const p = new URLSearchParams(window.location.search);
+      const menu = p.get('menu') || '';
+      const name = p.get('name') || '';
+      const date = p.get('date') || '';
+      const time = p.get('time') || '';
+      const isOnline = p.get('online') === '1';
+      const emailSent = p.get('emailSent') === '1';
+      const ONLINE_MENUS = ['オンライン', 'メンタルシフトセッション'];
+      const menuIsOnline = isOnline || ONLINE_MENUS.some(k => menu.includes(k));
+
+      // サブメッセージ
+      document.getElementById('subMsg').textContent =
+        name ? `${name} 様、ご予約ありがとうございます。` : 'ご予約いただきありがとうございます。';
+
+      // 日時表示
+      if (date && time) {
+        const [y, m, d] = date.split('-').map(Number);
+        const dow = ['日','月','火','水','木','金','土'][new Date(y,m-1,d).getDay()];
+        const dateLabel = `${y}年${m}月${d}日（${dow}）`;
+        const [h, min] = time.split(':').map(Number);
+        const endH = Math.floor((h * 60 + min + 60) / 60);
+        const endMin = (h * 60 + min + 60) % 60;
+        const endTime = `${String(endH).padStart(2,'0')}:${String(endMin).padStart(2,'0')}`;
+        document.getElementById('summaryDateTime').textContent = `${dateLabel} ${time}〜${endTime}`;
+        document.getElementById('summaryMenu').textContent = menu;
+        document.getElementById('summaryName').textContent = name ? `${name} 様` : '-';
+        document.getElementById('bookingSummary').style.display = 'block';
+      }
+
+      // Zoom情報表示
+      if (menuIsOnline) {
+        document.getElementById('zoomBox').style.display = 'block';
+      }
+
+      // メール通知メッセージ
+      if (!emailSent) {
+        document.getElementById('emailNote').innerHTML =
+          '📌 <strong>このページをスクリーンショットして保存</strong>してください。<br>' +
+          '確認メールの送信を試みましたが、システムの都合により届かない場合がございます。<br>' +
+          'このページに表示されているZoom情報をご利用ください。<br>' +
+          'ご不明な点は下記へご連絡ください：<br>' +
+          '<a href="tel:07091974336">📞 070-9197-4336</a>';
+      }
+    })();
+    </script>
   </div>
 </div>
 </body>
