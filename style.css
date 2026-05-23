@@ -766,6 +766,10 @@ input, textarea, select, button,
 .credentials-list li::before  { color: #b8976a !important; }
 .credentials-highlight        { color: #d4a96a !important; font-weight: 600 !important; }
 
+/* ── DM画像グリッド（HP/LP共通） ── */
+.dm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px; }
+@media (max-width: 600px) { .dm-grid { grid-template-columns: 1fr; } }
+
 /* ===== VOICE section (HP) ===== */
 .voice { background: #1a3a3a; }
 .voice .section-tag   { color: #b8976a; }

@@ -259,6 +259,10 @@ header a { color: #b8976a; text-decoration: none; font-size: 1.2rem; letter-spac
 .review-text { font-size: 0.92rem; color: #444; line-height: 2.1; margin-bottom: 16px; font-style: italic; }
 .review-meta { font-size: 0.82rem; color: #b8976a; font-weight: 600; }
 
+/* ── DM画像グリッド ── */
+.dm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px; }
+@media (max-width: 600px) { .dm-grid { grid-template-columns: 1fr; } }
+
 /* ── 最終CTA ── */
 .final-cta { background: #1a3a3a; padding: 72px 24px; text-align: center; }
 .final-cta h2 { color: #fff; font-size: clamp(1.2rem, 3.5vw, 1.6rem); line-height: 1.7; margin-bottom: 14px; }
@@ -445,7 +449,7 @@ footer p { color: #888; font-size: 0.78rem; }
     <h2 class="section-title fade-up delay-1">セッションを受けた方の声</h2>
 
     <!-- ── DM・メール体感報告 ── -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:36px;">
+    <div class="dm-grid">
       <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.18);">
         <img src="images/voice-dm1.jpg" alt="お客様の声1" style="width:100%;display:block;">
       </div>
